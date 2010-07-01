@@ -94,7 +94,8 @@ IAbsThread</string>
     </void>
     <void property="name">
      <void property="text">
-      <string>IAbsMutex</string>
+      <string>«interface»
+IAbsMutex</string>
      </void>
     </void>
    </object>
@@ -163,6 +164,33 @@ IAbsThread</string>
     </void>
    </object>
   </void>
+  <void method="addNode">
+   <object id="ClassNode4" class="com.horstmann.violet.ClassNode">
+    <void property="attributes">
+     <void property="text">
+      <string>- _threads : map&lt;std::string, IAbsThread*&gt;
+- _data : map&lt;std::string, void*&gt;</string>
+     </void>
+    </void>
+    <void property="methods">
+     <void property="text">
+      <string>+ openThread(std::string, startRoutine, bool) : bool
+</string>
+     </void>
+    </void>
+    <void property="name">
+     <void property="text">
+      <string>ThreadPool</string>
+     </void>
+    </void>
+   </object>
+   <object class="java.awt.geom.Point2D$Double">
+    <void method="setLocation">
+     <double>634.0</double>
+     <double>26.0</double>
+    </void>
+   </object>
+  </void>
   <void method="connect">
    <object class="com.horstmann.violet.ClassRelationshipEdge">
     <void property="bentStyle">
@@ -222,6 +250,18 @@ IAbsThread</string>
    </object>
    <object idref="ClassNode2"/>
    <object idref="InterfaceNode1"/>
+  </void>
+  <void method="connect">
+   <object class="com.horstmann.violet.ClassRelationshipEdge">
+    <void property="bentStyle">
+     <object class="com.horstmann.violet.BentStyle" field="HVH"/>
+    </void>
+    <void property="startArrowHead">
+     <object class="com.horstmann.violet.ArrowHead" field="DIAMOND"/>
+    </void>
+   </object>
+   <object idref="ClassNode4"/>
+   <object idref="InterfaceNode0"/>
   </void>
  </object>
 </java>
