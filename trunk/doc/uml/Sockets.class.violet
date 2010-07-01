@@ -6,8 +6,9 @@
     <void property="methods">
      <void property="text">
       <string>+ run() : void
-+ close() : void
-+ accept() : bool</string>
+- poll() : int
+- close() : void
+- accept() : bool</string>
      </void>
     </void>
     <void property="name">
@@ -221,8 +222,9 @@ ITCPSession</string>
     <void property="methods">
      <void property="text">
       <string>+ virtual run() : void
-+ close() : void
-+ accept() : bool</string>
+- poll() : int
+- close() : void
+- accept() : bool</string>
      </void>
     </void>
     <void property="name">
