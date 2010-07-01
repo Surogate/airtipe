@@ -168,8 +168,7 @@ IAbsMutex</string>
    <object id="ClassNode4" class="com.horstmann.violet.ClassNode">
     <void property="attributes">
      <void property="text">
-      <string>- _threads : map&lt;std::string, IAbsThread*&gt;
-- _data : map&lt;std::string, void*&gt;</string>
+      <string>- _threads : std::vector&lt;IAbsThread*&gt;</string>
      </void>
     </void>
     <void property="methods">
@@ -186,8 +185,8 @@ IAbsMutex</string>
    </object>
    <object class="java.awt.geom.Point2D$Double">
     <void method="setLocation">
-     <double>634.0</double>
-     <double>26.0</double>
+     <double>635.0</double>
+     <double>43.0</double>
     </void>
    </object>
   </void>
