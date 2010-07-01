@@ -51,7 +51,10 @@ bool	CAbsMutex_Unix::lock()
 
 bool	CAbsMutex_Unix::tryLock()
 {
-	return (false);
+	int res = pthread_mutex_trylock(this->_mid);
+	if (res != 0)
+		return (false);
+	return (true);
 }
 
 bool	CAbsMutex_Unix::unlock()

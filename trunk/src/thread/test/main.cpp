@@ -23,7 +23,8 @@ void*	myThread(void* data)
 	int i = -1;
 	while (i < 10)
 	{
-		if (gl_mutex.lock())
+		// if (gl_mutex.lock())
+		if (gl_mutex.tryLock())
 		{
 			if (gl_val > i)
 			{
