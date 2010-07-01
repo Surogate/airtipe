@@ -300,13 +300,13 @@ ISharedLibrary</string>
      </object> 
     </void> 
     <void property="name"> 
-     <string>server.class.violet</string> 
+     <string>RTypeServer.class.violet</string> 
     </void> 
    </object> 
    <object class="java.awt.geom.Point2D$Double"> 
     <void method="setLocation"> 
-     <double>790.0</double> 
-     <double>560.0</double> 
+     <double>800.0</double> 
+     <double>570.0</double> 
     </void> 
    </object> 
   </void> 
@@ -314,7 +314,7 @@ ISharedLibrary</string>
    <object idref="ClassNode10"/> 
    <object class="java.awt.geom.Point2D$Double"> 
     <void method="setLocation"> 
-     <double>796.0</double> 
+     <double>809.0</double> 
      <double>685.0</double> 
     </void> 
    </object> 
@@ -323,8 +323,8 @@ ISharedLibrary</string>
    <object idref="ClassNode11"/> 
    <object class="java.awt.geom.Point2D$Double"> 
     <void method="setLocation"> 
-     <double>799.0</double> 
-     <double>594.0</double> 
+     <double>813.0</double> 
+     <double>602.0</double> 
     </void> 
    </object> 
   </void> 
