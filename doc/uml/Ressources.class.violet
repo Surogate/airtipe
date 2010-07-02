@@ -382,7 +382,8 @@ ISharedLibrary</string>
 + setBulletType(type ; BulletType) : void
 + getSpawnFrameNum() : unsigned int
 + setSpawnFrameNum(frameNum : unsigned int) : void
-+ start(IN : actionList : std::list&lt;Action *&gt;, OUT : serverActionList : std::list&lt;Action *&gt;)</string> 
++ start(IN : actionList : std::list&lt;Action *&gt;, OUT : serverActionList : std::list&lt;Action *&gt;)
++ clone() : IEntity &amp;</string> 
      </void> 
     </void> 
     <void property="name"> 
@@ -394,8 +395,8 @@ IEntity</string>
    </object> 
    <object class="java.awt.geom.Point2D$Double"> 
     <void method="setLocation"> 
-     <double>417.0</double> 
-     <double>31.0</double> 
+     <double>415.0</double> 
+     <double>10.0</double> 
     </void> 
    </object> 
   </void> 
