@@ -270,7 +270,7 @@ ISharedLibrary</string>
    <object class="java.awt.geom.Point2D$Double"> 
     <void method="setLocation"> 
      <double>50.0</double> 
-     <double>360.0</double> 
+     <double>350.0</double> 
     </void> 
    </object> 
   </void> 
@@ -278,8 +278,8 @@ ISharedLibrary</string>
    <object idref="ClassNode10"/> 
    <object class="java.awt.geom.Point2D$Double"> 
     <void method="setLocation"> 
-     <double>191.0</double> 
-     <double>820.0</double> 
+     <double>200.0</double> 
+     <double>864.0</double> 
     </void> 
    </object> 
   </void> 
@@ -287,8 +287,8 @@ ISharedLibrary</string>
    <object idref="ClassNode6"/> 
    <object class="java.awt.geom.Point2D$Double"> 
     <void method="setLocation"> 
-     <double>230.0</double> 
-     <double>432.0</double> 
+     <double>222.0</double> 
+     <double>414.0</double> 
     </void> 
    </object> 
   </void> 
@@ -297,7 +297,7 @@ ISharedLibrary</string>
    <object class="java.awt.geom.Point2D$Double"> 
     <void method="setLocation"> 
      <double>60.0</double> 
-     <double>680.0</double> 
+     <double>620.0</double> 
     </void> 
    </object> 
   </void> 
@@ -305,8 +305,8 @@ ISharedLibrary</string>
    <object idref="ClassNode11"/> 
    <object class="java.awt.geom.Point2D$Double"> 
     <void method="setLocation"> 
-     <double>528.0</double> 
-     <double>710.0</double> 
+     <double>538.0</double> 
+     <double>704.0</double> 
     </void> 
    </object> 
   </void> 
@@ -314,8 +314,8 @@ ISharedLibrary</string>
    <object idref="InterfaceNode0"/> 
    <object class="java.awt.geom.Point2D$Double"> 
     <void method="setLocation"> 
-     <double>234.0</double> 
-     <double>556.0</double> 
+     <double>226.0</double> 
+     <double>538.0</double> 
     </void> 
    </object> 
   </void> 
@@ -323,8 +323,8 @@ ISharedLibrary</string>
    <object idref="ClassNode12"/> 
    <object class="java.awt.geom.Point2D$Double"> 
     <void method="setLocation"> 
-     <double>434.0</double> 
-     <double>815.0</double> 
+     <double>444.0</double> 
+     <double>809.0</double> 
     </void> 
    </object> 
   </void> 
@@ -332,8 +332,8 @@ ISharedLibrary</string>
    <object idref="ClassNode9"/> 
    <object class="java.awt.geom.Point2D$Double"> 
     <void method="setLocation"> 
-     <double>67.0</double> 
-     <double>821.0</double> 
+     <double>74.0</double> 
+     <double>755.0</double> 
     </void> 
    </object> 
   </void> 
@@ -341,8 +341,8 @@ ISharedLibrary</string>
    <object idref="ClassNode13"/> 
    <object class="java.awt.geom.Point2D$Double"> 
     <void method="setLocation"> 
-     <double>601.0</double> 
-     <double>815.0</double> 
+     <double>620.0</double> 
+     <double>809.0</double> 
     </void> 
    </object> 
   </void> 
@@ -350,8 +350,8 @@ ISharedLibrary</string>
    <object idref="PackageNode1"/> 
    <object class="java.awt.geom.Point2D$Double"> 
     <void method="setLocation"> 
-     <double>420.0</double> 
-     <double>680.0</double> 
+     <double>430.0</double> 
+     <double>670.0</double> 
     </void> 
    </object> 
   </void> 
@@ -359,8 +359,8 @@ ISharedLibrary</string>
    <object idref="ClassNode7"/> 
    <object class="java.awt.geom.Point2D$Double"> 
     <void method="setLocation"> 
-     <double>300.0</double> 
-     <double>817.0</double> 
+     <double>307.0</double> 
+     <double>751.0</double> 
     </void> 
    </object> 
   </void> 
@@ -368,8 +368,8 @@ ISharedLibrary</string>
    <object idref="ClassNode14"/> 
    <object class="java.awt.geom.Point2D$Double"> 
     <void method="setLocation"> 
-     <double>530.0</double> 
-     <double>564.0</double> 
+     <double>522.0</double> 
+     <double>546.0</double> 
     </void> 
    </object> 
   </void> 
@@ -377,8 +377,8 @@ ISharedLibrary</string>
    <object idref="ClassNode8"/> 
    <object class="java.awt.geom.Point2D$Double"> 
     <void method="setLocation"> 
-     <double>219.0</double> 
-     <double>713.0</double> 
+     <double>226.0</double> 
+     <double>647.0</double> 
     </void> 
    </object> 
   </void> 
@@ -386,8 +386,8 @@ ISharedLibrary</string>
    <object idref="ClassNode15"/> 
    <object class="java.awt.geom.Point2D$Double"> 
     <void method="setLocation"> 
-     <double>72.0</double> 
-     <double>550.0</double> 
+     <double>64.0</double> 
+     <double>532.0</double> 
     </void> 
    </object> 
   </void> 
@@ -395,8 +395,8 @@ ISharedLibrary</string>
    <object idref="ClassNode16"/> 
    <object class="java.awt.geom.Point2D$Double"> 
     <void method="setLocation"> 
-     <double>69.0</double> 
-     <double>468.0</double> 
+     <double>61.0</double> 
+     <double>450.0</double> 
     </void> 
    </object> 
   </void> 
@@ -404,8 +404,8 @@ ISharedLibrary</string>
    <object idref="ClassNode17"/> 
    <object class="java.awt.geom.Point2D$Double"> 
     <void method="setLocation"> 
-     <double>70.0</double> 
-     <double>394.0</double> 
+     <double>62.0</double> 
+     <double>376.0</double> 
     </void> 
    </object> 
   </void> 
