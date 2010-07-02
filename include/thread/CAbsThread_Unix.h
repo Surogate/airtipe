@@ -10,7 +10,7 @@
 # define	CABSTHREAD_UNIX_H__
 
 #include	"pthread.h"
-#include	"IAbsThread.h"
+#include	"thread/IAbsThread.h"
 
 /*!
  * \brief	Concrete implementation of thread absraction for UNIX
@@ -31,8 +31,9 @@ class		CAbsThread_Unix : public IAbsThread
 	public:
 		/*!
 		 * \brief	Initialise the thread given in parameters
-		 * \param	start		The routine from which the thread will start
-		 * \param	args		Arguments for the start routine
+		 * \param	The routine from which the thread will start
+		 * \param	Arguments for the start routine
+		 * \return	true if succeed. else false.
 		 */
 		bool	launch(
 					startRoutine	start,
@@ -41,6 +42,7 @@ class		CAbsThread_Unix : public IAbsThread
 
 		/*!
 		 * \brief	Wait for this thread to terminate
+		 * \return	true if succeed else false.
 		 */
 		virtual bool	join();
 

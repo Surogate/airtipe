@@ -27,9 +27,10 @@ class		IAbsThread
 	public:
 		/*!
 		 * \brief	Initialise the thread given in parameters
-		 * \param	threadID	The new thread to initialize
-		 * \param	start		The routine from which the thread will start
-		 * \param	args		Arguments for the start routine
+		 * \param	The new thread to initialize
+		 * \param	The routine from which the thread will start
+		 * \param	Arguments for the start routine
+		 * \return	true if succeed. else false.
 		 */
 		virtual bool	launch(
 							startRoutine	start,
@@ -38,6 +39,7 @@ class		IAbsThread
 
 		/*!
 		 * \brief	Wait for this thread to terminate
+		 * \return	true if succeed. else false.
 		 */
 		virtual bool	join() = 0;
 };

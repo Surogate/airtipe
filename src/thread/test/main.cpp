@@ -7,8 +7,8 @@
  */
 
 #ifdef		UNIX
-# include "CAbsThread_Unix.h"
-# include "CAbsMutex_Unix.h"
+# include "thread/CAbsThread_Unix.h"
+# include "thread/CAbsMutex_Unix.h"
 #endif
 
 #include	<iostream>
@@ -21,7 +21,7 @@ void*	myThread(void* data)
 {
 	int*	idata = static_cast<int*>(data);
 	int i = -1;
-	while (i < 10)
+	while (i < 9)
 	{
 		// if (gl_mutex.lock())
 		if (gl_mutex.tryLock())

@@ -10,7 +10,7 @@ SRCS		=	main.cpp					\
 
 OBJS		=	$(SRCS:.cpp=.o)
 CXX			=	g++
-CXXFLAGS	=	-I../ -Wextra -Wall -D UNIX
+CXXFLAGS	=	-I../../../include -Wextra -Wall -D UNIX
 LDFLAGS		=	-lpthread
 RM			=	rm -f
 

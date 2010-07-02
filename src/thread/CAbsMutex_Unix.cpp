@@ -7,7 +7,7 @@
  */
 
 #include	<iostream>
-#include	"CAbsMutex_Unix.h"
+#include	"thread/CAbsMutex_Unix.h"
 
 CAbsMutex_Unix::CAbsMutex_Unix():
 		_mid(new pthread_mutex_t)
