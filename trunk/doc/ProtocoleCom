@@ -132,7 +132,7 @@ validPartyKO
 
 ### GAME COMMUNICATION UDP (sended only to concerned party members)
 
-spawn		id type X Y frameNum
+spawn		id type skinType bulletType X Y frameNum
 			(spawn a new monster with id [id] of type [type] at position x y on the frame number [frameNum])
 
 move		id X Y
@@ -141,3 +141,10 @@ move		id X Y
 fight		id dir
 
 die			id
+
+gainHP
+
+looseHP
+
+bulletType	bulletType
+
