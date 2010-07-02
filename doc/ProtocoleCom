@@ -76,7 +76,7 @@ joinOK		map [[map],...]
 ### BROADCAST GENERAL COMMUNICATION TCP
 
 
-joinParty	login
+joinParty	login id
 			(login has join the party - sended only to concerned party members)
 
 leftParty	login
@@ -133,8 +133,10 @@ validPartyKO
 ### GAME COMMUNICATION UDP (sended only to concerned party members)
 
 spawn		id type X Y frameNum
+			(spawn a new monster with id [id] of type [type] at position x y on the frame number [frameNum])
 
-move		id dir
+move		id X Y
+			(move entity with id [id] at position x y)
 
 fight		id dir
 
