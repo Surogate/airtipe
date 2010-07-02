@@ -45,7 +45,7 @@ class		SharedLibrary_unix : public ISharedLibrary
 		/*!
 		 * \brief	Close and unmap the library from the memory
 		 * \param	The handler of the library
-		 * \return	true if success, false else
+		 * \return	true if success, false otherwise
 		 */
 		bool			libFree(libHandler lib);
 };
