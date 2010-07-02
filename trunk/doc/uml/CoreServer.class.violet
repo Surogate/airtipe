@@ -6,7 +6,7 @@
     <void property="attributes"> 
      <void property="text"> 
       <string>- ress_ : Ressource
-- endGame_ : Server_functer</string> 
+- endGame_ : Server_functor</string> 
      </void> 
     </void> 
     <void property="methods"> 
