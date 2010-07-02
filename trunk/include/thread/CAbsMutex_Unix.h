@@ -10,8 +10,11 @@
 # define	CABSMUTEX_UNIX_H__
 
 # include	"pthread.h"
-# include	"IAbsMutex.h"
+# include	"thread/IAbsMutex.h"
 
+/*!
+ * \class	Concrete implementation of mutex abstraction on Unix
+ */
 class		CAbsMutex_Unix : public IAbsMutex
 {
 	public:
@@ -28,6 +31,7 @@ class		CAbsMutex_Unix : public IAbsMutex
 	public:
 		/*!
 		 * \brief	initialisation of the mutex
+		 * \return	true if initialisation succeed. else false.
 		 */
 		bool	init();
 
@@ -38,20 +42,26 @@ class		CAbsMutex_Unix : public IAbsMutex
 
 		/*!
 		 * \brief	blocking lock. wait until the mutex is free, and take the ressource
+		 * \return	should return true. return false if error.
 		 */
 		bool	lock();
 
 		/*!
-		 * \brief	non blocking lock. try to take control of the mutex. return false if the mutex is locked
+		 * \brief	non blocking lock. try to take control of the mutex.
+		 * \return  return true if control on ressource is taken. return false if the mutex is locked
 		 */
 		bool	tryLock();
 
 		/*!
 		 * \brief	unlock the mutex (if you have control on it)
+		 * \return	return true if succeed. else false.
 		 */
 		bool	unlock();
 
 	private:
+		/*!
+		 * \brief	The mutex identifier
+		 */
 		pthread_mutex_t*	_mid;
 };
 
