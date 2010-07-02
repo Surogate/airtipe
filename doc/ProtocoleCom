@@ -1,0 +1,141 @@
+########## CLIENT TO SERVER ##########
+
+
+### GENERAL COMMUNICATION TCP
+
+
+register	login passwd
+			(register on server)
+
+login		login passwd
+			(login on server)
+
+create		nbPlayersMin nbPlayerMax
+			(creation of a party with minPlayer maxPlayer)
+
+addMap		map
+			(adding a map to a party)
+
+validParty
+			(valid the party)
+
+join		ownerLogin
+			(join a party owned by ownerLogin)
+
+colorChange	color
+			(color : color of the spacecraft)
+
+ready		true/false
+			(toggle ready flag of the player - the party can begin when minimum player have join and are ready)
+
+start
+			(start the party - only the owner)
+
+stop
+			(stop the party - only the owner)
+
+quit
+			(qui the party, and stop it if you are the owner)
+
+
+### GAME COMMUNIACATION UDP
+
+
+move		dir
+			(dir : direction code)
+
+fight		dir
+			(dir : direction code)
+
+
+########## SERVER TO CLIENT ##########
+
+
+### GENERAL COMMUNICATION TCP
+
+
+registerOK
+			(registration successfull)
+
+loginOK
+			(login ok)
+
+createOK	map [[map],...]
+			(creation of party successfull - sending all map list)
+
+addMapOK
+			(Adding map successfull)
+
+validPartyOK
+			(validing partysuccessfull)
+
+joinOK		map [[map],...]
+			(joining party successfull, sending party map list)
+
+
+### BROADCAST GENERAL COMMUNICATION TCP
+
+
+joinParty	login
+			(login has join the party - sended only to concerned party members)
+
+leftParty	login
+			(login has left the party - sended only to concerned party members)
+
+colorChange	login color
+			(login has choosed a new color for spaceCraft - sended only to concerned party members)
+
+ready		login
+			(login is ready - sended only to concerned party members)
+
+notReady	login
+			(login is not ready - sended only to concerned party members)
+
+starting	mapContent
+			!!!! A APPROFONDIR !!!! <<-- chargement des truc manquants etc... + signal de fin, tous le monde est pret et ca commence vraiment
+			(party is starting - receiving map content (background, floor and ceil))
+
+stop
+			(the party is done - when owner stop the party or when the server decide to stop it (Win - Loose))
+
+
+### ERROR CODES TCP
+
+
+registerKO
+			(registration unsuccessfull)
+
+loginAlreadyExists
+			(login already choosed by another player)
+
+badLoginFormat
+			(bad login format)
+
+badPasswordFormat
+			(bad password format)
+
+loginKO
+			(wrong login or password - login failure)
+
+createKO
+			(Creation of party unsuccessfull)
+
+maxPlayerTooHigh
+			(maximum player set is too high)
+
+unknownMap	map
+			(map unknown)
+
+validPartyKO
+			(validing the party unsuccessfull)
+
+
+### GAME COMMUNICATION UDP (sended only to concerned party members)
+
+spawn		id type X Y frameNum
+
+move		id dir
+
+fight		id dir
+
+die			id
