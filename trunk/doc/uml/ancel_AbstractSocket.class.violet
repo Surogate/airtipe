@@ -1,0 +1,356 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<java version="1.6.0_20" class="java.beans.XMLDecoder"> 
+ <object class="com.horstmann.violet.ClassDiagramGraph"> 
+  <void method="addNode"> 
+   <object id="ClassNode0" class="com.horstmann.violet.ClassNode"> 
+    <void property="attributes"> 
+     <void property="text"> 
+      <string>-    SocketCallBack&amp; callBack_;
+-    bool isConnected;
+-    std::string endPoint_;
+-    std::string port_;
+-    std::deque&lt;Packet*&gt; sendStack_;
+-    tcp::socket socket_;</string> 
+     </void> 
+    </void> 
+    <void property="methods"> 
+     <void property="text"> 
+      <string>-    Socket(Socket const&amp;);
+-    Socket&amp; operator=(Socket const&amp;);
+-    void handle_write(const int&amp; error);
+-    void start_listen();
+-    void handle_read_header(const int&amp; error);
+-    void handle_read_body(const int&amp; error);
+-    bool connect();
++   Socket(SocketCallBack* inter, std::string endPoint, std::string port);
++   ~Socket();
++   bool send(SocketCallBack::bytes const*, unsigned int const&amp; size);
++   bool connect(std::string endpoint, std::string port);
++   void disconnect();
++   unsigned int const getIp();
+</string> 
+     </void> 
+    </void> 
+    <void property="name"> 
+     <void property="text"> 
+      <string>tcp::LSocket : public ASocket</string> 
+     </void> 
+    </void> 
+   </object> 
+   <object class="java.awt.geom.Point2D$Double"> 
+    <void method="setLocation"> 
+     <double>1.0</double> 
+     <double>550.0</double> 
+    </void> 
+   </object> 
+  </void> 
+  <void method="addNode"> 
+   <object id="ClassNode1" class="com.horstmann.violet.ClassNode"> 
+    <void property="attributes"> 
+     <void property="text"> 
+      <string>#    SocketCallBack&amp; interface_;</string> 
+     </void> 
+    </void> 
+    <void property="methods"> 
+     <void property="text"> 
+      <string>+    ASocket(SocketCallBack&amp; inter);
++    virtual ~ASocket();
+
++    virtual bool send(SocketCallBack::bytes const*, unsigned int const&amp; size) = 0;
++    virtual void start_listen() = 0;
++    virtual bool connect(std::string endpoint, std::string port) = 0;
++    virtual void disconnect() = 0;
++    virtual void initRecvBuffer() = 0;
++    virtual unsigned int const getIp() = 0;</string> 
+     </void> 
+    </void> 
+    <void property="name"> 
+     <void property="text"> 
+      <string>ASocket</string> 
+     </void> 
+    </void> 
+   </object> 
+   <object class="java.awt.geom.Point2D$Double"> 
+    <void method="setLocation"> 
+     <double>562.9994422711634</double> 
+     <double>810.5910358474629</double> 
+    </void> 
+   </object> 
+  </void> 
+  <void method="addNode"> 
+   <object id="ClassNode2" class="com.horstmann.violet.ClassNode"> 
+    <void property="attributes"> 
+     <void property="text"> 
+      <string>-    tcp::Socket socket_;
+-    AcceptorCallBack&amp; callBack_</string> 
+     </void> 
+    </void> 
+    <void property="methods"> 
+     <void property="text"> 
+      <string>-    Acceptor(AcceptorCallBack&amp; factory, std::string&amp; endpoint);
+-    Acceptor(Acceptor const&amp;);
+-    Acceptor&amp; operator=(BAcceptor const&amp;);
+-    void accept_handler(ASocket* new_client, const int&amp; error);
++   ~Acceptor();
++   static Acceptor* getAcceptor_ip4(AcceptorCallBack&amp; factory, int port);
++   void start_accept();
++   void run();</string> 
+     </void> 
+    </void> 
+    <void property="name"> 
+     <void property="text"> 
+      <string>tcp::LAcceptor : public AAcceptor</string> 
+     </void> 
+    </void> 
+   </object> 
+   <object class="java.awt.geom.Point2D$Double"> 
+    <void method="setLocation"> 
+     <double>5.27282867797021</double> 
+     <double>80.36358566101484</double> 
+    </void> 
+   </object> 
+  </void> 
+  <void method="addNode"> 
+   <object id="ClassNode3" class="com.horstmann.violet.ClassNode"> 
+    <void property="attributes"> 
+     <void property="text"> 
+      <string>#    AcceptorCallBack&amp; interface_;</string> 
+     </void> 
+    </void> 
+    <void property="methods"> 
+     <void property="text"> 
+      <string>+    Acceptor(AcceptorCallBack&amp;);
++    virtual ~Acceptor();
+
++    virtual void start_accept() = 0;
++    virtual void run() = 0;</string> 
+     </void> 
+    </void> 
+    <void property="name"> 
+     <void property="text"> 
+      <string>AAcceptor</string> 
+     </void> 
+    </void> 
+   </object> 
+   <object class="java.awt.geom.Point2D$Double"> 
+    <void method="setLocation"> 
+     <double>717.8633067965966</double> 
+     <double>241.63641433898516</double> 
+    </void> 
+   </object> 
+  </void> 
+  <void method="addNode"> 
+   <object id="InterfaceNode0" class="com.horstmann.violet.InterfaceNode"> 
+    <void property="methods"> 
+     <void property="text"> 
+      <string>virtual ~AcceptorCallBack() {}
+virtual SocketCallBack* getSocketInterface() = 0;
+virtual void receive(ASocket*) = 0;</string> 
+     </void> 
+    </void> 
+    <void property="name"> 
+     <void property="text"> 
+      <string>AcceptorCallBack</string> 
+     </void> 
+    </void> 
+   </object> 
+   <object class="java.awt.geom.Point2D$Double"> 
+    <void method="setLocation"> 
+     <double>1102.0</double> 
+     <double>238.0</double> 
+    </void> 
+   </object> 
+  </void> 
+  <void method="addNode"> 
+   <object id="InterfaceNode1" class="com.horstmann.violet.InterfaceNode"> 
+    <void property="methods"> 
+     <void property="text"> 
+      <string>virtual ~SocketCallBack() {}
+virtual void OnSend(bytes const* sended, unsigned int const&amp; size) = 0;
+virtual void OnRecv(bytes const* header, bytes const*) = 0;
+virtual void OnConnect() = 0;
+virtual void OnDisconnect(bool error) = 0;
+virtual void OnDestroy() = 0;
+virtual unsigned int getHeaderSize() = 0;
+virtual unsigned int getBodySize(bytes const* header) = 0;
+virtual unsigned int getBodyMaxSize() = 0;</string> 
+     </void> 
+    </void> 
+    <void property="name"> 
+     <void property="text"> 
+      <string>SocketCallBack</string> 
+     </void> 
+    </void> 
+   </object> 
+   <object class="java.awt.geom.Point2D$Double"> 
+    <void method="setLocation"> 
+     <double>1189.0</double> 
+     <double>801.0</double> 
+    </void> 
+   </object> 
+  </void> 
+  <void method="addNode"> 
+   <object id="ClassNode4" class="com.horstmann.violet.ClassNode"> 
+    <void property="attributes"> 
+     <void property="text"> 
+      <string>-    tcp::Socket socket_;
+-    AcceptorCallBack&amp; callBack_</string> 
+     </void> 
+    </void> 
+    <void property="methods"> 
+     <void property="text"> 
+      <string>-    Acceptor(AcceptorCallBack&amp; factory, std::string&amp; endpoint);
+-    Acceptor(Acceptor const&amp;);
+-    Acceptor&amp; operator=(BAcceptor const&amp;);
+-    void accept_handler(ASocket* new_client, const int&amp; error);
++   ~Acceptor();
++   static Acceptor* getAcceptor_ip4(AcceptorCallBack&amp; factory, int port);
++   void start_accept();
++   void run();</string> 
+     </void> 
+    </void> 
+    <void property="name"> 
+     <void property="text"> 
+      <string>tcp::WAcceptor : public AAcceptor</string> 
+     </void> 
+    </void> 
+   </object> 
+   <object class="java.awt.geom.Point2D$Double"> 
+    <void method="setLocation"> 
+     <double>6.27282867797021</double> 
+     <double>334.36358566101484</double> 
+    </void> 
+   </object> 
+  </void> 
+  <void method="addNode"> 
+   <object id="ClassNode5" class="com.horstmann.violet.ClassNode"> 
+    <void property="attributes"> 
+     <void property="text"> 
+      <string>-    SocketCallBack&amp; callBack_;
+-    bool isConnected;
+-    std::string endPoint_;
+-    std::string port_;
+-    std::deque&lt;Packet*&gt; sendStack_;
+-    tcp::socket socket_;</string> 
+     </void> 
+    </void> 
+    <void property="methods"> 
+     <void property="text"> 
+      <string>-    Socket(Socket const&amp;);
+-    Socket&amp; operator=(Socket const&amp;);
+-    void handle_write(const int&amp; error);
+-    void start_listen();
+-    void handle_read_header(const int&amp; error);
+-    void handle_read_body(const int&amp; error);
+-    bool connect();
++   Socket(SocketCallBack* inter, std::string endPoint, std::string port);
++   ~Socket();
++   bool send(SocketCallBack::bytes const*, unsigned int const&amp; size);
++   bool connect(std::string endpoint, std::string port);
++   void disconnect();
++   unsigned int const getIp();
+</string> 
+     </void> 
+    </void> 
+    <void property="name"> 
+     <void property="text"> 
+      <string>tcp::WSocket : public ASocket</string> 
+     </void> 
+    </void> 
+   </object> 
+   <object class="java.awt.geom.Point2D$Double"> 
+    <void method="setLocation"> 
+     <double>-2.0</double> 
+     <double>912.0</double> 
+    </void> 
+   </object> 
+  </void> 
+  <void method="connect"> 
+   <object class="com.horstmann.violet.ClassRelationshipEdge"> 
+    <void property="bentStyle"> 
+     <object class="com.horstmann.violet.BentStyle" field="VHV"/> 
+    </void> 
+    <void property="endArrowHead"> 
+     <object class="com.horstmann.violet.ArrowHead" field="TRIANGLE"/> 
+    </void> 
+   </object> 
+   <object idref="ClassNode2"/> 
+   <object idref="ClassNode3"/> 
+  </void> 
+  <void method="connect"> 
+   <object class="com.horstmann.violet.ClassRelationshipEdge"> 
+    <void property="bentStyle"> 
+     <object class="com.horstmann.violet.BentStyle" field="VHV"/> 
+    </void> 
+    <void property="endArrowHead"> 
+     <object class="com.horstmann.violet.ArrowHead" field="TRIANGLE"/> 
+    </void> 
+   </object> 
+   <object idref="ClassNode0"/> 
+   <object idref="ClassNode1"/> 
+  </void> 
+  <void method="connect"> 
+   <object class="com.horstmann.violet.ClassRelationshipEdge"> 
+    <void property="bentStyle"> 
+     <object class="com.horstmann.violet.BentStyle" field="VHV"/> 
+    </void> 
+    <void property="endArrowHead"> 
+     <object class="com.horstmann.violet.ArrowHead" field="TRIANGLE"/> 
+    </void> 
+   </object> 
+   <object idref="ClassNode4"/> 
+   <object idref="ClassNode3"/> 
+  </void> 
+  <void method="connect"> 
+   <object class="com.horstmann.violet.ClassRelationshipEdge"> 
+    <void property="bentStyle"> 
+     <object class="com.horstmann.violet.BentStyle" field="VHV"/> 
+    </void> 
+    <void property="endArrowHead"> 
+     <object class="com.horstmann.violet.ArrowHead" field="TRIANGLE"/> 
+    </void> 
+   </object> 
+   <object idref="ClassNode5"/> 
+   <object idref="ClassNode1"/> 
+  </void> 
+  <void method="connect"> 
+   <object class="com.horstmann.violet.ClassRelationshipEdge"> 
+    <void property="bentStyle"> 
+     <object class="com.horstmann.violet.BentStyle" field="HVH"/> 
+    </void> 
+    <void property="startArrowHead"> 
+     <object class="com.horstmann.violet.ArrowHead" field="DIAMOND"/> 
+    </void> 
+   </object> 
+   <object idref="ClassNode3"/> 
+   <object idref="InterfaceNode0"/> 
+  </void> 
+  <void method="connect"> 
+   <object class="com.horstmann.violet.ClassRelationshipEdge"> 
+    <void property="bentStyle"> 
+     <object class="com.horstmann.violet.BentStyle" field="HVH"/> 
+    </void> 
+    <void property="startArrowHead"> 
+     <object class="com.horstmann.violet.ArrowHead" field="DIAMOND"/> 
+    </void> 
+   </object> 
+   <object idref="ClassNode1"/> 
+   <object idref="InterfaceNode1"/> 
+  </void> 
+  <void method="connect"> 
+   <object class="com.horstmann.violet.ClassRelationshipEdge"> 
+    <void property="bentStyle"> 
+     <object class="com.horstmann.violet.BentStyle" field="HVH"/> 
+    </void> 
+    <void property="endArrowHead"> 
+     <object class="com.horstmann.violet.ArrowHead" field="V"/> 
+    </void> 
+    <void property="middleLabel"> 
+     <string>Produit</string> 
+    </void> 
+   </object> 
+   <object idref="ClassNode3"/> 
+   <object idref="ClassNode1"/> 
+  </void> 
+ </object> 
+</java> 

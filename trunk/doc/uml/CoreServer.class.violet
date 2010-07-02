@@ -5,8 +5,13 @@
    <object id="ClassNode0" class="com.horstmann.violet.ClassNode"> 
     <void property="attributes"> 
      <void property="text"> 
-      <string>- Ressource ress_;
-- Server&amp; serv_</string> 
+      <string>- ress_ : Ressource
+- endGame_ : Server_functer</string> 
+     </void> 
+    </void> 
+    <void property="methods"> 
+     <void property="text"> 
+      <string>+ run() : void</string> 
      </void> 
     </void> 
     <void property="name"> 
@@ -17,8 +22,8 @@
    </object> 
    <object class="java.awt.geom.Point2D$Double"> 
     <void method="setLocation"> 
-     <double>416.0</double> 
-     <double>265.0</double> 
+     <double>391.0</double> 
+     <double>277.0</double> 
     </void> 
    </object> 
   </void> 
@@ -32,7 +37,8 @@
     </void> 
     <void property="methods"> 
      <void property="text"> 
-      <string>+ run() : void</string> 
+      <string>+ run() : void
++ endGame(Partie* game) : void</string> 
      </void> 
     </void> 
     <void property="name"> 
@@ -58,7 +64,7 @@
    </object> 
    <object class="java.awt.geom.Point2D$Double"> 
     <void method="setLocation"> 
-     <double>615.0</double> 
+     <double>645.0</double> 
      <double>291.0</double> 
     </void> 
    </object> 
