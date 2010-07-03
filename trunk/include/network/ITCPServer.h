@@ -35,7 +35,7 @@ class		ITCPServer
 		/*!
 		 * \brief	The function to redefine to do something with data incoming from clients threads
 		 */
-		virtual void		processData() = 0;
+		virtual void	processData() = 0;
 
 		/*!
 		 * \brief	Close the server and all opened client sessions

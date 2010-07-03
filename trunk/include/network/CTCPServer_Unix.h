@@ -50,7 +50,7 @@ class		CTCPServer_Unix : ITCPServer
 		 * \brief	Try accepting a new client (should be non blocking)
 		 * \return	true if someone has been accepted. else false.
 		 */
-		bool		accept();
+		virtual bool		accept();
 
 		/*!
 		 * \brief	The function to redefine to do something with data incoming from clients threads
@@ -79,7 +79,7 @@ class		CTCPServer_Unix : ITCPServer
 		unsigned int		_bufferSize;
 
 		/*!
-		 * \brief	Determine if the server is runnig or not
+		 * \brief	Determine if the server is running or not
 		 */
 		bool				_running;
 
