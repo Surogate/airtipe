@@ -9,7 +9,12 @@
 #ifndef		CTCPSESSION_UNIX_H__
 # define	CTCPSESSION_UNIX_H__
 
+#include	<list>
 #include	"network/ITCPSession.h"
+#include	"thread/CAbsMutex_Unix.h"
+
+class		CTCPServer_Unix;
+typedef		CTCPServer_Unix		TCPServer;
 
 /*!
  * \brief	Concrete implementation of a TCP session for Unix
@@ -18,15 +23,12 @@ class		CTCPSession_Unix : ITCPSession
 {
 	public:
 		/*!
-		 * \brief	Default constructor
-		 */
-		CTCPSession_Unix();
-
-		/*!
 		 * \brief	Constructor with socket initialisation
 		 * \param	The socket to init with
+		 * \param	A reference to the server which own the session
+		 * \param	Size of read buffers
 		 */
-		CTCPSession_Unix(int socket);
+		CTCPSession_Unix(int socket, TCPServer& server, unsigned int bufferSize = 512);
 
 		/*!
 		 * \brief	Destructor
@@ -34,6 +36,17 @@ class		CTCPSession_Unix : ITCPSession
 		virtual ~CTCPSession_Unix();
 
 	public:
+		/*!
+		 * \brief	To run the sesssion
+		 */
+		virtual void	run();
+
+		/*!
+		 * \brief	To demultiplex data on the socket (use select)
+		 * \return	true if there is something to do. else false.
+		 */
+		bool		poll();
+
 		/*!
 		 * \brief	Write some data to the client owning the session
 		 * \param	in: the data to write
@@ -68,6 +81,47 @@ class		CTCPSession_Unix : ITCPSession
 		 * \brief	The client socket
 		 */
 		int		_socket;
+
+		/*!
+		 * \brief	A reference to the server
+		 */
+		TCPServer&	_server;
+
+		/*!
+		 * \brief	Size of buffers for reads
+		 */
+		unsigned int	_bufferSize;
+
+		/*!
+		 * \brief	Incoming data
+		 */
+		std::list<Data>		_incoming;
+
+		/*!
+		 * \brief	A bool to tell us when the client socket is disconnected or broken
+		 */
+		bool	_broken;
+
+		/*!
+		 * \brief	Set to true if there is data incoming on socket. Call poll
+		 */
+		bool	_canRead;
+
+		/*!
+		 * \brief	Set to true if socket is ready to be written. Call poll
+		 */
+		bool	_canWrite;
+	
+	public:
+		/*!
+		 * \brief	Outgoing data
+		 */
+		std::list<Data>		outgoing;
+
+		/*!
+		 * \brief	mutex on outgoing data
+		 */
+		AbsMutex			mutexOutgoing;
 };
 
 /*!

@@ -15,11 +15,22 @@
 typedef void*	Data;
 
 /*!
- * \brief	Interafce over a server-side client session on a TCP server
+ * \brief	Interface over a server-side client session on a TCP server
  */
 class		ITCPSession
 {
 	public:
+		/*!
+		 * \brief	To run the session
+		 */
+		virtual void	run() = 0;
+
+		/*!
+		 * \brief	To demultiplex data on the socket.
+		 * \return	true if there is something to do. else false.
+		 */
+		virtual bool	poll() = 0;
+
 		/*!
 		 * \brief	Write some data to the client owning the session
 		 * \param	in: the data to write
