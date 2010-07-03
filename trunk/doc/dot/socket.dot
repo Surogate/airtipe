@@ -1,0 +1,101 @@
+digraph G {
+fontname = "Bitstream Vera Sans"
+fontsize = 8
+
+node [
+fontname = "Bitstream Vera Sans"
+fontsize = 8
+shape = "record"
+]
+
+edge [
+fontname = "Bitstream Vera Sans"
+fontsize = 8
+]
+
+subgraph clusterNetwork {
+label = "Network"
+
+ITCPSession [
+label = "{\
+\<interface\> - ITCPSession|\
+typedef void* Data\l\l\
++ write(Data, unsigned int) : int\l\
++ read(Data, unsigned int) : int\l\
++ close() : bool\l\
+}"
+]
+
+CTCPSession_Unix [
+label = "{\
+CTCPSession_Unix|\
+- _socket : int\l|\
++ write(Data, unsigned int) : int\l\
++ read(Data, unsigned int) : int\l\
++ close() : bool\l\
+}"
+]
+
+CTCPSession_Win32 [
+label = "{\
+CTCPSession_Win32|\
+- _socket : SOCKET\l|\
++ write(Data, unsigned int) : int\l\
++ read(Data, unsigned int) : int\l\
++ close() : bool\l\
+}"
+]
+
+edge [
+arrowhead = "onormal"
+style = "dashed"
+]
+
+CTCPSession_Unix -> ITCPSession
+CTCPSession_Win32 -> ITCPSession
+
+ITCPClient [
+label = "{\
+\<interface\> - ITCPClient|\
+typedef void* Data\l\l\
++ connect() : bool\l\
++ write(Date, unsigned int) : int\l\
++ read(Data, unsigned int) : int\l\
++ close() : bool\l\
+}"
+]
+
+CTCPClient_Unix [
+label = "{\
+CTCPClient_Unix|\
+- _socket : int\l|\
++ connect() : bool\l\
++ write(Date, unsigned int) : int\l\
++ read(Data, unsigned int) : int\l\
++ close() : bool\l\
+}"
+]
+
+CTCPClient_Win32 [
+label = "{\
+CTCPClient_Win32|\
+- _socket : SOCKET\l|\
++ connect() : bool\l\
++ write(Date, unsigned int) : int\l\
++ read(Data, unsigned int) : int\l\
++ close() : bool\l\
+}"
+]
+
+
+edge [
+arrowhead = "onormal"
+style = "dashed"
+]
+
+CTCPClient_Unix -> ITCPClient
+CTCPClient_Win32 -> ITCPClient
+
+}
+
+}
