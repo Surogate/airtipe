@@ -8,25 +8,26 @@
 #ifndef		IENTITY_HPP_
 #define		IENTITY_HPP_
 
-class		Ientity
+class		Aentity
 {
   float		_posx;
   float		_posy;
+
 public:
-  virtual ~Ientity() {}
-  virtual void	move_to(float, float);
-  virtual void	move_to(dir);
-  virtual void	appear(float, float);
-  virtual void	destroy();
-  virtual void	fire() = 0;
-protected:
-  enum		dir
+  enum dir
   {
     up,
     down,
     left,
     right
-  }
+  };
+  virtual ~Aentity();
+  virtual void	move_to(float, float);
+  virtual void	move_to(dir);
+  virtual void	appear(float, float);
+  virtual void	destroy();
+  virtual void	fire() = 0;
+
 };
 
 #endif		/* IENTITY_HPP_ */

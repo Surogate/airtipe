@@ -8,12 +8,12 @@
 #ifndef		PLAYER_HPP_
 #define		PLAYER_HPP_
 
-#include "Ientity.hpp"
+#include "Aentity.hpp"
 
-class		Player: public Ientity
+class		Player: public Aentity
 {
   Player(Player const &){}
-  Player&	operator=(Player const &){}
+  Player&	operator=(Player const &);
 public:
   Player();
   ~Player();

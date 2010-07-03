@@ -14,7 +14,7 @@ int		main()
   App.Create(sf::VideoMode(width, height, 32),
              "R-TYPE");
 
-  if (!Image.LoadFromFile("../ressources/r-typesheet42.gif"))
+  if (!Image.LoadFromFile("../ressources/sprites/r-typesheet42.gif"))
     return EXIT_FAILURE;
 
   sf::Sprite		Sprite(Image);
