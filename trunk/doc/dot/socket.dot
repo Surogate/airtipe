@@ -96,6 +96,73 @@ style = "dashed"
 CTCPClient_Unix -> ITCPClient
 CTCPClient_Win32 -> ITCPClient
 
+IUDP [
+label = "{\
+\<interface\> - IUDP|\
+typedef void* Data\l\l\
++ send(Data, unsigned int) : int\l\
++ receive(unsigned int) : int\l\
++ close() : void\l\
+}"
+]
+
+CUDP_Unix [
+label = "{\
+CUDP_Unix|\
+- _socket : int\l|\
++ send(Data, unsigned int) : int\l\
++ receive(unsigned int) : int\l\
++ close() : void\l\
+}"
+]
+
+CUDP_Win32 [
+label = "{\
+CUDP_Win32|\
+- _socket : SOCKET\l|\
++ send(Data, unsigned int) : int\l\
++ receive(unsigned int) : int\l\
++ close() : void\l\
+}"
+]
+
+edge [
+arrowhead = "onormal"
+style = "dashed"
+]
+
+CUDP_Unix -> IUDP
+CUDP_Win32 -> IUDP
+
+ITCPServer [
+label = "{\
+\<interface\> - ITCPServer|\
++ run() : void\l\
+- poll() : int\l\
+- close() : void\l\
+- accept() : bool\l\
+}"
+]
+
+CTCPServer [
+label = "{\
+CTCPServer|\
+- _port : short\l\
+- _sessions : std::list<ITCPSession*>\l|\
++ virtual run() : void\l\
+- poll() : int\l\
+- close() : void\l\
+- accept() : bool\l\
+}"
+]
+
+edge [
+arrowhead = "onormal"
+style = "dashed"
+]
+
+CTCPServer -> ITCPServer
+
 }
 
 }
