@@ -1,0 +1,8 @@
+Install graphviz packages at http://www.graphviz.org
+A tutorial here : http://www.ffnn.nl/pages/articles/media/uml-diagrams-using-graphviz-dot.php
+
+exec :
+# dot -T png -o uml.png uml.dot
+
+Enjoy ;)
+
