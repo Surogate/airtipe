@@ -1,0 +1,93 @@
+﻿Tech3s RType Group 
+ancel_a
+Category: Standards Track
+lucaze_b
+
+chanio_f
+
+korcza_b
+
+bertra_b
+
+lebrun_d
+
+July 2010
+
+
+	R-Type Client/Server Protocol
+
+Abstract
+
+	This document intend to describe protocol to how R-Type's server
+	and client shall transmit information. It will detail each
+	exchange with TCP and UDP.
+
+Status of This Memo
+	This document is a draft, and was actually made to let us train
+	to read rfc. Any suggestions and request will be denied, go make  
+	your own protocol. Distribution of this memo is unlimited.
+
+
+Copyright Notice
+	This document is under GNU/GPL.
+
+Table of Contents
+
+	1.	Introduction. . . . . . . . . . . . . . . . . . . . . . . 2
+		1.1	Conventions Used in This Document . . . . . . . . . 2
+	2.	Standard Message Exchange . . . . . . . . . . . . . . . . 3
+	3.	TCP Message . . . . . . . . . . . . . . . . . . . . . . . 4
+	4.	UDP Message . . . . . . . . . . . . . . . . . . . . . . . 5
+		
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ancel_a
+Standard Track
+[page1]
+
+
+
+RFC 1337
+R-Type Client/Server Protocol
+July 2010
+
+
+1.	Introduction
+
+	This document intend to describe protocol to how R-Type's server
+	and client shall transmit information. It will detail each
+	exchange with TCP and UDP.
+
+1.1.  Conventions Used in This Document
+
+   	The key words "MUST", "MUST NOT", "REQUIRED", "SHALL",
+	"SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY",
+	and "OPTIONAL" in this document are to be interpreted
+	as described in [RFC2119].
+
+2.	Standard Message Exchange
+
