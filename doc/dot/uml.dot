@@ -601,7 +601,7 @@ arrowhead = "odiamond"
 style = "solid"
 ]
 
-ITCPServer -> ITCPSession
+CTCPServer -> CTCPSession
 Client -> Server
 
 edge [
