@@ -4,10 +4,7 @@
 ### GENERAL COMMUNICATION TCP
 
 
-register	login passwd
-			(register on server)
-
-login		login passwd
+login		login
 			(login on server)
 
 create		nbPlayersMin nbPlayerMax
@@ -54,9 +51,6 @@ fight		dir
 ### GENERAL COMMUNICATION TCP
 
 
-registerOK
-			(registration successfull)
-
 loginOK
 			(login ok)
 
@@ -79,7 +73,7 @@ joinOK		map [[map],...]
 joinParty	login id
 			(login has join the party - sended only to concerned party members)
 
-leftParty	login
+leftParty	login id
 			(login has left the party - sended only to concerned party members)
 
 colorChange	login color
@@ -102,17 +96,11 @@ stop
 ### ERROR CODES TCP
 
 
-registerKO
-			(registration unsuccessfull)
-
 loginAlreadyExists
 			(login already choosed by another player)
 
 badLoginFormat
 			(bad login format)
-
-badPasswordFormat
-			(bad password format)
 
 loginKO
 			(wrong login or password - login failure)
