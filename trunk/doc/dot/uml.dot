@@ -13,9 +13,13 @@ fontname = "Bitstream Vera Sans"
 fontsize = 8
 ]
 
+//
+// RESSOURCES
+//
 subgraph clusterRessources {
 label = "Ressources"
 
+// Interface IEntity
 IEntity [
 label = "{\
 \<interface\> - IEntity||\
@@ -38,6 +42,7 @@ label = "{\
 }"
 ]
 
+// Class player
 Player [
 label = "{\
 Player|\
@@ -64,6 +69,7 @@ Player|\
 }"
 ]
 
+// Class Entity Factory
 EntityFactory [
 label = "{\
 EntityFactory|\
@@ -84,6 +90,7 @@ EntityFactory|\
 }"
 ]
 
+//Class ObjectFactory
 ObjectFactory [
 label = "{\
 ObjectFactory|\
@@ -93,6 +100,7 @@ ObjectFactory|\
 }"
 ]
 
+// Interface IObject
 IObject [
 label = "{\
 \<interface\> - IObject||\
@@ -102,24 +110,27 @@ label = "{\
 }"
 ]
 
+// Class BonusHealth
 BonusHealth [
 label = "{BonusHealth}"
 ]
 
+// Class Laser
 Laser [
 label = "{Laser}"
 ]
 
+// Class DoubleLaser
 DoubleLaser [
 label = "{DoubleLaser}"
 ]
 
+// Class Object0
 Object0 [
 label = "{...}"
 ]
 
-
-
+// Class Ressoruce
 Ressource [
 label = "{\
 Ressource|\
@@ -131,6 +142,7 @@ Ressource|\
 }"
 ]
 
+// Class Map
 Map [
 label = "{\
 Map|\
@@ -146,6 +158,7 @@ Map|\
 }"
 ]
 
+// Class Frame
 Frame [
 label = "{\
 Frame|\
@@ -160,9 +173,13 @@ Frame|\
 }"
 ]
 
+//
+// SHARED LIBRARY ABSTRACTION
+//
 subgraph clusterAbsSharedLibrary {
 label = "SharedLibrary Abstraction"
 
+// Interface ISharedLibrary
 ISharedLibrary [
 label = "{\
 \<interface\> - ISharedLibrary||\
@@ -172,19 +189,25 @@ label = "{\
 }"
 ]
 
+// Class SharedLibrary_unix
 SharedLibrary_unix [
 label = "SharedLibrary_unix"
 ]
 
+// Class SharedLibrary_windows
 SharedLibrary_windows [
 label = "SharedLibrary_windows"
 ]
 
-}
+} // End : Shared Library Abstraction
 
+//
+// MONSTER LIBRARY
+//
 subgraph clusterMonstersLibrary {
 label = "Monster Library"
 
+// Abstract class AMonster
 AMonster [
 label = "{\
 \<abstract\> - AMonster|\
@@ -198,6 +221,7 @@ label = "{\
 }"
 ]
 
+// Entry points
 EntryDynamicLibrary [
 label = "{\
 \<not a class\> - entry points|\
@@ -205,32 +229,22 @@ getInstance() ; IEntity &\l\
 }"
 ]
 
+// Class Monster1
 Monster1 [
 label = "{Monster1}"
 ]
 
+// Class Monster2
 Monster2 [
 label = "{Monster2}"
 ]
 
+// Class Monster3
 Monster3 [
 label = "{...}"
 ]
 
-}
-
-}
-
-subgraph clusterServerCore {
-label = "Server Core"
-
-Party [
-label = "{\
-Party|...\l|...\l\
-}"
-]
-
-}
+} // End : Monster Library
 
 edge [
 arrowhead = "odiamond"
@@ -250,9 +264,6 @@ style = "solid"
 ]
 
 ISharedLibrary -> EntityFactory
-Ressource -> Party
-EntityFactory -> Party
-ObjectFactory -> Party
 IObject -> ObjectFactory
 
 edge [
@@ -278,5 +289,299 @@ Laser -> IObject
 DoubleLaser -> IObject
 Object0 -> IObject
 
+} // End : Ressource
+
+
+//
+// SERVER CORE
+//
+subgraph clusterServerCore {
+label = "Server Core"
+
+// Class Party
+Party [
+label = "{\
+Party|...\l|...\l\
+}"
+]
+
+edge [
+arrowhead = "diamond"
+style = "solid"
+]
+
+Ressource -> Party
+EntityFactory -> Party
+ObjectFactory -> Party
+
+} // End : Server Core
+
+//
+// NETWORK
+//
+subgraph clusterNetwork {
+label = "Network"
+
+// Interface ITCPSession
+ITCPSession [
+label = "{\
+\<interface\> - ITCPSession|\
+typedef void* Data\l\l\
++ write(Data, unsigned int) : int\l\
++ read(Data, unsigned int) : int\l\
++ close() : bool\l\
+}"
+]
+
+// Class CTCPSession_Unix
+CTCPSession_Unix [
+label = "{\
+CTCPSession_Unix|\
+- _socket : int\l|\
++ write(Data, unsigned int) : int\l\
++ read(Data, unsigned int) : int\l\
++ close() : bool\l\
+}"
+]
+
+// Class CTCPSession_Win32
+CTCPSession_Win32 [
+label = "{\
+CTCPSession_Win32|\
+- _socket : SOCKET\l|\
++ write(Data, unsigned int) : int\l\
++ read(Data, unsigned int) : int\l\
++ close() : bool\l\
+}"
+]
+
+edge [
+arrowhead = "onormal"
+style = "dashed"
+]
+
+CTCPSession_Unix -> ITCPSession
+CTCPSession_Win32 -> ITCPSession
+
+// Interface ITCPClient
+ITCPClient [
+label = "{\
+\<interface\> - ITCPClient|\
+typedef void* Data\l\l\
++ connect() : bool\l\
++ write(Date, unsigned int) : int\l\
++ read(Data, unsigned int) : int\l\
++ close() : bool\l\
+}"
+]
+
+// Class CTCPClient_Unix
+CTCPClient_Unix [
+label = "{\
+CTCPClient_Unix|\
+- _socket : int\l|\
++ connect() : bool\l\
++ write(Date, unsigned int) : int\l\
++ read(Data, unsigned int) : int\l\
++ close() : bool\l\
+}"
+]
+
+// Class CTCPClient_Win32
+CTCPClient_Win32 [
+label = "{\
+CTCPClient_Win32|\
+- _socket : SOCKET\l|\
++ connect() : bool\l\
++ write(Date, unsigned int) : int\l\
++ read(Data, unsigned int) : int\l\
++ close() : bool\l\
+}"
+]
+
+edge [
+arrowhead = "onormal"
+style = "dashed"
+]
+
+CTCPClient_Unix -> ITCPClient
+CTCPClient_Win32 -> ITCPClient
+
+// Interface IUDP
+IUDP [
+label = "{\
+\<interface\> - IUDP|\
+typedef void* Data\l\l\
++ send(Data, unsigned int) : int\l\
++ receive(unsigned int) : int\l\
++ close() : void\l\
+}"
+]
+
+// Class CUDP_Unix
+CUDP_Unix [
+label = "{\
+CUDP_Unix|\
+- _socket : int\l|\
++ send(Data, unsigned int) : int\l\
++ receive(unsigned int) : int\l\
++ close() : void\l\
+}"
+]
+
+// Class CUDP_Win32
+CUDP_Win32 [
+label = "{\
+CUDP_Win32|\
+- _socket : SOCKET\l|\
++ send(Data, unsigned int) : int\l\
++ receive(unsigned int) : int\l\
++ close() : void\l\
+}"
+]
+
+edge [
+arrowhead = "onormal"
+style = "dashed"
+]
+
+CUDP_Unix -> IUDP
+CUDP_Win32 -> IUDP
+
+// Interface ITCPServer
+ITCPServer [
+label = "{\
+\<interface\> - ITCPServer|\
++ run() : void\l\
+- poll() : int\l\
+- close() : void\l\
+- accept() : bool\l\
+}"
+]
+
+// Class CTCPServer
+CTCPServer [
+label = "{\
+CTCPServer|\
+- _port : short\l\
+- _sessions : std::list<ITCPSession*>\l|\
++ virtual run() : void\l\
+- poll() : int\l\
+- close() : void\l\
+- accept() : bool\l\
+}"
+]
+
+edge [
+arrowhead = "onormal"
+style = "dashed"
+]
+
+CTCPServer -> ITCPServer
+
+} // End : Network
+
+//
+// THREAD
+//
+subgraph clusterThread {
+label = "Thread"
+
+// Interface thread
+IAbsThread [
+label = "{\
+\<interface\> - IAbsThread|\
+typedef void* (*startRoutine)(void*)\l|\
++ launch(startRoutine, void* args) : bool\l\
++ join() : bool\l\
++ exit() : void\l\
+}"
+]
+
+// Concrete thread class for unix
+CAbsThread_Unix [
+label = "{\
+CAbsThread_Unix|\
+- _tid : pthread_t*\l|\
++ launch(startRoutine, void* args) : bool\l\
++ join() : bool\l\
++ exit() : void\l\
+}"
+]
+
+// Concrete thread class for windows
+CAbsThread_Win32 [
+label = "{\
+CAbsThread_Win32|\
+- _tid : HANDLE\l|\
++ launch(startRoutine, void* args) : bool\l\
++ join() : bool\l\
++ exit() : void\l\
+}"
+]
+
+edge [
+arrowhead = "onormal"
+style = "dashed"
+]
+
+CAbsThread_Unix -> IAbsThread
+CAbsThread_Win32 -> IAbsThread
+
+} // End : Thread
+
+//
+// MUTEX
+//
+subgraph clusterMutex {
+label = "Mutex"
+
+// Interface IAbsMutex
+IAbsMutex [
+label = "{\
+\<interface\> - IAbsMutex|\
++ init() : bool\l\
++ destroy() : void\l\
++ lock() : bool\l\
++ tryLock() : bool\l\
++ unlock() : bool\l\
+}"
+]
+
+// Class CAbsMutex_Unix
+CAbsMutex_Unix [
+label = "{\
+CAbsMutex_Unix|\
+- _mid : pthread_mutex_t*\l|\
++ init() : bool\l\
++ destroy() : void\l\
++ lock() : bool\l\
++ tryLock() : bool\l\
++ unlock() : bool\l\
+}"
+]
+
+// Class CAbsMutex_Win32
+CAbsMutex_Win32 [
+label = "{\
+CAbsMutex_Win32|\
+- _mid : HANDLE\l|\
++ init() : bool\l\
++ destroy() : void\l\
++ lock() : bool\l\
++ tryLock() : bool\l\
++ unlock() : bool\l\
+}"
+]
+
+edge [
+arrowhead = "onormal"
+style = "dashed"
+]
+
+CAbsMutex_Unix -> IAbsMutex
+CAbsMutex_Win32 -> IAbsMutex
+
+}
 
 }
