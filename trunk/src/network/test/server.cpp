@@ -3,10 +3,11 @@
 #endif
 
 #include	<iostream>
+#include	<cstdlib>
 
 int		main()
 {
-	TCPServer	serv(22255);
+	TCPServer	serv(22255, 8);
 
 	if (serv.init())
 	{

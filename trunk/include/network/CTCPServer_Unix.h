@@ -23,9 +23,11 @@ class		CTCPServer_Unix : ITCPServer
 {
 	public:
 		/*!
-		 * \brief	Default constructor
+		 * \brief	Constructor
+		 * \param	The port on which the server will listen
+		 * \param	Size for read buffers
 		 */
-		CTCPServer_Unix(short port);
+		CTCPServer_Unix(short port,  unsigned int bufferSize);
 
 		/*!
 		 * \brief	Destructor
@@ -45,16 +47,15 @@ class		CTCPServer_Unix : ITCPServer
 		virtual void	run();
 
 		/*!
-		 * \brief	Abstraction for demultiplexing clients (sessions)
-		 * \return	The total changes number
-		 */
-		int			poll();
-
-		/*!
 		 * \brief	Try accepting a new client (should be non blocking)
 		 * \return	true if someone has been accepted. else false.
 		 */
 		bool		accept();
+
+		/*!
+		 * \brief	The function to redefine to do something with data incoming from clients threads
+		 */
+		virtual void		processData();
 
 		/*!
 		 * \brief	Close the server and all opened client sessions
@@ -72,6 +73,11 @@ class		CTCPServer_Unix : ITCPServer
 		 */
 		int					_socket;
 
+		/*
+		 * \brief	Size for read buffers
+		 */
+		unsigned int		_bufferSize;
+
 		/*!
 		 * \brief	Determine if the server is runnig or not
 		 */
@@ -82,15 +88,16 @@ class		CTCPServer_Unix : ITCPServer
 		 */
 		std::map<TCPSession*, AbsThread*>		_sessions;
 
+	public:
 		/*!
 		 * \brief	A list of clients requests (need a mutex for access)
 		 */
-		std::map<TCPSession*, Data>				_requests;
+		std::list<std::pair<TCPSession*, Data> >	requests;
 
 		/*!
 		 * \brief	Mutex for requests
 		 */
-		AbsMutex		_mutexRequests;
+		AbsMutex		mutexRequests;
 };
 
 /*!

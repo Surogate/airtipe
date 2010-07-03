@@ -9,6 +9,7 @@
 #include	<iostream>
 #include	<cstdlib>
 #include	<cstring>
+#include	<fcntl.h>
 #include	<sys/types.h>
 #include	<sys/socket.h>
 #include	<arpa/inet.h>
@@ -18,22 +19,17 @@ static void*	runClient(void* args)
 {
 	TCPSession* session = NULL;
 	if (args != NULL)
-		session = static_cast<TCPSession*>(args);
-
-	while (42)
 	{
-		std::cout << "coucou ";
-		if (session != NULL)
-			std::cout << session->getSocket();
-		std::cout << std::endl;
-		sleep(2);
+		session = static_cast<TCPSession*>(args);
+		session->run();
 	}
-	exit(0);
+	return (NULL);
 }
 
-CTCPServer_Unix::CTCPServer_Unix(short port) :
+CTCPServer_Unix::CTCPServer_Unix(short port, unsigned int bufferSize) :
 	_port(port),
 	_socket(-1),
+	_bufferSize(bufferSize),
 	_running(false)
 {
 
@@ -61,6 +57,7 @@ bool	CTCPServer_Unix::init()
 		std::cerr << "socket failed" << std::endl;
 		return (false);
 	}
+	fcntl(this->_socket, F_SETFL, O_NONBLOCK);
 	// bind
 	res = bind(this->_socket, (sockaddr*)&saddr, sizeof(saddr));
 	if (res == -1)
@@ -87,17 +84,10 @@ void	CTCPServer_Unix::run()
 	this->_running = true;
 	while (this->_running)
 	{
-		std::cout << "tour" << std::endl;
 		if (this->accept())
-		{
 			std::cout << "new client" << std::endl;
-		}
+		this->processData();
 	}
-}
-
-int		CTCPServer_Unix::poll()
-{
-	return (0);
 }
 
 bool	CTCPServer_Unix::accept()
@@ -107,13 +97,33 @@ bool	CTCPServer_Unix::accept()
 	int newSock = ::accept(this->_socket, &saddr, &saddrSize);
 	if (newSock >= 0)
 	{
-		TCPSession*		session = new TCPSession(newSock);
+		TCPSession*		session = new TCPSession(newSock, *this, this->_bufferSize);
 		AbsThread*		th = new AbsThread;
 		this->_sessions.insert(std::pair<TCPSession*, AbsThread*>(session, th));
 		th->launch(&runClient, session);
 		return (true);
 	}
 	return (false);
+}
+
+void	CTCPServer_Unix::processData()
+{
+	if (this->requests.size() > 0 && this->mutexRequests.tryLock())
+	{
+		while (!this->requests.empty())
+		{
+			TCPSession*	session = this->requests.begin()->first;
+			if (session->mutexOutgoing.tryLock())
+			{
+				void* response = new char[this->_bufferSize];
+				memcpy(response, this->requests.begin()->second, this->_bufferSize);
+				session->outgoing.push_back(response);
+				this->requests.erase(this->requests.begin());
+				session->mutexOutgoing.unlock();
+			}
+		}
+		this->mutexRequests.unlock();
+	}
 }
 
 void	CTCPServer_Unix::close()
