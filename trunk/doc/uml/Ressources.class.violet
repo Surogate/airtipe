@@ -143,7 +143,6 @@ entry points</string>
      <void property="text"> 
       <string>+ getEntity(EntityType) : IEntity &amp;
 + typeExists(EntityType) : bool
-+ getLibPath(EntityType) : std::string
 - loadEntity(EntityType) : bool
 </string> 
      </void> 
@@ -156,8 +155,8 @@ entry points</string>
    </object> 
    <object class="java.awt.geom.Point2D$Double"> 
     <void method="setLocation"> 
-     <double>377.0</double> 
-     <double>576.0</double> 
+     <double>384.0</double> 
+     <double>611.0</double> 
     </void> 
    </object> 
   </void> 
@@ -259,8 +258,8 @@ ISharedLibrary</string>
    </object> 
    <object class="java.awt.geom.Point2D$Double"> 
     <void method="setLocation"> 
-     <double>892.0</double> 
-     <double>658.0</double> 
+     <double>840.0</double> 
+     <double>792.0</double> 
     </void> 
    </object> 
   </void> 
@@ -291,8 +290,8 @@ ISharedLibrary</string>
    </object> 
    <object class="java.awt.geom.Point2D$Double"> 
     <void method="setLocation"> 
-     <double>690.0</double> 
-     <double>650.0</double> 
+     <double>910.0</double> 
+     <double>1000.0</double> 
     </void> 
    </object> 
   </void> 
@@ -300,8 +299,8 @@ ISharedLibrary</string>
    <object idref="ClassNode10"/> 
    <object class="java.awt.geom.Point2D$Double"> 
     <void method="setLocation"> 
-     <double>696.0</double> 
-     <double>680.0</double> 
+     <double>920.0</double> 
+     <double>1025.0</double> 
     </void> 
    </object> 
   </void> 
@@ -414,8 +413,8 @@ IEntity</string>
    </object> 
    <object class="java.awt.geom.Point2D$Double"> 
     <void method="setLocation"> 
-     <double>1250.0</double> 
-     <double>626.0</double> 
+     <double>1039.0</double> 
+     <double>563.0</double> 
     </void> 
    </object> 
   </void> 
@@ -441,8 +440,8 @@ IEntity</string>
    </object> 
    <object class="java.awt.geom.Point2D$Double"> 
     <void method="setLocation"> 
-     <double>1217.0</double> 
-     <double>408.0</double> 
+     <double>1014.0</double> 
+     <double>350.0</double> 
     </void> 
    </object> 
   </void> 
@@ -550,8 +549,8 @@ IEntity</string>
    </object> 
    <object class="java.awt.geom.Point2D$Double"> 
     <void method="setLocation"> 
-     <double>1269.0</double> 
-     <double>281.0</double> 
+     <double>1263.0</double> 
+     <double>1022.0</double> 
     </void> 
    </object> 
   </void> 
@@ -807,11 +806,11 @@ IEntity</string>
      <object class="com.horstmann.violet.BentStyle" field="HVH"/> 
     </void> 
     <void property="startArrowHead"> 
-     <object class="com.horstmann.violet.ArrowHead" field="BLACK_DIAMOND"/> 
+     <object class="com.horstmann.violet.ArrowHead" field="DIAMOND"/> 
     </void> 
    </object> 
-   <object idref="ClassNode14"/> 
    <object idref="ClassNode20"/> 
+   <object idref="ClassNode15"/> 
   </void> 
   <void method="connect"> 
    <object class="com.horstmann.violet.ClassRelationshipEdge"> 
@@ -819,11 +818,11 @@ IEntity</string>
      <object class="com.horstmann.violet.BentStyle" field="HVH"/> 
     </void> 
     <void property="startArrowHead"> 
-     <object class="com.horstmann.violet.ArrowHead" field="DIAMOND"/> 
+     <object class="com.horstmann.violet.ArrowHead" field="BLACK_DIAMOND"/> 
     </void> 
    </object> 
+   <object idref="ClassNode10"/> 
    <object idref="ClassNode20"/> 
-   <object idref="ClassNode15"/> 
   </void> 
  </object> 
 </java> 
