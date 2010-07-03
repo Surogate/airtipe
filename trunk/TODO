@@ -4,10 +4,16 @@ Tous les commits doivent etre commentes
 Toute modification des declarations doivents etres reportes sur l'UML le plus tot possible
 
 CONCEPTION:
+- Pointer sur fonction -> pointer sur methode (threads et sockets)
+- PacketManager et PacketFactory
+- Moteur physique et synchro de l'avancement de la map
+- Classe Partie
+- CLasse Server
 
 CLIENT:
 
 SERVER:
 
 PROTOCOLE / RFC:
-
+- Finir le protocole
+- Faire la RFC
