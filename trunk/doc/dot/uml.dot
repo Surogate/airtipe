@@ -177,7 +177,7 @@ Frame|\
 // SHARED LIBRARY ABSTRACTION
 //
 subgraph clusterAbsSharedLibrary {
-label = "SharedLibrary Abstraction"
+label = "SharedLibrary Abstraction (Unix/Win32)"
 
 // Interface ISharedLibrary
 ISharedLibrary [
@@ -191,12 +191,7 @@ label = "{\
 
 // Class SharedLibrary_unix
 SharedLibrary_unix [
-label = "SharedLibrary_unix"
-]
-
-// Class SharedLibrary_windows
-SharedLibrary_windows [
-label = "SharedLibrary_windows"
+label = "SharedLibrary"
 ]
 
 } // End : Shared Library Abstraction
@@ -205,7 +200,7 @@ label = "SharedLibrary_windows"
 // MONSTER LIBRARY
 //
 subgraph clusterMonstersLibrary {
-label = "Monster Library"
+label = "Monster Dynamic Library"
 
 // Abstract class AMonster
 AMonster [
@@ -272,7 +267,6 @@ style = "solid"
 ]
 
 SharedLibrary_unix -> ISharedLibrary
-SharedLibrary_windows -> ISharedLibrary
 Monster1 -> AMonster
 Monster2 -> AMonster
 Monster3 -> AMonster
@@ -338,10 +332,10 @@ Party -> Server
 } // End : Server Core
 
 //
-// NETWORK
+// TCPSESSION
 //
-subgraph clusterNetwork {
-label = "Network"
+subgraph clusterTCPSession {
+label = "TCPSession Abstraction (Unix/Win32)"
 
 // Interface ITCPSession
 ITCPSession [
@@ -355,10 +349,10 @@ label = "{\
 }"
 ]
 
-// Class CTCPSession_Unix
-CTCPSession_Unix [
+// Class CTCPSession
+CTCPSession [
 label = "{\
-CTCPSession_Unix|\
+CTCPSession|\
 - _socket : int\l\
 - _server : TCPServer&\l\
 - _bufferSize : unsigned int\l\
@@ -368,29 +362,7 @@ CTCPSession_Unix|\
 - _incoming : list\<Data\>\l\
 + outgoing : list\<Data\>\l\
 + mutexOutgoing : AbsMutex\l|\
-+ CTCPSession_Unix(socket : int, server : TCPServer&, bufferSize : unsigned int)\l\
-+ virtual run() : void\l\
-+ poll() : bool\l\
-+ write(Data, unsigned int) : int\l\
-+ read(Data, unsigned int) : int\l\
-+ close() : bool\l\
-}"
-]
-
-// Class CTCPSession_Win32
-CTCPSession_Win32 [
-label = "{\
-CTCPSession_Win32|\
-- _socket : SOCKET\l\
-- _server : TCPServer&\l\
-- _bufferSize : unsigned int\l\
-- _broken : bool\l\
-- _canRead : bool\l\
-- _canWrite : bool\l\
-- _incoming : list\<Data\>\l\
-+ outgoing : list\<Data\>\l\
-+ mutexOutgoing : AbsMutex\l|\
-+ CTCPSession_Win32(socket : SOCKET, server : TCPServer&, bufferSize : unsigned int)\l\
++ CTCPSession(socket : int, server : TCPServer&, bufferSize : unsigned int)\l\
 + virtual run() : void\l\
 + poll() : bool\l\
 + write(Data, unsigned int) : int\l\
@@ -404,15 +376,9 @@ arrowhead = "onormal"
 style = "dashed"
 ]
 
-CTCPSession_Unix -> ITCPSession
-CTCPSession_Win32 -> ITCPSession
+CTCPSession -> ITCPSession
 
-edge [
-arrowhead = "onormal"
-style = "solid"
-]
-
-Server -> ITCPServer
+}
 
 /*
 // Interface ITCPClient
@@ -427,10 +393,10 @@ typedef void* Data\l\l\
 }"
 ]
 
-// Class CTCPClient_Unix
-CTCPClient_Unix [
+// Class CTCPClient
+CTCPClient [
 label = "{\
-CTCPClient_Unix|\
+CTCPClient|\
 - _socket : int\l|\
 + connect() : bool\l\
 + write(Date, unsigned int) : int\l\
@@ -456,9 +422,15 @@ arrowhead = "onormal"
 style = "dashed"
 ]
 
-CTCPClient_Unix -> ITCPClient
+CTCPClient -> ITCPClient
 CTCPClient_Win32 -> ITCPClient
 */
+
+//
+// TCPSESSION
+//
+subgraph clusterUDP {
+label = "UDPConnexion Abstraction (Unix/Win32)"
 
 // Interface IUDP
 IUDP [
@@ -471,22 +443,11 @@ typedef void* Data\l\l\
 }"
 ]
 
-// Class CUDP_Unix
-CUDP_Unix [
+// Class CUDP
+CUDP [
 label = "{\
-CUDP_Unix|\
+CUDP|\
 - _socket : int\l|\
-+ send(Data, unsigned int) : int\l\
-+ receive(unsigned int) : int\l\
-+ close() : void\l\
-}"
-]
-
-// Class CUDP_Win32
-CUDP_Win32 [
-label = "{\
-CUDP_Win32|\
-- _socket : SOCKET\l|\
 + send(Data, unsigned int) : int\l\
 + receive(unsigned int) : int\l\
 + close() : void\l\
@@ -498,8 +459,22 @@ arrowhead = "onormal"
 style = "dashed"
 ]
 
-CUDP_Unix -> IUDP
-CUDP_Win32 -> IUDP
+CUDP -> IUDP
+
+edge [
+arrowhead = "odiamond"
+style = "solid"
+]
+
+CUDP -> Client
+
+} // End IUDP
+
+//
+// TCPSERVER
+//
+subgraph clusterTCPServer {
+label = "TCPServer Abstraction (Unix/Win32)"
 
 // Interface ITCPServer
 ITCPServer [
@@ -514,10 +489,10 @@ typedef void* Data\l\l\
 }"
 ]
 
-// Class CTCPServer_Unix
-CTCPServer_Unix [
+// Class CTCPServer
+CTCPServer [
 label = "{\
-CTCPServer_Unix|\
+CTCPServer|\
 - _port : short\l\
 - _socket : int\l\
 - _bufferSize : unsigned int\l\
@@ -525,27 +500,7 @@ CTCPServer_Unix|\
 - _sessions : map\<ITCPSession*, AbsThread*\>\l\
 + requests : list\<pair\<ITCPSession*, Data\>\>\l\
 + mutexRequests : AbsMutex\l|\
-+ CTCPServer_Unix(port : short, bufferSize : unsigned int)\l\
-+ init() : bool\l\
-+ virtual run() : void\l\
-+ virtual processData() : void\l\
-+ close() : void\l\
-+ virtual accept() : bool\l\
-}"
-]
-
-// Class CTCPServer_Win32
-CTCPServer_Win32 [
-label = "{\
-CTCPServer_Win32|\
-- _port : short\l\
-- _socket : SOCKET\l\
-- _bufferSize : unsigned int\l\
-- _running : bool\l\
-- _sessions : map\<ITCPSession*, AbsThread*\>\l\
-+ requests : list\<pair\<ITCPSession*, Data\>\>\l\
-+ mutexRequests : AbsMutex\l|\
-+ CTCPServer_Win32(port : short, bufferSize : unsigned int)\l\
++ CTCPServer(port : short, bufferSize : unsigned int)\l\
 + init() : bool\l\
 + virtual run() : void\l\
 + virtual processData() : void\l\
@@ -559,16 +514,15 @@ arrowhead = "onormal"
 style = "dashed"
 ]
 
-CTCPServer_Unix -> ITCPServer
-CTCPServer_Win32 -> ITCPServer
+CTCPServer -> ITCPServer
 
-} // End : Network
+} // End : TCPServer
 
 //
 // THREAD
 //
 subgraph clusterThread {
-label = "Thread"
+label = "Thread & Mutex Abstraction (Unix/Win32)"
 
 // Interface thread
 IAbsThread [
@@ -582,21 +536,10 @@ typedef void* (*startRoutine)(void*)\l|\
 ]
 
 // Concrete thread class for unix
-CAbsThread_Unix [
+CAbsThread [
 label = "{\
-CAbsThread_Unix|\
+CAbsThread|\
 - _tid : pthread_t*\l|\
-+ launch(startRoutine, void* args) : bool\l\
-+ join() : bool\l\
-+ exit() : void\l\
-}"
-]
-
-// Concrete thread class for windows
-CAbsThread_Win32 [
-label = "{\
-CAbsThread_Win32|\
-- _tid : HANDLE\l|\
 + launch(startRoutine, void* args) : bool\l\
 + join() : bool\l\
 + exit() : void\l\
@@ -608,8 +551,7 @@ arrowhead = "onormal"
 style = "dashed"
 ]
 
-CAbsThread_Unix -> IAbsThread
-CAbsThread_Win32 -> IAbsThread
+CAbsThread -> IAbsThread
 
 // Interface IAbsMutex
 IAbsMutex [
@@ -623,24 +565,11 @@ label = "{\
 }"
 ]
 
-// Class CAbsMutex_Unix
-CAbsMutex_Unix [
+// Class CAbsMutex
+CAbsMutex [
 label = "{\
-CAbsMutex_Unix|\
+CAbsMutex|\
 - _mid : pthread_mutex_t*\l|\
-+ init() : bool\l\
-+ destroy() : void\l\
-+ lock() : bool\l\
-+ tryLock() : bool\l\
-+ unlock() : bool\l\
-}"
-]
-
-// Class CAbsMutex_Win32
-CAbsMutex_Win32 [
-label = "{\
-CAbsMutex_Win32|\
-- _mid : HANDLE\l|\
 + init() : bool\l\
 + destroy() : void\l\
 + lock() : bool\l\
@@ -654,8 +583,7 @@ arrowhead = "onormal"
 style = "dashed"
 ]
 
-CAbsMutex_Unix -> IAbsMutex
-CAbsMutex_Win32 -> IAbsMutex
+CAbsMutex -> IAbsMutex
 
 } // End : thread
 
@@ -664,10 +592,9 @@ arrowhead = "diamond"
 style = "solid"
 ]
 
-IAbsMutex -> CTCPServer_Unix
-IAbsMutex -> CTCPSession_Win32
-IAbsMutex -> CTCPSession_Unix
-IAbsThread -> CTCPServer_Unix
+IAbsMutex -> CTCPServer
+IAbsMutex -> CTCPSession
+IAbsThread -> CTCPServer
 
 edge [
 arrowhead = "odiamond"
@@ -675,13 +602,20 @@ style = "solid"
 ]
 
 ITCPServer -> ITCPSession
-Server -> Client
+Client -> Server
 
 edge [
 arrowhead = "onormal"
 style = "solid"
 ]
 
-Client -> ITCPSession
+Client -> CTCPSession
+
+edge [
+arrowhead = "onormal"
+style = "solid"
+]
+
+Server -> CTCPServer
 
 }
