@@ -312,6 +312,13 @@ Server|...\l|...\l\
 }"
 ]
 
+Client [
+label = "{\
+Client|\
++ UDPConnexion : IUDP*\l|\
+}"
+]
+
 edge [
 arrowhead = "diamond"
 style = "solid"
@@ -340,7 +347,8 @@ label = "Network"
 ITCPSession [
 label = "{\
 \<interface\> - ITCPSession|\
-typedef void* Data\l\l\
++ run() : void\l\
++ poll() : bool\l\
 + write(Data, unsigned int) : int\l\
 + read(Data, unsigned int) : int\l\
 + close() : bool\l\
@@ -351,7 +359,18 @@ typedef void* Data\l\l\
 CTCPSession_Unix [
 label = "{\
 CTCPSession_Unix|\
-- _socket : int\l|\
+- _socket : int\l\
+- _server : TCPServer&\l\
+- _bufferSize : unsigned int\l\
+- _broken : bool\l\
+- _canRead : bool\l\
+- _canWrite : bool\l\
+- _incoming : list\<Data\>\l\
++ outgoing : list\<Data\>\l\
++ mutexOutgoing : AbsMutex\l|\
++ CTCPSession_Unix(socket : int, server : TCPServer&, bufferSize : unsigned int)\l\
++ virtual run() : void\l\
++ poll() : bool\l\
 + write(Data, unsigned int) : int\l\
 + read(Data, unsigned int) : int\l\
 + close() : bool\l\
@@ -362,7 +381,18 @@ CTCPSession_Unix|\
 CTCPSession_Win32 [
 label = "{\
 CTCPSession_Win32|\
-- _socket : SOCKET\l|\
+- _socket : SOCKET\l\
+- _server : TCPServer&\l\
+- _bufferSize : unsigned int\l\
+- _broken : bool\l\
+- _canRead : bool\l\
+- _canWrite : bool\l\
+- _incoming : list\<Data\>\l\
++ outgoing : list\<Data\>\l\
++ mutexOutgoing : AbsMutex\l|\
++ CTCPSession_Win32(socket : SOCKET, server : TCPServer&, bufferSize : unsigned int)\l\
++ virtual run() : void\l\
++ poll() : bool\l\
 + write(Data, unsigned int) : int\l\
 + read(Data, unsigned int) : int\l\
 + close() : bool\l\
@@ -378,12 +408,13 @@ CTCPSession_Unix -> ITCPSession
 CTCPSession_Win32 -> ITCPSession
 
 edge [
-arrowhead = "odiamond"
+arrowhead = "onormal"
 style = "solid"
 ]
 
-ITCPSession -> Server
+Server -> ITCPServer
 
+/*
 // Interface ITCPClient
 ITCPClient [
 label = "{\
@@ -427,6 +458,7 @@ style = "dashed"
 
 CTCPClient_Unix -> ITCPClient
 CTCPClient_Win32 -> ITCPClient
+*/
 
 // Interface IUDP
 IUDP [
@@ -473,23 +505,52 @@ CUDP_Win32 -> IUDP
 ITCPServer [
 label = "{\
 \<interface\> - ITCPServer|\
+typedef void* Data\l\l\
++ init() : bool\l\
 + run() : void\l\
-- poll() : int\l\
-- close() : void\l\
-- accept() : bool\l\
++ processData() : void\l\
++ close() : void\l\
++ accept() : bool\l\
 }"
 ]
 
-// Class CTCPServer
-CTCPServer [
+// Class CTCPServer_Unix
+CTCPServer_Unix [
 label = "{\
-CTCPServer|\
+CTCPServer_Unix|\
 - _port : short\l\
-- _sessions : std::list<ITCPSession*>\l|\
+- _socket : int\l\
+- _bufferSize : unsigned int\l\
+- _running : bool\l\
+- _sessions : map\<ITCPSession*, AbsThread*\>\l\
++ requests : list\<pair\<ITCPSession*, Data\>\>\l\
++ mutexRequests : AbsMutex\l|\
++ CTCPServer_Unix(port : short, bufferSize : unsigned int)\l\
++ init() : bool\l\
 + virtual run() : void\l\
-- poll() : int\l\
-- close() : void\l\
-- accept() : bool\l\
++ virtual processData() : void\l\
++ close() : void\l\
++ virtual accept() : bool\l\
+}"
+]
+
+// Class CTCPServer_Win32
+CTCPServer_Win32 [
+label = "{\
+CTCPServer_Win32|\
+- _port : short\l\
+- _socket : SOCKET\l\
+- _bufferSize : unsigned int\l\
+- _running : bool\l\
+- _sessions : map\<ITCPSession*, AbsThread*\>\l\
++ requests : list\<pair\<ITCPSession*, Data\>\>\l\
++ mutexRequests : AbsMutex\l|\
++ CTCPServer_Win32(port : short, bufferSize : unsigned int)\l\
++ init() : bool\l\
++ virtual run() : void\l\
++ virtual processData() : void\l\
++ close() : void\l\
++ virtual accept() : bool\l\
 }"
 ]
 
@@ -498,7 +559,8 @@ arrowhead = "onormal"
 style = "dashed"
 ]
 
-CTCPServer -> ITCPServer
+CTCPServer_Unix -> ITCPServer
+CTCPServer_Win32 -> ITCPServer
 
 } // End : Network
 
@@ -602,9 +664,24 @@ arrowhead = "diamond"
 style = "solid"
 ]
 
-IAbsMutex -> CTCPServer
+IAbsMutex -> CTCPServer_Unix
 IAbsMutex -> CTCPSession_Win32
 IAbsMutex -> CTCPSession_Unix
-IAbsThread -> CTCPServer
+IAbsThread -> CTCPServer_Unix
+
+edge [
+arrowhead = "odiamond"
+style = "solid"
+]
+
+ITCPServer -> ITCPSession
+Server -> Client
+
+edge [
+arrowhead = "onormal"
+style = "solid"
+]
+
+Client -> ITCPSession
 
 }
