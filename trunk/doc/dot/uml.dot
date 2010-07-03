@@ -305,6 +305,13 @@ Party|...\l|...\l\
 }"
 ]
 
+// Class Server
+Server [
+label = "{\
+Server|...\l|...\l\
+}"
+]
+
 edge [
 arrowhead = "diamond"
 style = "solid"
@@ -313,6 +320,13 @@ style = "solid"
 Ressource -> Party
 EntityFactory -> Party
 ObjectFactory -> Party
+
+edge [
+arrowhead = "odiamond"
+style = "solid"
+]
+
+Party -> Server
 
 } // End : Server Core
 
@@ -362,6 +376,13 @@ style = "dashed"
 
 CTCPSession_Unix -> ITCPSession
 CTCPSession_Win32 -> ITCPSession
+
+edge [
+arrowhead = "odiamond"
+style = "solid"
+]
+
+ITCPSession -> Server
 
 // Interface ITCPClient
 ITCPClient [
@@ -528,14 +549,6 @@ style = "dashed"
 CAbsThread_Unix -> IAbsThread
 CAbsThread_Win32 -> IAbsThread
 
-} // End : Thread
-
-//
-// MUTEX
-//
-subgraph clusterMutex {
-label = "Mutex"
-
 // Interface IAbsMutex
 IAbsMutex [
 label = "{\
@@ -582,6 +595,16 @@ style = "dashed"
 CAbsMutex_Unix -> IAbsMutex
 CAbsMutex_Win32 -> IAbsMutex
 
-}
+} // End : thread
+
+edge [
+arrowhead = "diamond"
+style = "solid"
+]
+
+IAbsMutex -> CTCPServer
+IAbsMutex -> CTCPSession_Win32
+IAbsMutex -> CTCPSession_Unix
+IAbsThread -> CTCPServer
 
 }
