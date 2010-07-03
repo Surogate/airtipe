@@ -424,7 +424,7 @@ IEntity</string>
    <object id="ClassNode14" class="com.horstmann.violet.ClassNode"> 
     <void property="attributes"> 
      <void property="text"> 
-      <string>- frames : vector&lt;Frame&gt;
+      <string>- frames : deque&lt;Frame&gt;
 - mapScript : fstream &amp;
 </string> 
      </void> 
@@ -433,7 +433,9 @@ IEntity</string>
      <void property="text"> 
       <string>+ Map(mapScript : fstream &amp;)
 + getNumberOfFrame() : unsigned int
-+ getFrame(num : unsigned int) : Frame &amp;</string> 
++ getFrame(num : unsigned int) : Frame &amp;
++ getNextFrame() : Frame *
++ popFront() : Frame *</string> 
      </void> 
     </void> 
     <void property="name"> 
@@ -460,7 +462,7 @@ IEntity</string>
 - floor : WallType
 - floorHeight : unsigned int
 - monsters : vector&lt;IEntity *&gt;
-- object : vector&lt;IObject *&gt;</string> 
+- objects : vector&lt;IObject *&gt;</string> 
      </void> 
     </void> 
     <void property="name"> 
