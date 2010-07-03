@@ -13,5 +13,14 @@ Player::Player()
 Player::~Player()
 {}
 
+Player&		Player::operator=(Player const &cpy)
+{
+  if (this != &cpy)
+  {
+
+  }
+  return (*this);
+}
+
 void	Player::fire()
 {}
