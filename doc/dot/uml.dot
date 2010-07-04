@@ -8,13 +8,8 @@ fontsize = 8
 shape = "record"
 ]
 
-edge [
-fontname = "Bitstream Vera Sans"
-fontsize = 8
-]
-
 //
-// RESSOURCES
+// RESSOURCES SUBGRAPH
 //
 subgraph clusterRessources {
 label = "Ressources"
@@ -66,7 +61,7 @@ Player|\
 }"
 ]
 
-// Class Entity Factory
+// Class EntityFactory
 EntityFactory [
 label = "{\
 EntityFactory|\
@@ -173,7 +168,7 @@ Frame|\
 ]
 
 //
-// SHARED LIBRARY ABSTRACTION
+// SHARED LIBRARY ABS SUBGRAPH
 //
 subgraph clusterAbsSharedLibrary {
 label = "SharedLibrary Abstraction (Unix/Win32)"
@@ -193,10 +188,10 @@ SharedLibrary_unix [
 label = "SharedLibrary"
 ]
 
-} // End : Shared Library Abstraction
+} // END SHARED LIBRARY ABS SUBGRAPH
 
 //
-// MONSTER LIBRARY
+// MONSTER LIBRARY SUBGRAPH
 //
 subgraph clusterMonstersLibrary {
 label = "Monster Dynamic Library"
@@ -238,55 +233,12 @@ Monster3 [
 label = "{...}"
 ]
 
-} // End : Monster Library
+} // END : MONSTER LIBRARY SUBGRAPH
 
-edge [
-arrowhead = "odiamond"
-style = "solid"
-]
-
-IEntity -> EntityFactory
-IEntity -> Ressource
-Map -> Ressource
-IObject -> Ressource
-Frame -> Map
-Player -> Ressource
-
-edge [
-arrowhead = "diamond"
-style = "solid"
-]
-
-ISharedLibrary -> EntityFactory
-IObject -> ObjectFactory
-
-edge [
-arrowhead = "onormal"
-style = "solid"
-]
-
-SharedLibrary_unix -> ISharedLibrary
-Monster1 -> AMonster
-Monster2 -> AMonster
-Monster3 -> AMonster
-
-edge [
-arrowhead = "onormal"
-style = "dashed"
-]
-
-Player -> IEntity
-AMonster -> IEntity
-BonusHealth -> IObject
-Laser -> IObject
-DoubleLaser -> IObject
-Object0 -> IObject
-
-} // End : Ressource
-
+} // END : RESSOURCE SUBGRAPH
 
 //
-// SERVER CORE
+// SERVER CORE SUBGRAPH
 //
 subgraph clusterServerCore {
 label = "Server Core"
@@ -321,26 +273,10 @@ Client||\
 }"
 ]
 
-edge [
-arrowhead = "diamond"
-style = "solid"
-]
-
-Ressource -> Party
-EntityFactory -> Ressource
-ObjectFactory -> Ressource
-
-edge [
-arrowhead = "odiamond"
-style = "solid"
-]
-
-Party -> Server
-
-} // End : Server Core
+} // END : SERVER CORE SUBGRAPH
 
 //
-// TCPSESSION
+// TCPSESSION SUBGRAPH
 //
 subgraph clusterTCPSession {
 label = "TCPSession Abstraction (Unix/Win32)"
@@ -379,63 +315,10 @@ TCPSession|\
 }"
 ]
 
-edge [
-arrowhead = "onormal"
-style = "dashed"
-]
-
-TCPSession -> ITCPSession
-
-}
-
-/*
-// Interface ITCPClient
-ITCPClient [
-label = "{\
-\<interface\> - ITCPClient|\
-typedef void* Data\l\l\
-+ connect() : bool\l\
-+ write(Date, unsigned int) : int\l\
-+ read(Data, unsigned int) : int\l\
-+ close() : bool\l\
-}"
-]
-
-// Class CTCPClient
-CTCPClient [
-label = "{\
-CTCPClient|\
-- _socket : int\l|\
-+ connect() : bool\l\
-+ write(Date, unsigned int) : int\l\
-+ read(Data, unsigned int) : int\l\
-+ close() : bool\l\
-}"
-]
-
-// Class CTCPClient_Win32
-CTCPClient_Win32 [
-label = "{\
-CTCPClient_Win32|\
-- _socket : SOCKET\l|\
-+ connect() : bool\l\
-+ write(Date, unsigned int) : int\l\
-+ read(Data, unsigned int) : int\l\
-+ close() : bool\l\
-}"
-]
-
-edge [
-arrowhead = "onormal"
-style = "dashed"
-]
-
-CTCPClient -> ITCPClient
-CTCPClient_Win32 -> ITCPClient
-*/
+} // END : TCPSESSION SUBGRAPH
 
 //
-// TCPSESSION
+// UDP SUBGRAPH
 //
 subgraph clusterUDP {
 label = "UDPConnexion Abstraction (Unix/Win32)"
@@ -462,24 +345,10 @@ UDP|\
 }"
 ]
 
-edge [
-arrowhead = "onormal"
-style = "dashed"
-]
-
-UDP -> IUDP
-
-edge [
-arrowhead = "diamond"
-style = "solid"
-]
-
-UDP -> Party
-
-} // End IUDP
+} // END : UDP SUBGRAPH
 
 //
-// TCPSERVER
+// TCPSERVER SUBGRAPH
 //
 subgraph clusterTCPServer {
 label = "TCPServer Abstraction (Unix/Win32)"
@@ -517,17 +386,10 @@ TCPServer|\
 }"
 ]
 
-edge [
-arrowhead = "onormal"
-style = "dashed"
-]
-
-TCPServer -> ITCPServer
-
-} // End : TCPServer
+} // END : TCPSERVER SUBGRAPH
 
 //
-// THREAD
+// THREAD SUBGRAPH
 //
 subgraph clusterThread {
 label = "Thread & Mutex Abstraction (Unix/Win32)"
@@ -554,13 +416,6 @@ AbsThread|\
 }"
 ]
 
-edge [
-arrowhead = "onormal"
-style = "dashed"
-]
-
-AbsThread -> IAbsThread
-
 // Interface IAbsMutex
 IAbsMutex [
 label = "{\
@@ -586,40 +441,56 @@ AbsMutex|\
 }"
 ]
 
-edge [
-arrowhead = "onormal"
-style = "dashed"
-]
-
-AbsMutex -> IAbsMutex
-
-} // End : thread
+} // END : THREAD SUBGRAPH
 
 edge [
-arrowhead = "diamond"
-style = "solid"
+fontname = "Bitstream Vera Sans"
+fontsize = 8
 ]
 
-AbsMutex -> TCPServer
-AbsMutex -> TCPSession
-AbsMutex -> Party
-AbsThread -> TCPServer
+// Composition
+AbsMutex -> TCPServer [arrowhead = "diamond" style = "solid"]
+AbsMutex -> TCPSession [arrowhead = "diamond" style = "solid"]
+AbsMutex -> Party [arrowhead = "diamond" style = "solid"]
+AbsThread -> TCPServer [arrowhead = "diamond" style = "solid"]
+UDP -> Party [arrowhead = "diamond" style = "solid"]
+Ressource -> Party [arrowhead = "diamond" style = "solid"]
+EntityFactory -> Ressource [arrowhead = "diamond" style = "solid"]
+ObjectFactory -> Ressource [arrowhead = "diamond" style = "solid"]
+ISharedLibrary -> EntityFactory [arrowhead = "diamond" style = "solid"]
+IObject -> ObjectFactory [arrowhead = "diamond" style = "solid"]
 
-edge [
-arrowhead = "odiamond"
-style = "solid"
-]
+// Aggregation
+TCPSession -> TCPServer [arrowhead = "odiamond" style = "solid"]
+Client -> Server [arrowhead = "odiamond" style = "solid"]
+Client -> Party [arrowhead = "odiamond" style = "solid"]
+Party -> Server [arrowhead = "odiamond" style = "solid"]
+IEntity -> EntityFactory [arrowhead = "odiamond" style = "solid"]
+IEntity -> Ressource [arrowhead = "odiamond" style = "solid"]
+Map -> Ressource [arrowhead = "odiamond" style = "solid"]
+IObject -> Ressource [arrowhead = "odiamond" style = "solid"]
+Frame -> Map [arrowhead = "odiamond" style = "solid"]
+Player -> Ressource [arrowhead = "odiamond" style = "solid"]
 
-TCPSession -> TCPServer
-Client -> Server
-Client -> Party
+// Heritage
+Server -> TCPServer [arrowhead = "onormal" style = "solid"]
+Client -> TCPSession [arrowhead = "onormal" style = "solid"]
+SharedLibrary_unix -> ISharedLibrary [arrowhead = "onormal" style = "solid"]
+Monster1 -> AMonster [arrowhead = "onormal" style = "solid"]
+Monster2 -> AMonster [arrowhead = "onormal" style = "solid"]
+Monster3 -> AMonster [arrowhead = "onormal" style = "solid"]
 
-edge [
-arrowhead = "onormal"
-style = "solid"
-]
-
-Server -> TCPServer
-Client -> TCPSession
+// Implement interface
+AbsThread -> IAbsThread [arrowhead = "onormal" style = "dashed"]
+AbsMutex -> IAbsMutex [arrowhead = "onormal" style = "dashed"]
+TCPServer -> ITCPServer [arrowhead = "onormal" style = "dashed"]
+UDP -> IUDP [arrowhead = "onormal" style = "dashed"]
+TCPSession -> ITCPSession [arrowhead = "onormal" style = "dashed"]
+Player -> IEntity [arrowhead = "onormal" style = "dashed"]
+AMonster -> IEntity [arrowhead = "onormal" style = "dashed"]
+BonusHealth -> IObject [arrowhead = "onormal" style = "dashed"]
+Laser -> IObject [arrowhead = "onormal" style = "dashed"]
+DoubleLaser -> IObject [arrowhead = "onormal" style = "dashed"]
+Object0 -> IObject [arrowhead = "onormal" style = "dashed"]
 
 }
