@@ -1,0 +1,312 @@
+digraph G {
+fontname = "Bitstream Vera Sans"
+fontsize = 8
+
+node [
+fontname = "Bitstream Vera Sans"
+fontsize = 8
+shape = "record"
+]
+
+// Interface IEntity
+IEntity [
+label = "{\
+\<interface\> - IEntity|\
++ getId() : unsigned int\l\
++ setId(id : unsigned int)\l\
++ getPosX() : unsigned int\l\
++ getPosY() : unsigned int\l\
++ setPosX(x : unsigned int) : void\l\
++ setPosY(y : unsigned int) : void\l\
++ getType() : EntityType\l\
++ getSkinType() : SkinType\l\
++ getPV() : unsigned int\l\
++ setPV(pv : unsigned int) : void\l\
++ getBulletType() : BulletType\l\
++ setBulletType(type ; BulletType) : void\l\
++ getSpawnFrameNum() : unsigned int\l\
++ setSpawnFrameNum(frameNum : unsigned int) : void\l\
++ start(IN : actionList : list\<Action *\>, OUT : partyActionList : list\<Action *\> &)\l\
++ clone() : IEntity *\l\
+}"
+]
+
+// Class player
+Player [
+label = "{\
+Player|\
+- _id : unsigned int\l\
+- _login : string\l\
+- _posX : unsigned int\l\
+- _posY : unsigned int\l\
+- _typeId : unsigned int\l\
+- _skinId : unsigned int\l\
+- _pv : int\l\
+- _spawnFrameNum : unsigned int\l\
+- _ready : bool\l\
+- _color : Color\l|\
++ Player()\l\
++ getLogin() : string\l\
++ setLogin(login : string) : void\l\
++ isReady() : bool\l\
++ setReady(ready : bool) : void\l\
++ getColor() : Color\l\
++ setColor(color : Color) : void\l\
+}"
+]
+
+// Class EntityFactory
+EntityFactory [
+label = "{\
+\<singleton\> - EntityFactory|\
+#ifdef UNIX\l\
+	typedef libHandler void*\l\
+	typedef libProcAddr void*\l\
+#endif\l\
+#ifdef WIN32\l\
+	typedef libHandler HMODULE\l\
+	typedef libProcAddr FARPROC\l\
+#endif\l\
+- _entities : map<EntityType, IEntity>\l\
+- _libHandler : ISharedLybrary &\l\
+- \<static\> _currentId : unsigned int\l|\
++ getInstance() : EntityFactory &\l\
++ getEntity(EntityType) : IEntity &\l\
++ typeExists(EntityType) : bool\l\
+- loadEntity(EntityType) : bool\l\
+}"
+]
+
+//Class ObjectFactory
+ObjectFactory [
+label = "{\
+\<singleton\> - ObjectFactory|\
+- _objects : map<ObjectType, IObject>\l|\
++ getInstance() : ObjectFactory &\l\
++ getObject(ObjectType) : IObject &\l\
++ typeExists(ObjectType) : bool\l\
+}"
+]
+
+// Interface IObject
+IObject [
+label = "{\
+\<interface\> - IObject|\
++ setChanges(IEntity &, partyActionList : list\<Action *\> &) : void\l\
++ getType() : ObjectType\l\
++ clone() : IObject *\l\
+}"
+]
+
+// Class BonusHealth
+BonusHealth [
+label = "{BonusHealth}"
+]
+
+// Class Laser
+Laser [
+label = "{Laser}"
+]
+
+// Class DoubleLaser
+DoubleLaser [
+label = "{DoubleLaser}"
+]
+
+// Class Object0
+Object0 [
+label = "{...}"
+]
+
+// Class Ressoruce
+Ressource [
+label = "{\
+Ressource|\
+- _entityFactory : EntityFactory &\l\
+- _objectFactory : ObjectFactory &\l\
+- _entities : vector\<IEntity *\>\l\
+- _objects : vector\<IObjects *\>\l\
+- _maps : vector\<Map *\>\l\
+- _players : vector\<Player *\>\l|\
++ loadMaps(mapScript : fstream) : void\l\
+}"
+]
+
+// Class Map
+Map [
+label = "{\
+Map|\
+- _frames : deque\<Frame\>\l\
+- _mapScript : fstream &\l\
+- _loaded : bool\l|\
++ Map(mapScript : fstream &)\l\
++ loadMap() : void\l\
++ getNumberOfFrame() : unsigned int\l\
++ getFrame(num : unsigned int) : Frame &\l\
++ getNextFrame() : Frame *\l\
++ popFront() : Frame *\l\
+}"
+]
+
+// Class Frame
+Frame [
+label = "{\
+Frame|\
+- _width : unsigned int\l\
+- _height : unsigned int\l\
+- _ceil : WallType\l\
+- _ceilHeight : unsigned int\l\
+- _floor : WallType\l\
+- _floorHeight : unsigned int\l\
+- _monsters : map\<EntityType, pair\<x : int, y : int\>\>\l\
+- _objects : map\<ObjectType, pair\<x : int, y : int\>\>\l\
+}"
+]
+
+//
+// SHARED LIBRARY ABS SUBGRAPH
+//
+subgraph clusterAbsSharedLibrary {
+label = "SharedLibrary Abstraction (Unix/Win32)"
+
+// Interface ISharedLibrary
+ISharedLibrary [
+label = "{\
+\<interface\> - ISharedLibrary|\
++ libHandler libLoad(string filename)\l\
++ libProcAddr libGetProc(libHandler lib, string filename)\l\
++ bool libFree(libHandler lib)\l\
+}"
+]
+
+// Class SharedLibrary_unix
+SharedLibrary_unix [
+label = "SharedLibrary"
+]
+
+} // END SHARED LIBRARY ABS SUBGRAPH
+
+//
+// MONSTER LIBRARY SUBGRAPH
+//
+subgraph clusterMonstersLibrary {
+label = "Monster Dynamic Library"
+
+// Abstract class AEntity
+AEntity [
+label = "{\
+\<abstract\> - AEntity|\
+- _id : unsigned int\l\
+- _posX : unsigned int\l\
+- _posY : unsigned int\l\
+- _typeId : unsigned int\l\
+- _skinId : unsigned int\l\
+- _pv : int\l\
+- _spawnFrameNum : unsigned int\l\
+- _pf : PacketFactory &\l\
++ requests : list\<Packet *\>\l\
++ mutexRequests : AbsMutex\l\
+}"
+]
+
+// Entry points
+EntryDynamicLibrary [
+label = "{\
+\<not a class\> - entry points|\
+getInstance() ; IEntity &\l\
+}"
+]
+
+// Class Monster1
+Monster1 [
+label = "{Monster1}"
+]
+
+// Class Monster2
+Monster2 [
+label = "{Monster2}"
+]
+
+// Class Monster3
+Monster3 [
+label = "{...}"
+]
+
+} // END : MONSTER LIBRARY SUBGRAPH
+
+//
+// PACKETFACTORY SUBGRAPH
+//
+subgraph clusterPacketFactory {
+label = "Diagram Server.dot.png"
+
+// Class PacketFactory
+PacketFactory [
+label = "{\
+\<singleton\> - PacketFactory|\
+- packets : map\<PaketCode, Packet\>\l|\
++ getInstance() : PacketFactory &\l\
++ getPacket(PacketCode) : IPacket &\l\
++ typeExists(PacketCode) : bool\l\
+}"
+]
+
+}
+
+//
+// MUTEX SUBGRAPH
+//
+subgraph clusterMutex {
+label = "Diagram AbstractionMutex.dot.png"
+
+// Class AbsMutex
+AbsMutex [
+label = "{\
+AbsMutex|\
+- _mid : pthread_mutex_t*\l|\
++ init() : bool\l\
++ destroy() : void\l\
++ lock() : bool\l\
++ tryLock() : bool\l\
++ unlock() : bool\l\
+}"
+]
+
+}
+
+edge [
+fontname = "Bitstream Vera Sans"
+fontsize = 8
+]
+
+// Composition
+AbsMutex -> AEntity [arrowhead = "diamond" style = "solid"]
+EntityFactory -> Ressource [arrowhead = "diamond" style = "solid"]
+ObjectFactory -> Ressource [arrowhead = "diamond" style = "solid"]
+ISharedLibrary -> EntityFactory [arrowhead = "diamond" style = "solid"]
+IObject -> ObjectFactory [arrowhead = "diamond" style = "solid"]
+PacketFactory -> AEntity [arrowhead = "diamond" style = "solid"]
+
+// Aggregation
+IEntity -> EntityFactory [arrowhead = "odiamond" style = "solid"]
+IEntity -> Ressource [arrowhead = "odiamond" style = "solid"]
+Map -> Ressource [arrowhead = "odiamond" style = "solid"]
+IObject -> Ressource [arrowhead = "odiamond" style = "solid"]
+Frame -> Map [arrowhead = "odiamond" style = "solid"]
+Player -> Ressource [arrowhead = "odiamond" style = "solid"]
+
+// Heritage
+SharedLibrary_unix -> ISharedLibrary [arrowhead = "onormal" style = "solid"]
+Monster1 -> AEntity [arrowhead = "onormal" style = "solid"]
+Monster2 -> AEntity [arrowhead = "onormal" style = "solid"]
+Monster3 -> AEntity [arrowhead = "onormal" style = "solid"]
+
+// Implement interface
+Player -> IEntity [arrowhead = "onormal" style = "dashed"]
+AEntity -> IEntity [arrowhead = "onormal" style = "dashed"]
+BonusHealth -> IObject [arrowhead = "onormal" style = "dashed"]
+Laser -> IObject [arrowhead = "onormal" style = "dashed"]
+DoubleLaser -> IObject [arrowhead = "onormal" style = "dashed"]
+Object0 -> IObject [arrowhead = "onormal" style = "dashed"]
+
+}
