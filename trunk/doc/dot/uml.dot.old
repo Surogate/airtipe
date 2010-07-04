@@ -8,6 +8,12 @@ fontsize = 8
 shape = "record"
 ]
 
+//
+// RESSOURCES SUBGRAPH
+//
+subgraph clusterRessources {
+label = "Ressources"
+
 // Interface IEntity
 IEntity [
 label = "{\
@@ -163,6 +169,12 @@ Frame|\
 }"
 ]
 
+//
+// SHARED LIBRARY ABS SUBGRAPH
+//
+subgraph clusterAbsSharedLibrary {
+label = "SharedLibrary Abstraction (Unix/Win32)"
+
 // Interface ISharedLibrary
 ISharedLibrary [
 label = "{\
@@ -177,6 +189,14 @@ label = "{\
 SharedLibrary_unix [
 label = "SharedLibrary"
 ]
+
+} // END SHARED LIBRARY ABS SUBGRAPH
+
+//
+// MONSTER LIBRARY SUBGRAPH
+//
+subgraph clusterMonstersLibrary {
+label = "Monster Dynamic Library"
 
 // Abstract class AEntity
 AEntity [
@@ -217,6 +237,16 @@ label = "{Monster2}"
 Monster3 [
 label = "{...}"
 ]
+
+} // END : MONSTER LIBRARY SUBGRAPH
+
+} // END : RESSOURCE SUBGRAPH
+
+//
+// SERVER CORE SUBGRAPH
+//
+subgraph clusterServerCore {
+label = "Server Core"
 
 // Class Party
 Party [
@@ -427,6 +457,12 @@ PacketBullet||\
 
 ]
 
+//
+// TCPSESSION SUBGRAPH
+//
+subgraph clusterTCPSession {
+label = "TCPSession Abstraction (Unix/Win32)"
+
 // Interface ITCPSession
 ITCPSession [
 label = "{\
@@ -461,6 +497,14 @@ TCPSession|\
 }"
 ]
 
+} // END : TCPSESSION SUBGRAPH
+
+//
+// UDP SUBGRAPH
+//
+subgraph clusterUDP {
+label = "UDPConnexion Abstraction (Unix/Win32)"
+
 // Interface IUDP
 IUDP [
 label = "{\
@@ -482,6 +526,14 @@ UDP|\
 + close() : void\l\
 }"
 ]
+
+} // END : UDP SUBGRAPH
+
+//
+// TCPSERVER SUBGRAPH
+//
+subgraph clusterTCPServer {
+label = "TCPServer Abstraction (Unix/Win32)"
 
 // Interface ITCPServer
 ITCPServer [
@@ -515,6 +567,17 @@ TCPServer|\
 + virtual accept() : bool\l\
 }"
 ]
+
+} // END : TCPSERVER SUBGRAPH
+
+
+} // END : SERVER CORE SUBGRAPH
+
+//
+// THREAD SUBGRAPH
+//
+subgraph clusterThread {
+label = "Thread & Mutex Abstraction (Unix/Win32)"
 
 // Interface thread
 IAbsThread [
@@ -562,6 +625,8 @@ AbsMutex|\
 + unlock() : bool\l\
 }"
 ]
+
+} // END : THREAD SUBGRAPH
 
 edge [
 fontname = "Bitstream Vera Sans"
