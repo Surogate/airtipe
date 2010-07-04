@@ -76,6 +76,7 @@ label = "{\
 - _entities : map<EntityType, IEntity>\l\
 - _libHandler : ISharedLybrary &\l\
 - \<static\> _currentId : unsigned int\l|\
++ getInstance() : EntityFactory &\l\
 + getEntity(EntityType) : IEntity &\l\
 + typeExists(EntityType) : bool\l\
 - loadEntity(EntityType) : bool\l\
@@ -87,6 +88,7 @@ ObjectFactory [
 label = "{\
 \<singleton\> - ObjectFactory|\
 - _objects : map<ObjectType, IObject>\l|\
++ getInstance() : ObjectFactory &\l\
 + getObject(ObjectType) : IObject &\l\
 + typeExists(ObjectType) : bool\l\
 }"
@@ -126,8 +128,8 @@ label = "{...}"
 Ressource [
 label = "{\
 Ressource|\
-- _entityFactory : EntityFactory\l\
-- _objectFactory : ObjectFactory\l\
+- _entityFactory : EntityFactory &\l\
+- _objectFactory : ObjectFactory &\l\
 - _monsters : vector\<IEntity *\>\l\
 - _objects : vector\<IObjects *\>\l\
 - _maps : vector\<Map *\>\l\
@@ -250,7 +252,8 @@ Party|\
 - _UDPServer : UDP\l\
 - _ressources : Ressource\l\
 - _players : map\<Player &, Client &\>\l\
-- _thread : AbsThread\l|\
+- _thread : AbsThread\l\
+- _pf : PacketFactory &\l|\
 }"
 ]
 
@@ -258,6 +261,7 @@ Party|\
 Server [
 label = "{\
 Server|\
+- _pf : PacketFactory &\l\
 - _parties : vector\<Party\>\l\
 - _clients : vector\<Client\>\l|\
 - createParty() : void\l\
@@ -266,11 +270,159 @@ Server|\
 }"
 ]
 
+// Class Client
 Client [
 label = "{\
 Client||\
 + run() : void\l\
 }"
+]
+
+// Class PacketFactory
+PacketFactory [
+label = "{\
+\<singleton\> - PacketFactory|\
+- packets : map\<PaketCode, Packet\>\l|\
++ getInstance() : PacketFactory &\l\
++ getPacket(PacketCode) : IPacket &\l\
++ typeExists(PacketCode) : bool\l\
+}"
+]
+
+APacket [
+label = "{\
+\<abstract\> - APacket||\
++ header : PacketHeader\l\
++ data : AData\l\
+}"
+]
+
+AData [
+label = "{\
+\<abstract\> - AData||\
+}"
+]
+
+PacketHeader [
+label = "{\
+PacketHeader||\
++ code : PacketCode\l\
++ time : Timestamp\l\
++ dataSize : unsigned int\l\
+}"
+]
+
+PacketLogin [
+label = "{\
+PacketLogin||\
++ login : char[15]\l\
+}"
+]
+
+PacketColor [
+label = "{\
+PacketColor||\
++ color : colorCode\l\
+}"
+]
+
+PacketCreateParty [
+label = "{\
+PacketCreateParty||\
++ nbPlayersMin : unsigned int\l\
++ nbPlayerMax : unsigned int\l\
+}"
+]
+
+PacketMap [
+label = "{\
+PacketMap||\
++ mapName : char[15]\l\
+}"
+]
+
+PacketReady [
+label = "{\
+PacketReady||\
++ ready : bool\l\
+}"
+]
+
+PacketAction [
+label = "{\
+PacketAction||\
++ id : unsigned int\l\
++ dir : DirectionCode\l\
+}"
+]
+
+PacketLoginId [
+label = "{\
+PacketLoginId||\
++ login : char[15]\l\
++ id : unsigned int\l\
+}"
+]
+
+PacketLoginColor [
+label = "{\
+PacketLoginColor||\
++ login : char[15]\l\
++ color : ColorCode\l\
+}"
+]
+
+PacketSpawn [
+label = "{\
+PacketSpawn||\
++ id : unsigned int\l\
++ type : EntityType\l\
++ skinType : SkinType\l\
++ bulletType : BulletType\l\
++ x : unsigned int\l\
++ y : unsigned int\l\
++ frameNum : unsigned int\l\
+}"
+]
+
+PacketEmpty [
+label = "{\
+PacketEmpty\
+}"
+]
+
+PacketMove [
+label = "{\
+PacketMove||\
++ id : unsigned int\l\
++ x : unsigned int\l\
++ y : unsigned int\l\
+}"
+]
+
+PacketId [
+label = "{\
+PacketId||\
++ id : unsigned int\l\
+}"
+
+]
+
+PacketFight [
+label = "{\
+PacketFight||\
++ id : unsigned int\l\
++ dir : DirectionCode\l\
+}"
+
+]
+
+PacketBullet [
+label = "{\
+PacketBullet||\
++ bullet : BulletType\l\
+}"
+
 ]
 
 } // END : SERVER CORE SUBGRAPH
@@ -467,6 +619,10 @@ EntityFactory -> Ressource [arrowhead = "diamond" style = "solid"]
 ObjectFactory -> Ressource [arrowhead = "diamond" style = "solid"]
 ISharedLibrary -> EntityFactory [arrowhead = "diamond" style = "solid"]
 IObject -> ObjectFactory [arrowhead = "diamond" style = "solid"]
+PacketHeader -> APacket [arrowhead = "diamond" style = "solid"]
+AData -> APacket [arrowhead = "diamond" style = "solid"]
+PacketFactory -> Server [arrowhead = "diamond" style = "solid"]
+PacketFactory -> Party [arrowhead = "diamond" style = "solid"]
 
 // Aggregation
 TCPSession -> TCPServer [arrowhead = "odiamond" style = "solid"]
@@ -479,6 +635,7 @@ Map -> Ressource [arrowhead = "odiamond" style = "solid"]
 IObject -> Ressource [arrowhead = "odiamond" style = "solid"]
 Frame -> Map [arrowhead = "odiamond" style = "solid"]
 Player -> Ressource [arrowhead = "odiamond" style = "solid"]
+APacket -> PacketFactory [arrowhead = "odiamond" style = "solid"]
 
 // Heritage
 Server -> TCPServer [arrowhead = "onormal" style = "solid"]
@@ -487,6 +644,20 @@ SharedLibrary_unix -> ISharedLibrary [arrowhead = "onormal" style = "solid"]
 Monster1 -> AMonster [arrowhead = "onormal" style = "solid"]
 Monster2 -> AMonster [arrowhead = "onormal" style = "solid"]
 Monster3 -> AMonster [arrowhead = "onormal" style = "solid"]
+PacketLogin -> AData [arrowhead = "onormal" style = "solid"]
+PacketCreateParty -> AData [arrowhead = "onormal" style = "solid"]
+PacketMap -> AData [arrowhead = "onormal" style = "solid"]
+PacketEmpty -> AData [arrowhead = "onormal" style = "solid"]
+PacketReady -> AData [arrowhead = "onormal" style = "solid"]
+PacketAction -> AData [arrowhead = "onormal" style = "solid"]
+PacketColor -> AData [arrowhead = "onormal" style = "solid"]
+PacketLoginId -> AData [arrowhead = "onormal" style = "solid"]
+PacketLoginColor -> AData [arrowhead = "onormal" style = "solid"]
+PacketSpawn -> AData [arrowhead = "onormal" style = "solid"]
+PacketMove -> AData [arrowhead = "onormal" style = "solid"]
+PacketId -> AData [arrowhead = "onormal" style = "solid"]
+PacketFight -> AData [arrowhead = "onormal" style = "solid"]
+PacketBullet -> AData [arrowhead = "onormal" style = "solid"]
 
 // Implement interface
 AbsThread -> IAbsThread [arrowhead = "onormal" style = "dashed"]
