@@ -22,7 +22,7 @@ label = "Ressources"
 // Interface IEntity
 IEntity [
 label = "{\
-\<interface\> - IEntity||\
+\<interface\> - IEntity|\
 + getId() : unsigned int\l\
 + setId(id : unsigned int)\l\
 + getPosX() : unsigned int\l\
@@ -103,7 +103,7 @@ ObjectFactory|\
 // Interface IObject
 IObject [
 label = "{\
-\<interface\> - IObject||\
+\<interface\> - IObject|\
 + setChanges(IEntity &, partyActionList : list\<Action *\> &) : void\l\
 + getType() : ObjectType\l\
 + clone() : IObject *\l\
@@ -182,7 +182,7 @@ label = "SharedLibrary Abstraction (Unix/Win32)"
 // Interface ISharedLibrary
 ISharedLibrary [
 label = "{\
-\<interface\> - ISharedLibrary||\
+\<interface\> - ISharedLibrary|\
 + libHandler libLoad(string filename)\l\
 + libProcAddr libGetProc(libHandler lib, string filename)\l\
 + bool libFree(libHandler lib)\l\
@@ -296,11 +296,12 @@ label = "Server Core"
 Party [
 label = "{\
 Party|\
+- _UDPServer : UDP\l\
 - _entityFactory : EntityFactory\l\
 - _ressources : Ressource\l\
 - _players : map\<Player, Client *\>\l\
 - _objectFactory : ObjectFactory\l\
-- _thread : AbsThread\l\
+- _thread : AbsThread\l|\
 }"
 ]
 
@@ -309,14 +310,17 @@ Server [
 label = "{\
 Server|\
 - _parties : vector\<Party\>\l\
-- _clients : vector\<Client\>\l\
+- _clients : vector\<Client\>\l|\
+- createParty() : void\l\
++ processData() : void\l\
++ accept() : bool\l\
 }"
 ]
 
 Client [
 label = "{\
-Client|\
-+ UDPConnexion : IUDP*\l|\
+Client||\
++ run() : void\l\
 }"
 ]
 
@@ -469,11 +473,11 @@ style = "dashed"
 UDP -> IUDP
 
 edge [
-arrowhead = "odiamond"
+arrowhead = "diamond"
 style = "solid"
 ]
 
-UDP -> Client
+UDP -> Party
 
 } // End IUDP
 
@@ -601,6 +605,7 @@ style = "solid"
 
 AbsMutex -> TCPServer
 AbsMutex -> TCPSession
+AbsMutex -> Party
 AbsThread -> TCPServer
 
 edge [
