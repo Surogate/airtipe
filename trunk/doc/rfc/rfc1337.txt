@@ -1,20 +1,13 @@
-﻿Tech3s RType Group 
-ancel_a
-Category: Standards Track
-lucaze_b
-
-chanio_f
-
-korcza_b
-
-bertra_b
-
-lebrun_d
-
-July 2010
+﻿Tech3s RType Group 											ancel_a
+Category: Standards Track									lucaze_b
+															chanio_f
+															korcza_b
+															bertra_b
+															lebrun_d
+															July 2010
 
 
-	R-Type Client/Server Protocol
+					R-Type Client/Server Protocol
 
 Abstract
 
@@ -40,40 +33,9 @@ Table of Contents
 	4.	UDP Message . . . . . . . . . . . . . . . . . . . . . . . 5
 		
 
+ancel_a				Standard Track							[page1]
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-ancel_a
-Standard Track
-[page1]
-
-
-
-RFC 1337
-R-Type Client/Server Protocol
-July 2010
+RFC 1337		R-Type Client/Server Protocol				July 2010
 
 
 1.	Introduction
@@ -90,4 +52,5 @@ July 2010
 	as described in [RFC2119].
 
 2.	Standard Message Exchange
+
 
