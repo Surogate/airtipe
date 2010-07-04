@@ -1,0 +1,82 @@
+digraph uml {
+	graph	[fontname=Verdana, fontsize=8, ranksep=0.3];
+	node	[fontname=Verdana, fontsize=10];
+	edge	[fontname=Verdana, fontsize=10];
+
+// The start
+	"start"	
+		[shape=circle, label="", height=0.15];
+	"end"
+		[shape=point, label="", height=0.15, style=filled, fillcolor=black];
+
+// The main loop conditions
+	"game finished"
+		[shape=diamond];
+	"already exists clients"
+		[shape=diamond];
+
+	"start"						-> "game finished";
+	"game finished"				-> "end"
+		[label=yes];
+	"game finished"				-> "already exists clients"
+		[label=no];
+	"already exists clients"	-> "end"
+		[label=no];
+
+// Reading incoming data
+	"read UDP requests"
+		[shape=ellipse];
+	"read entities requests"
+		[shape=ellipse];
+	"note: need a try lock system\l like 'read server messages'"
+		[shape=record, style=filled, fillcolor=yellow];
+	"read server messages"
+		[shape=ellipse];
+
+	"already exists clients"	-> "read UDP requests"
+		[label=yes];
+	"read UDP requests"			-> "read entities requests";
+	"read entities requests"	-> "read server messages";
+	"read entities requests"	-> "note: need a try lock system\l like 'read server messages'"
+		[arrowhead=none, style=dashed];
+
+// Processing data
+	"there is actions"
+		[shape=diamond];
+	"process actions"
+		[shape=ellipse];
+
+	"there is actions"			-> "game finished"
+		[label=no];
+	"there is actions"			-> "process actions"
+		[label=yes];
+	"process actions"			-> "there is actions";
+
+// Server message reading (mutex)
+	"there is server messages"
+		[shape=diamond];
+	"try lock server access list"
+		[shape=diamond];
+	"there already is message"
+		[shape=diamond];
+	"transfer to actions"
+		[shape=ellipse];
+	"unlock server access list"
+		[shape=ellipse];
+
+	"read server messages"			-> "there is server messages";
+	"there is server messages"		-> "there is actions"
+		[label=no];
+	"there is server messages"		-> "try lock server access list"
+		[label=yes];
+	"try lock server access list"	-> "there is actions"
+		[label=no];
+	"try lock server access list"	-> "transfer to actions"
+		[label=yes];
+	"transfer to actions"			-> "there already is message";
+	"there already is message"		-> "transfer to actions"
+		[label=yes];
+	"there already is message"		-> "unlock server access list"
+		[label=no];
+	"unlock server access list"		-> "there is actions";
+}
