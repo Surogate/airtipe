@@ -276,6 +276,12 @@ Client||\
 } // END : SERVER CORE SUBGRAPH
 
 //
+// NETWORK SUBGRAPH
+//
+subgraph clusterNetwork {
+label = "Network"
+
+//
 // TCPSESSION SUBGRAPH
 //
 subgraph clusterTCPSession {
@@ -387,6 +393,8 @@ TCPServer|\
 ]
 
 } // END : TCPSERVER SUBGRAPH
+
+} // END : NETWORK SUBGRAPH
 
 //
 // THREAD SUBGRAPH
