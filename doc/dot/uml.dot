@@ -46,17 +46,17 @@ label = "{\
 Player [
 label = "{\
 Player|\
-- id : unsigned int\l\
-- login : string\l\
-- passwd : string\l\
-- posX : unsigned int\l\
-- posY : unsigned int\l\
-- typeId : unsigned int\l\
-- skinId : unsigned int\l\
-- pv : int\l\
-- spawnFrameNum : unsigned int\l\
-- ready : bool\l\
-- color : Color\l|\
+- _id : unsigned int\l\
+- _login : string\l\
+- _passwd : string\l\
+- _posX : unsigned int\l\
+- _posY : unsigned int\l\
+- _typeId : unsigned int\l\
+- _skinId : unsigned int\l\
+- _pv : int\l\
+- _spawnFrameNum : unsigned int\l\
+- _ready : bool\l\
+- _color : Color\l|\
 + Player()\l\
 + getLogin() : string\l\
 + setLogin(login : string) : void\l\
@@ -81,9 +81,9 @@ EntityFactory|\
 	typedef libHandler HMODULE\l\
 	typedef libProcAddr FARPROC\l\
 #endif\l\
-- entities : map<EntityType, IEntity>\l\
-- libHandler : ISharedLybrary &\l\
-- \<static\> currentId : unsigned int\l|\
+- _entities : map<EntityType, IEntity>\l\
+- _libHandler : ISharedLybrary &\l\
+- \<static\> _currentId : unsigned int\l|\
 + getEntity(EntityType) : IEntity &\l\
 + typeExists(EntityType) : bool\l\
 - loadEntity(EntityType) : bool\l\
@@ -94,7 +94,7 @@ EntityFactory|\
 ObjectFactory [
 label = "{\
 ObjectFactory|\
-- objects : map<ObjectType, IObject>\l|\
+- _objects : map<ObjectType, IObject>\l|\
 + getObject(ObjectType) : IObject &\l\
 + typeExists(ObjectType) : bool\l\
 }"
@@ -134,10 +134,10 @@ label = "{...}"
 Ressource [
 label = "{\
 Ressource|\
-- monsters : vector\<IEntity *\>\l\
-- objects : vector\<IObjects *\>\l\
-- maps : vector\<Map *\>\l\
-- players : vector\<Player *\>\l|\
+- _monsters : vector\<IEntity *\>\l\
+- _objects : vector\<IObjects *\>\l\
+- _maps : vector\<Map *\>\l\
+- _players : vector\<Player *\>\l|\
 + loadMaps(mapScript : fstream) : void\l\
 }"
 ]
@@ -146,9 +146,9 @@ Ressource|\
 Map [
 label = "{\
 Map|\
-- frames : deque\<Frame\>\l\
-- mapScript : fstream &\l\
-- loaded : bool\l|\
+- _frames : deque\<Frame\>\l\
+- _mapScript : fstream &\l\
+- _loaded : bool\l|\
 + Map(mapScript : fstream &)\l\
 + loadMap() : void\l\
 + getNumberOfFrame() : unsigned int\l\
@@ -162,14 +162,14 @@ Map|\
 Frame [
 label = "{\
 Frame|\
-- width : unsigned int\l\
-- height : unsigned int\l\
-- ceil : WallType\l\
-- ceilHeight : unsigned int\l\
-- floor : WallType\l\
-- floorHeight : unsigned int\l\
-- monsters : map\<EntityType, pair\<x : int, y : int\>\>\l\
-- objects : map\<ObjectType, pair\<x : int, y : int\>\>\l\
+- _width : unsigned int\l\
+- _height : unsigned int\l\
+- _ceil : WallType\l\
+- _ceilHeight : unsigned int\l\
+- _floor : WallType\l\
+- _floorHeight : unsigned int\l\
+- _monsters : map\<EntityType, pair\<x : int, y : int\>\>\l\
+- _objects : map\<ObjectType, pair\<x : int, y : int\>\>\l\
 }"
 ]
 
@@ -206,13 +206,13 @@ label = "Monster Dynamic Library"
 AMonster [
 label = "{\
 \<abstract\> - AMonster|\
-- id : unsigned int\l\
-- posX : unsigned int\l\
-- posY : unsigned int\l\
-- typeId : unsigned int\l\
-- skinId : unsigned int\l\
-- pv : int\l\
-- spawnFrameNum : unsigned int\l\
+- _id : unsigned int\l\
+- _posX : unsigned int\l\
+- _posY : unsigned int\l\
+- _typeId : unsigned int\l\
+- _skinId : unsigned int\l\
+- _pv : int\l\
+- _spawnFrameNum : unsigned int\l\
 }"
 ]
 
@@ -295,14 +295,21 @@ label = "Server Core"
 // Class Party
 Party [
 label = "{\
-Party|...\l|...\l\
+Party|\
+- _entityFactory : EntityFactory\l\
+- _ressources : Ressource\l\
+- _players : map\<Player, Client *\>\l\
+- _objectFactory : ObjectFactory\l\
+- _thread : AbsThread\l\
 }"
 ]
 
 // Class Server
 Server [
 label = "{\
-Server|...\l|...\l\
+Server|\
+- _parties : vector\<Party\>\l\
+- _clients : vector\<Client\>\l\
 }"
 ]
 
@@ -349,10 +356,10 @@ label = "{\
 }"
 ]
 
-// Class CTCPSession
-CTCPSession [
+// Class TCPSession
+TCPSession [
 label = "{\
-CTCPSession|\
+TCPSession|\
 - _socket : int\l\
 - _server : TCPServer&\l\
 - _bufferSize : unsigned int\l\
@@ -362,7 +369,7 @@ CTCPSession|\
 - _incoming : list\<Data\>\l\
 + outgoing : list\<Data\>\l\
 + mutexOutgoing : AbsMutex\l|\
-+ CTCPSession(socket : int, server : TCPServer&, bufferSize : unsigned int)\l\
++ TCPSession(socket : int, server : TCPServer&, bufferSize : unsigned int)\l\
 + virtual run() : void\l\
 + poll() : bool\l\
 + write(Data, unsigned int) : int\l\
@@ -376,7 +383,7 @@ arrowhead = "onormal"
 style = "dashed"
 ]
 
-CTCPSession -> ITCPSession
+TCPSession -> ITCPSession
 
 }
 
@@ -443,10 +450,10 @@ typedef void* Data\l\l\
 }"
 ]
 
-// Class CUDP
-CUDP [
+// Class UDP
+UDP [
 label = "{\
-CUDP|\
+UDP|\
 - _socket : int\l|\
 + send(Data, unsigned int) : int\l\
 + receive(unsigned int) : int\l\
@@ -459,14 +466,14 @@ arrowhead = "onormal"
 style = "dashed"
 ]
 
-CUDP -> IUDP
+UDP -> IUDP
 
 edge [
 arrowhead = "odiamond"
 style = "solid"
 ]
 
-CUDP -> Client
+UDP -> Client
 
 } // End IUDP
 
@@ -489,10 +496,10 @@ typedef void* Data\l\l\
 }"
 ]
 
-// Class CTCPServer
-CTCPServer [
+// Class TCPServer
+TCPServer [
 label = "{\
-CTCPServer|\
+TCPServer|\
 - _port : short\l\
 - _socket : int\l\
 - _bufferSize : unsigned int\l\
@@ -500,7 +507,7 @@ CTCPServer|\
 - _sessions : map\<ITCPSession*, AbsThread*\>\l\
 + requests : list\<pair\<ITCPSession*, Data\>\>\l\
 + mutexRequests : AbsMutex\l|\
-+ CTCPServer(port : short, bufferSize : unsigned int)\l\
++ TCPServer(port : short, bufferSize : unsigned int)\l\
 + init() : bool\l\
 + virtual run() : void\l\
 + virtual processData() : void\l\
@@ -514,7 +521,7 @@ arrowhead = "onormal"
 style = "dashed"
 ]
 
-CTCPServer -> ITCPServer
+TCPServer -> ITCPServer
 
 } // End : TCPServer
 
@@ -536,9 +543,9 @@ typedef void* (*startRoutine)(void*)\l|\
 ]
 
 // Concrete thread class for unix
-CAbsThread [
+AbsThread [
 label = "{\
-CAbsThread|\
+AbsThread|\
 - _tid : pthread_t*\l|\
 + launch(startRoutine, void* args) : bool\l\
 + join() : bool\l\
@@ -551,7 +558,7 @@ arrowhead = "onormal"
 style = "dashed"
 ]
 
-CAbsThread -> IAbsThread
+AbsThread -> IAbsThread
 
 // Interface IAbsMutex
 IAbsMutex [
@@ -565,10 +572,10 @@ label = "{\
 }"
 ]
 
-// Class CAbsMutex
-CAbsMutex [
+// Class AbsMutex
+AbsMutex [
 label = "{\
-CAbsMutex|\
+AbsMutex|\
 - _mid : pthread_mutex_t*\l|\
 + init() : bool\l\
 + destroy() : void\l\
@@ -583,7 +590,7 @@ arrowhead = "onormal"
 style = "dashed"
 ]
 
-CAbsMutex -> IAbsMutex
+AbsMutex -> IAbsMutex
 
 } // End : thread
 
@@ -592,30 +599,25 @@ arrowhead = "diamond"
 style = "solid"
 ]
 
-CAbsMutex -> CTCPServer
-CAbsMutex -> CTCPSession
-CAbsThread -> CTCPServer
+AbsMutex -> TCPServer
+AbsMutex -> TCPSession
+AbsThread -> TCPServer
 
 edge [
 arrowhead = "odiamond"
 style = "solid"
 ]
 
-CTCPServer -> CTCPSession
+TCPSession -> TCPServer
 Client -> Server
+Client -> Party
 
 edge [
 arrowhead = "onormal"
 style = "solid"
 ]
 
-Client -> CTCPSession
-
-edge [
-arrowhead = "onormal"
-style = "solid"
-]
-
-Server -> CTCPServer
+Server -> TCPServer
+Client -> TCPSession
 
 }
