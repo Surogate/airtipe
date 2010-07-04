@@ -48,7 +48,6 @@ label = "{\
 Player|\
 - _id : unsigned int\l\
 - _login : string\l\
-- _passwd : string\l\
 - _posX : unsigned int\l\
 - _posY : unsigned int\l\
 - _typeId : unsigned int\l\
@@ -60,8 +59,6 @@ Player|\
 + Player()\l\
 + getLogin() : string\l\
 + setLogin(login : string) : void\l\
-+ getPasswd() : string\l\
-+ setPasswd(passwd : string) : void\l\
 + isReady() : bool\l\
 + setReady(ready : bool) : void\l\
 + getColor() : Color\l\
@@ -300,7 +297,7 @@ label = "{\
 Party|\
 - _UDPServer : UDP\l\
 - _ressources : Ressource\l\
-- _players : map\<Player, Client *\>\l\
+- _players : map\<Player &, Client &\>\l\
 - _thread : AbsThread\l|\
 }"
 ]

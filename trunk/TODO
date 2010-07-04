@@ -6,9 +6,8 @@ Toute modification des declarations doivents etres reportes sur l'UML le plus to
 CONCEPTION:
 - Pointer sur fonction -> pointer sur methode (threads et sockets)
 - PacketManager et PacketFactory
+- Finir le Server Core
 - Moteur physique et synchro de l'avancement de la map
-- Classe Partie
-- CLasse Server
 
 CLIENT:
 
