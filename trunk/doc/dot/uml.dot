@@ -253,7 +253,11 @@ Party|\
 - _ressources : Ressource\l\
 - _players : map\<Player &, Client &\>\l\
 - _thread : AbsThread\l\
-- _pf : PacketFactory &\l|\
+- _pf : PacketFactory &\l\
+- _actions : map\<PacketCode, PartyActionFunc\>\l|\
+- playerMove(pak : APacket const &) : APacket *\l\
+- playerKill(pak : APacket const &) : APacket *\l\
+- monsterSpawn(pak : APacket const &) : APacket *\l\
 }"
 ]
 
@@ -263,8 +267,10 @@ label = "{\
 Server|\
 - _pf : PacketFactory &\l\
 - _parties : vector\<Party\>\l\
+- _actions : map\<PacketCode, ServerActionFunc\>\l\
 - _clients : vector\<Client\>\l|\
-- createParty() : void\l\
+- createParty(pak : APacket const &) : APacket *\l\
++ run() : void\l\
 + processData() : void\l\
 + accept() : bool\l\
 }"
