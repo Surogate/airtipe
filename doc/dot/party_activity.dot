@@ -46,8 +46,6 @@ digraph uml {
 	"process actions"
 		[shape=ellipse];
 
-	"there is actions"			-> "game finished"
-		[label=no];
 	"there is actions"			-> "process actions"
 		[label=yes];
 	"process actions"			-> "there is actions";
@@ -79,4 +77,31 @@ digraph uml {
 	"there already is message"		-> "unlock server access list"
 		[label=no];
 	"unlock server access list"		-> "there is actions";
+
+// Check collisions
+	"check collisions"
+		[shape=diamond];
+	"process collisions"
+		[shape=ellipse];
+
+	"process actions"				-> "check collisions";
+	"there is actions"				-> "check collisions"
+		[label=no];
+	"check collisions"				-> "process collisions"
+		[label=yes];
+
+// Inform client
+	"there is responses"
+		[shape=diamond];
+	"broadcast responses on UDP"
+		[shape=ellipse];
+
+	"process collisions"			-> "there is responses";
+	"check collisions"				-> "there is responses"
+		[label=no];
+	"there is responses"			-> "game finished"
+		[label=no];
+	"there is responses"			-> "broadcast responses on UDP"
+		[label=yes];
+	"broadcast responses on UDP"	-> "there is responses";
 }
