@@ -64,7 +64,7 @@ Player|\
 // Class EntityFactory
 EntityFactory [
 label = "{\
-EntityFactory|\
+\<singleton\> - EntityFactory|\
 #ifdef UNIX\l\
 	typedef libHandler void*\l\
 	typedef libProcAddr void*\l\
@@ -85,7 +85,7 @@ EntityFactory|\
 //Class ObjectFactory
 ObjectFactory [
 label = "{\
-ObjectFactory|\
+\<singleton\> - ObjectFactory|\
 - _objects : map<ObjectType, IObject>\l|\
 + getObject(ObjectType) : IObject &\l\
 + typeExists(ObjectType) : bool\l\
