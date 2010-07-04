@@ -134,6 +134,8 @@ label = "{...}"
 Ressource [
 label = "{\
 Ressource|\
+- _entityFactory : EntityFactory\l\
+- _objectFactory : ObjectFactory\l\
 - _monsters : vector\<IEntity *\>\l\
 - _objects : vector\<IObjects *\>\l\
 - _maps : vector\<Map *\>\l\
@@ -297,10 +299,8 @@ Party [
 label = "{\
 Party|\
 - _UDPServer : UDP\l\
-- _entityFactory : EntityFactory\l\
 - _ressources : Ressource\l\
 - _players : map\<Player, Client *\>\l\
-- _objectFactory : ObjectFactory\l\
 - _thread : AbsThread\l|\
 }"
 ]
@@ -330,8 +330,8 @@ style = "solid"
 ]
 
 Ressource -> Party
-EntityFactory -> Party
-ObjectFactory -> Party
+EntityFactory -> Ressource
+ObjectFactory -> Ressource
 
 edge [
 arrowhead = "odiamond"
