@@ -1,0 +1,249 @@
+digraph G {
+fontname = "Bitstream Vera Sans"
+fontsize = 8
+
+node [
+fontname = "Bitstream Vera Sans"
+fontsize = 8
+shape = "record"
+]
+
+//
+// TCPSESSION SUBGRAPH
+//
+subgraph clusterTCPSession {
+label = "TCPSession Abstraction (Unix/Win32)"
+
+// Interface ITCPSession
+ITCPSession [
+label = "{\
+\<interface\> - ITCPSession|\
++ run() : void\l\
++ poll() : bool\l\
++ write(Data, unsigned int) : int\l\
++ read(Data, unsigned int) : int\l\
++ close() : bool\l\
+}"
+]
+
+// Class TCPSession_Unix
+TCPSession_Unix [
+label = "{\
+TCPSession_Unix|\
+- _socket : int\l\
+- _server : TCPServer&\l\
+- _bufferSize : unsigned int\l\
+- _broken : bool\l\
+- _canRead : bool\l\
+- _canWrite : bool\l\
+- _incoming : list\<Data\>\l\
++ outgoing : list\<Data\>\l\
++ mutexOutgoing : AbsMutex\l|\
++ TCPSession(socket : int, server : TCPServer&, bufferSize : unsigned int)\l\
++ virtual run() : void\l\
++ poll() : bool\l\
++ write(Data, unsigned int) : int\l\
++ read(Data, unsigned int) : int\l\
++ close() : bool\l\
+}"
+]
+
+// Class TCPSession_Win32
+TCPSession_Win32 [
+label = "{\
+TCPSession_Win32|\
+- _socket : SOCKET\l\
+- _server : TCPServer&\l\
+- _bufferSize : unsigned int\l\
+- _broken : bool\l\
+- _canRead : bool\l\
+- _canWrite : bool\l\
+- _incoming : list\<Data\>\l\
++ outgoing : list\<Data\>\l\
++ mutexOutgoing : AbsMutex\l|\
++ TCPSession(socket : int, server : TCPServer&, bufferSize : unsigned int)\l\
++ virtual run() : void\l\
++ poll() : bool\l\
++ write(Data, unsigned int) : int\l\
++ read(Data, unsigned int) : int\l\
++ close() : bool\l\
+}"
+]
+
+} // END : TCPSESSION SUBGRAPH
+
+//
+// UDP SUBGRAPH
+//
+subgraph clusterUDP {
+label = "UDPConnexion Abstraction (Unix/Win32)"
+
+// Interface IUDP
+IUDP [
+label = "{\
+\<interface\> - IUDP|\
+typedef void* Data\l\l\
++ send(Data, unsigned int) : int\l\
++ receive(unsigned int) : int\l\
++ close() : void\l\
+}"
+]
+
+// Class UDP_Unix
+UDP_Unix [
+label = "{\
+UDP_Unix|\
+- _socket : int\l|\
++ send(Data, unsigned int) : int\l\
++ receive(unsigned int) : int\l\
++ close() : void\l\
+}"
+]
+
+// Class UDP_Win32
+UDP_Win32 [
+label = "{\
+UDP_Win32|\
+- _socket : SOCKET\l|\
++ send(Data, unsigned int) : int\l\
++ receive(unsigned int) : int\l\
++ close() : void\l\
+}"
+]
+
+
+} // END : UDP SUBGRAPH
+
+//
+// TCPSERVER SUBGRAPH
+//
+subgraph clusterTCPServer {
+label = "TCPServer Abstraction (Unix/Win32)"
+
+// Interface ITCPServer
+ITCPServer [
+label = "{\
+\<interface\> - ITCPServer|\
+typedef void* Data\l\l\
++ init() : bool\l\
++ run() : void\l\
++ processData() : void\l\
++ close() : void\l\
++ accept() : bool\l\
+}"
+]
+
+// Class TCPServer_Unix
+TCPServer_Unix [
+label = "{\
+TCPServer_Unix|\
+- _port : short\l\
+- _socket : int\l\
+- _bufferSize : unsigned int\l\
+- _running : bool\l\
+- _sessions : map\<ITCPSession*, AbsThread*\>\l\
++ requests : list\<pair\<ITCPSession*, Data\>\>\l\
++ mutexRequests : AbsMutex\l|\
++ TCPServer(port : short, bufferSize : unsigned int)\l\
++ init() : bool\l\
++ virtual run() : void\l\
++ virtual processData() : void\l\
++ close() : void\l\
++ virtual accept() : bool\l\
+}"
+]
+
+// Class TCPServer_Win32
+TCPServer_Win32 [
+label = "{\
+TCPServer_Win32|\
+- _port : short\l\
+- _socket : SOCKET\l\
+- _bufferSize : unsigned int\l\
+- _running : bool\l\
+- _sessions : map\<ITCPSession*, AbsThread*\>\l\
++ requests : list\<pair\<ITCPSession*, Data\>\>\l\
++ mutexRequests : AbsMutex\l|\
++ TCPServer(port : short, bufferSize : unsigned int)\l\
++ init() : bool\l\
++ virtual run() : void\l\
++ virtual processData() : void\l\
++ close() : void\l\
++ virtual accept() : bool\l\
+}"
+]
+
+
+} // END : TCPSERVER SUBGRAPH
+
+
+//
+// MUTEX SUBGRAPH
+//
+subgraph clusterMutex {
+label = "Diagram ThreadMutex.dot.png"
+
+// Class AbsMutex
+AbsMutex [
+label = "{\
+AbsMutex|\
+- _mid : pthread_mutex_t*\l|\
++ init() : bool\l\
++ destroy() : void\l\
++ lock() : bool\l\
++ tryLock() : bool\l\
++ unlock() : bool\l\
+}"
+]
+
+} // END : MUTEX SUBGRAPH
+
+
+//
+// THREAD SUBGRAPH
+//
+subgraph clusterThread {
+label = "Diagram ThreadMutext.dot.png"
+
+// Concrete thread class for unix
+AbsThread [
+label = "{\
+AbsThread|\
+- _tid : pthread_t*\l|\
++ launch(startRoutine, void* args) : bool\l\
++ join() : bool\l\
++ exit() : void\l\
+}"
+]
+
+} // END : THREAD SUBGRAPH
+
+
+edge [
+fontname = "Bitstream Vera Sans"
+fontsize = 8
+]
+
+// Composition
+AbsMutex -> TCPServer_Unix [arrowhead = "diamond" style = "solid"]
+AbsMutex -> TCPServer_Win32 [arrowhead = "diamond" style = "solid"]
+AbsMutex -> TCPSession_Win32 [arrowhead = "diamond" style = "solid"]
+AbsMutex -> TCPSession_Unix [arrowhead = "diamond" style = "solid"]
+AbsThread -> TCPServer_Unix [arrowhead = "diamond" style = "solid"]
+AbsThread -> TCPServer_Win32 [arrowhead = "diamond" style = "solid"]
+
+// Aggregation
+ITCPSession -> TCPServer_Unix [arrowhead = "odiamond" style = "solid"]
+ITCPSession -> TCPServer_Win32 [arrowhead = "odiamond" style = "solid"]
+
+// Heritage
+
+// Implement interface
+TCPServer_Unix -> ITCPServer [arrowhead = "onormal" style = "dashed"]
+TCPServer_Win32 -> ITCPServer [arrowhead = "onormal" style = "dashed"]
+UDP_Unix -> IUDP [arrowhead = "onormal" style = "dashed"]
+UDP_Win32 -> IUDP [arrowhead = "onormal" style = "dashed"]
+TCPSession_Unix -> ITCPSession [arrowhead = "onormal" style = "dashed"]
+TCPSession_Win32 -> ITCPSession [arrowhead = "onormal" style = "dashed"]
+
+}

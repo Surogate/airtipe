@@ -1,0 +1,172 @@
+digraph G {
+fontname = "Bitstream Vera Sans"
+fontsize = 8
+
+node [
+fontname = "Bitstream Vera Sans"
+fontsize = 8
+shape = "record"
+]
+
+APacket [
+label = "{\
+\<abstract\> - APacket||\
++ header : PacketHeader\l\
++ data : AData\l\
+}"
+]
+
+AData [
+label = "{\
+\<abstract\> - AData||\
+}"
+]
+
+PacketHeader [
+label = "{\
+PacketHeader||\
++ code : PacketCode\l\
++ time : Timestamp\l\
++ dataSize : unsigned int\l\
+}"
+]
+
+PacketLogin [
+label = "{\
+PacketLogin||\
++ login : char[15]\l\
+}"
+]
+
+PacketColor [
+label = "{\
+PacketColor||\
++ color : colorCode\l\
+}"
+]
+
+PacketCreateParty [
+label = "{\
+PacketCreateParty||\
++ nbPlayersMin : unsigned int\l\
++ nbPlayerMax : unsigned int\l\
+}"
+]
+
+PacketMap [
+label = "{\
+PacketMap||\
++ mapName : char[15]\l\
+}"
+]
+
+PacketReady [
+label = "{\
+PacketReady||\
++ ready : bool\l\
+}"
+]
+
+PacketAction [
+label = "{\
+PacketAction||\
++ id : unsigned int\l\
++ dir : DirectionCode\l\
+}"
+]
+
+PacketLoginId [
+label = "{\
+PacketLoginId||\
++ login : char[15]\l\
++ id : unsigned int\l\
+}"
+]
+
+PacketLoginColor [
+label = "{\
+PacketLoginColor||\
++ login : char[15]\l\
++ color : ColorCode\l\
+}"
+]
+
+PacketSpawn [
+label = "{\
+PacketSpawn||\
++ id : unsigned int\l\
++ type : EntityType\l\
++ skinType : SkinType\l\
++ bulletType : BulletType\l\
++ x : unsigned int\l\
++ y : unsigned int\l\
++ frameNum : unsigned int\l\
+}"
+]
+
+PacketEmpty [
+label = "{\
+PacketEmpty\
+}"
+]
+
+PacketMove [
+label = "{\
+PacketMove||\
++ id : unsigned int\l\
++ x : unsigned int\l\
++ y : unsigned int\l\
+}"
+]
+
+PacketId [
+label = "{\
+PacketId||\
++ id : unsigned int\l\
+}"
+
+]
+
+PacketFight [
+label = "{\
+PacketFight||\
++ id : unsigned int\l\
++ dir : DirectionCode\l\
+}"
+
+]
+
+PacketBullet [
+label = "{\
+PacketBullet||\
++ bullet : BulletType\l\
+}"
+
+]
+
+edge [
+fontname = "Bitstream Vera Sans"
+fontsize = 8
+]
+
+// Composition
+PacketHeader -> APacket [arrowhead = "diamond" style = "solid"]
+AData -> APacket [arrowhead = "diamond" style = "solid"]
+
+// Heritage
+PacketLogin -> AData [arrowhead = "onormal" style = "solid"]
+PacketCreateParty -> AData [arrowhead = "onormal" style = "solid"]
+PacketMap -> AData [arrowhead = "onormal" style = "solid"]
+PacketEmpty -> AData [arrowhead = "onormal" style = "solid"]
+PacketReady -> AData [arrowhead = "onormal" style = "solid"]
+PacketAction -> AData [arrowhead = "onormal" style = "solid"]
+PacketColor -> AData [arrowhead = "onormal" style = "solid"]
+PacketLoginId -> AData [arrowhead = "onormal" style = "solid"]
+PacketLoginColor -> AData [arrowhead = "onormal" style = "solid"]
+PacketSpawn -> AData [arrowhead = "onormal" style = "solid"]
+PacketMove -> AData [arrowhead = "onormal" style = "solid"]
+PacketId -> AData [arrowhead = "onormal" style = "solid"]
+PacketFight -> AData [arrowhead = "onormal" style = "solid"]
+PacketBullet -> AData [arrowhead = "onormal" style = "solid"]
+
+}

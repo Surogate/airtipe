@@ -4,5 +4,7 @@ A tutorial here : http://www.ffnn.nl/pages/articles/media/uml-diagrams-using-gra
 exec :
 # dot -T png -o uml.png uml.dot
 
+You can add your Diagrams to the Makefile
+
 Enjoy ;)
 
