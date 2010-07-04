@@ -592,9 +592,9 @@ arrowhead = "diamond"
 style = "solid"
 ]
 
-IAbsMutex -> CTCPServer
-IAbsMutex -> CTCPSession
-IAbsThread -> CTCPServer
+CAbsMutex -> CTCPServer
+CAbsMutex -> CTCPSession
+CAbsThread -> CTCPServer
 
 edge [
 arrowhead = "odiamond"
