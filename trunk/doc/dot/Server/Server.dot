@@ -65,8 +65,7 @@ Party|\
 - _startTime : Timestamp\l\
 - _entities : list\<pair\<IEntity *, AbsThread *\>\>\l|\
 - playerMove(pak : APacket const &) : APacket *\l\
-- playerKill(pak : APacket const &) : APacket *\l\
-- monsterSpawn(pak : APacket const &) : APacket *\l\
+- playerFight(pak : APacket const &) : APacket *\l\
 - readEntities() : void\l\
 - checkCollision() : void\l\
 }"
@@ -96,12 +95,22 @@ label = "{\
 Server|\
 - _pf : PacketFactory &\l\
 - _parties : map\<Party, AbsThread *\>\l\
-- _clients : map\<Client, AbsThread *\>\l|\
-- _actions : map\<PacketCode, ServerActionFunc\>\l\
+- _clients : map\<Client, AbsThread *\>\l\
+- _actions : map\<PacketCode, ServerActionFunc\>\l|\
 - createParty(pak : APacket const &) : APacket *\l\
 + run() : void\l\
 + processData() : void\l\
 + accept() : bool\l\
+- login(pak : APacket const &) : APacket *\l\
+- create(pak : APacket const &) : APacket *\l\
+- addMap(pak : APacket const &) : APacket *\l\
+- validParty(pak : APacket const &) : APacket *\l\
+- join(pak : APacket const &) : APacket *\l\
+- colorChange(pak : APacket const &) : APacket *\l\
+- ready(pak : APacket const &) : APacket *\l\
+- start(pak : APacket const &) : APacket *\l\
+- stop(pak : APacket const &) : APacket *\l\
+- quit(pak : APacket const &) : APacket *\l\
 }"
 ]
 
