@@ -1,0 +1,21 @@
+digraph G {
+fontname = "Bitstream Vera Sans"
+fontsize = 8
+
+node [
+fontname = "Bitstream Vera Sans"
+fontsize = 8
+shape = "record"
+]
+
+Client [
+label =  "{
+Client|\
+- _renderer : IRenderer\l\
+- _networkManager : NetwokManager\l\
+- _eventManager : IEventManager\l\
+}"
+
+
+
+]
