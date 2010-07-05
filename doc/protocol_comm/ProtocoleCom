@@ -4,46 +4,56 @@
 ### GENERAL COMMUNICATION TCP
 
 
-login		login
+login		DataLogin
+			- login
 			(login on server)
 
-create		nbPlayersMin nbPlayerMax
+create		DataCreateParty
+			- nbPlayersMin
+			- nbPlayerMax
 			(creation of a party with minPlayer maxPlayer)
 
-addMap		map
+addMap		DataMap
+			- mapName
 			(adding a map to a party)
 
-validParty
+validParty	DataEmpty
 			(valid the party)
 
-join		ownerLogin
-			(join a party owned by ownerLogin)
+join		DataLogin
+			- partyOwnerLogin
+			(join a party)
 
-colorChange	color
-			(color : color of the spacecraft)
+colorChange	DataColor
+			- color
+			(change color of the spacecraft)
 
-ready		true/false
+ready		DataReady
+			- true/false
 			(toggle ready flag of the player - the party can begin when minimum player have join and are ready)
 
-start
+start		DataEmpty
 			(start the party - only the owner)
 
-stop
+stop		DataEmpty
 			(stop the party - only the owner)
 
-quit
+quit		DataEmpty
 			(qui the party, and stop it if you are the owner)
 
 
 ### GAME COMMUNIACATION UDP
 
 
-move		dir
-			(dir : direction code)
+move		DataAction
+			- id of player
+			- dir of movement
+			(Move action)
 
-fight		dir
-			(dir : direction code)
-
+fight		DataAction
+			- id
+			- dir
+			(Fight action)
 
 ########## SERVER TO CLIENT ##########
 
@@ -51,88 +61,137 @@ fight		dir
 ### GENERAL COMMUNICATION TCP
 
 
-loginOK
+loginOK		DataLoginId
+			- login
+			- id
 			(login ok)
 
-createOK	map [[map],...]
-			(creation of party successfull - sending all map list)
+createOK	DataEmpty
 
-addMapOK
+sendMaps	DataMap
+			- mapName
+			(sending all map name of the server)
+
+sendMapsEnd	DataMap
+			- mapName
+			(sending last map name of the server)
+
+addMapOK	DataEmpty
 			(Adding map successfull)
 
-validPartyOK
-			(validing partysuccessfull)
+validPartyOK DataEmpty
+			(validing party successfull)
 
-joinOK		map [[map],...]
+joinOK		DataEmpty
 			(joining party successfull, sending party map list)
 
 
 ### BROADCAST GENERAL COMMUNICATION TCP
 
 
-joinParty	login id
+joinParty	DataLoginId
+			- login
+			- id
 			(login has join the party - sended only to concerned party members)
 
-leftParty	login id
+leftParty	DataLoginId
+			- login
+			- id
 			(login has left the party - sended only to concerned party members)
 
-colorChange	login color
+colorChange	DataLoginColor
+			- login
+			- color
 			(login has choosed a new color for spaceCraft - sended only to concerned party members)
 
-ready		login
+ready		DataLogin
+			- login
 			(login is ready - sended only to concerned party members)
 
-notReady	login
+notReady	DataLogin
+			- login
 			(login is not ready - sended only to concerned party members)
 
-starting	mapContent
-			!!!! A APPROFONDIR !!!! <<-- chargement des truc manquants etc... + signal de fin, tous le monde est pret et ca commence vraiment
-			(party is starting - receiving map content (background, floor and ceil))
+starting	DataEmpty
+			(party is starting)
 
-stop
+sendMapDesc	DataMapDesc
+			- frameNum
+			- ceilType
+			- ceilHeight
+			- floorType
+			- floorHeight
+			(Sending Environment)
+
+sendMapDescEnd	DataMapDesc
+			- frameNum
+			- ceilType
+			- ceilHeight
+			- floorType
+			- floorHeight
+			(End of sending environment)
+
+stop		DataEmpty
 			(the party is done - when owner stop the party or when the server decide to stop it (Win - Loose))
 
 
 ### ERROR CODES TCP
 
 
-loginAlreadyExists
-			(login already choosed by another player)
+loginAlreadyExists	DataEmpty
+					(login already choosed by another player)
 
-badLoginFormat
-			(bad login format)
+badLoginFormat		DataEmpty
+					(bad login format)
 
-loginKO
+loginKO		DataEmpty
 			(wrong login or password - login failure)
 
-createKO
+createKO	DataEmpty
 			(Creation of party unsuccessfull)
 
-maxPlayerTooHigh
-			(maximum player set is too high)
+maxPlayerTooHigh	DataEmpty
+					(maximum player set is too high)
 
-unknownMap	map
+unknownMap	DataMap
+			- mapName
 			(map unknown)
 
-validPartyKO
-			(validing the party unsuccessfull)
+validPartyKO	DataEmpty
+				(validing the party unsuccessfull)
 
 
 ### GAME COMMUNICATION UDP (sended only to concerned party members)
 
-spawn		id type skinType bulletType X Y frameNum
+spawn		DataSpawn
+			- id
+			- type
+			- skinType
+			- bulletType
+			- X
+			- Y
+			- frameNum
 			(spawn a new monster with id [id] of type [type] at position x y on the frame number [frameNum])
 
-move		id X Y
+move		DataMove
+			- id
+			- X
+			- Y
 			(move entity with id [id] at position x y)
 
-fight		id dir
+fight		DataAction
+			- id
+			- dir
 
-die			id
+die			DataId
+			- id
 
-gainHP
+gainHP		DataId
+			- id
 
-looseHP
+looseHP		DataId
+			- id
 
-bulletType	bulletType
+bulletType	DataBullet
+			- bulletType
 
