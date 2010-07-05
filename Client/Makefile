@@ -13,7 +13,7 @@ NAME		= R-type
 ############### DIRECTORIES
 
 DIR_SRC		= ./src/
-DIR_INC		= ./inc/
+DIR_INC		= ./include/
 DIR_LIB		= ./lib/
 DIR_BIN		= ./bin/
 
@@ -21,6 +21,9 @@ DIR_BIN		= ./bin/
 
 SRC		= \
 		$(DIR_SRC)main.cpp			\
+		$(DIR_SRC)Client.cpp			\
+		$(DIR_SRC)Graphics.cpp			\
+		$(DIR_SRC)NetWork.cpp
 
 INC		= \
 
