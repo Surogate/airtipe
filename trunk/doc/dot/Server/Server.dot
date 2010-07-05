@@ -16,9 +16,9 @@ Ressource [
 label = "{\
 Ressource|\
 - _entityFactory : EntityFactory &\l\
-- _objectFactory : ObjectFactory &\l\
+- _objectFactory : ItemFactory &\l\
 - _entities : vector\<IEntity *\>\l\
-- _objects : vector\<IObjects *\>\l\
+- _objects : vector\<IItems *\>\l\
 - _maps : vector\<Map *\>\l\
 - _players : vector\<Player *\>\l|\
 + loadMaps(mapScript : fstream) : void\l\
@@ -54,8 +54,9 @@ label = "{\
 Party [
 label = "{\
 Party|\
-+ _actions : map\<PacketCode, PartyActionFunc\>\l\
-+ _mutexActions : AbsMutex\l\
++ _serverActions : map\<PacketCode, PartyActionFunc\>\l\
++ _mutexServerActions : AbsMutex\l\
+- _actions : map\<PacketCode, PartyActionFunc\>\l\
 - _UDPServer : UDP\l\
 - _ressources : Ressource\l\
 - _players : map\<Player &, Client &\>\l\
@@ -79,12 +80,12 @@ PhysicEngine|\
 - _startTime : Timestamp\l\
 - _environmentCollisions : list\<IEntity *\>\l\
 - _entityCollisions : list\<pair\<IEntity *, IEntity *\>\>\l\
-- _objectCollisions : list\<pair\<Player &, IObject *\>\>\l|\
+- _objectCollisions : list\<pair\<Player &, IItem *\>\>\l|\
 + PhysicEngine(ressources : Ressource &, startTime : Timestamp)\l\
 + checkCollision() : bool\l\
 + getEnvironmentCollisions() : list\<IEntity *\> &\l\
 + getEntityCollisions() : list\<pair\<IEntity *, IEntity *\>\> &\l\
-+ getObjectCollisions() : list\<pair\<Player &, IObject *\>\> &\l\
++ getObjectCollisions() : list\<pair\<Player &, IItem *\>\> &\l\
 - getCamera() : void\l\
 }"
 ]

@@ -77,55 +77,63 @@ label = "{\
 }"
 ]
 
-//Class ObjectFactory
-ObjectFactory [
+//Class ItemFactory
+ItemFactory [
 label = "{\
-\<singleton\> - ObjectFactory|\
-- _objects : map<ObjectType, IObject>\l|\
-+ getInstance() : ObjectFactory &\l\
-+ getObject(ObjectType) : IObject &\l\
-+ typeExists(ObjectType) : bool\l\
+\<singleton\> - ItemFactory|\
+- _objects : map\<ItemType, IItem\>\l|\
++ getInstance() : ItemFactory &\l\
++ getObject(ItemType) : IItem &\l\
++ typeExists(ItemType) : bool\l\
 }"
 ]
 
-// Interface IObject
-IObject [
+// Interface IItem
+IItem [
 label = "{\
-\<interface\> - IObject|\
+\<interface\> - IItem|\
 + setChanges(IEntity &, partyActionList : list\<Action *\> &) : void\l\
-+ getType() : ObjectType\l\
-+ clone() : IObject *\l\
++ getType() : ItemType\l\
++ clone() : IItem *\l\
 }"
 ]
+
+//
+// ITEM SUBGRAPH
+//
+subgraph clusterItem {
+label = "Item Dynamic Library"
 
 // Class BonusHealth
 BonusHealth [
-label = "{BonusHealth}"
+label = "{ItemBonusHealth||}"
 ]
 
 // Class Laser
 Laser [
-label = "{Laser}"
+label = "{ItemLaser||}"
 ]
 
 // Class DoubleLaser
 DoubleLaser [
-label = "{DoubleLaser}"
+label = "{ItemDoubleLaser||}"
 ]
 
 // Class Object0
 Object0 [
-label = "{...}"
+label = "{...||}"
 ]
+
+} // END : ITEM SUBGRAPH
 
 // Class Ressoruce
 Ressource [
 label = "{\
 Ressource|\
 - _entityFactory : EntityFactory &\l\
-- _objectFactory : ObjectFactory &\l\
+- _objectFactory : ItemFactory &\l\
 - _entities : vector\<IEntity *\>\l\
-- _objects : vector\<IObjects *\>\l\
+- _objects : vector\<IItems *\>\l\
 - _maps : vector\<Map *\>\l\
 - _players : vector\<Player *\>\l|\
 + loadMaps(mapScript : fstream) : void\l\
@@ -159,7 +167,7 @@ Frame|\
 - _floor : WallType\l\
 - _floorHeight : unsigned int\l\
 - _monsters : map\<EntityType, pair\<x : int, y : int\>\>\l\
-- _objects : map\<ObjectType, pair\<x : int, y : int\>\>\l\
+- _objects : map\<ItemType, pair\<x : int, y : int\>\>\l\
 }"
 ]
 
@@ -219,17 +227,31 @@ getInstance() ; IEntity &\l\
 
 // Class Monster1
 Monster1 [
-label = "{Monster1}"
+label = "{Monster1||}"
 ]
 
 // Class Monster2
 Monster2 [
-label = "{Monster2}"
+label = "{Monster2||}"
 ]
 
 // Class Monster3
 Monster3 [
-label = "{...}"
+label = "{...||}"
+]
+
+// Class BulletLaser
+BulletLaser [
+label = "{\
+BulletLaser||\
+}"
+]
+
+// Class BulletDoubleLaser
+BulletDoubleLaser [
+label = "{\
+BulletDoubleLaser||\
+}"
 ]
 
 } // END : MONSTER LIBRARY SUBGRAPH
@@ -282,16 +304,16 @@ fontsize = 8
 // Composition
 AbsMutex -> AEntity [arrowhead = "diamond" style = "solid"]
 EntityFactory -> Ressource [arrowhead = "diamond" style = "solid"]
-ObjectFactory -> Ressource [arrowhead = "diamond" style = "solid"]
+ItemFactory -> Ressource [arrowhead = "diamond" style = "solid"]
 ISharedLibrary -> EntityFactory [arrowhead = "diamond" style = "solid"]
-IObject -> ObjectFactory [arrowhead = "diamond" style = "solid"]
+IItem -> ItemFactory [arrowhead = "diamond" style = "solid"]
 PacketFactory -> AEntity [arrowhead = "diamond" style = "solid"]
 
 // Aggregation
 IEntity -> EntityFactory [arrowhead = "odiamond" style = "solid"]
 IEntity -> Ressource [arrowhead = "odiamond" style = "solid"]
 Map -> Ressource [arrowhead = "odiamond" style = "solid"]
-IObject -> Ressource [arrowhead = "odiamond" style = "solid"]
+IItem -> Ressource [arrowhead = "odiamond" style = "solid"]
 Frame -> Map [arrowhead = "odiamond" style = "solid"]
 Player -> Ressource [arrowhead = "odiamond" style = "solid"]
 
@@ -300,13 +322,15 @@ SharedLibrary_unix -> ISharedLibrary [arrowhead = "onormal" style = "solid"]
 Monster1 -> AEntity [arrowhead = "onormal" style = "solid"]
 Monster2 -> AEntity [arrowhead = "onormal" style = "solid"]
 Monster3 -> AEntity [arrowhead = "onormal" style = "solid"]
+BulletLaser -> AEntity [arrowhead = "onormal" style = "solid"]
+BulletDoubleLaser -> AEntity [arrowhead = "onormal" style = "solid"]
 
 // Implement interface
 Player -> IEntity [arrowhead = "onormal" style = "dashed"]
 AEntity -> IEntity [arrowhead = "onormal" style = "dashed"]
-BonusHealth -> IObject [arrowhead = "onormal" style = "dashed"]
-Laser -> IObject [arrowhead = "onormal" style = "dashed"]
-DoubleLaser -> IObject [arrowhead = "onormal" style = "dashed"]
-Object0 -> IObject [arrowhead = "onormal" style = "dashed"]
+BonusHealth -> IItem [arrowhead = "onormal" style = "dashed"]
+Laser -> IItem [arrowhead = "onormal" style = "dashed"]
+DoubleLaser -> IItem [arrowhead = "onormal" style = "dashed"]
+Object0 -> IItem [arrowhead = "onormal" style = "dashed"]
 
 }
