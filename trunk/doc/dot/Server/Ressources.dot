@@ -18,6 +18,10 @@ label = "{\
 + getPosY() : unsigned int\l\
 + setPosX(x : unsigned int) : void\l\
 + setPosY(y : unsigned int) : void\l\
++ getWidth() : unsigned int\l\
++ setWidth(unsigned int) : void\l\
++ getHeight() : unsigned int\l\
++ setHeight(unsigned int) : void\l\
 + getType() : EntityType\l\
 + getSkinType() : SkinType\l\
 + getPV() : unsigned int\l\
@@ -207,6 +211,8 @@ label = "{\
 - _id : unsigned int\l\
 - _posX : unsigned int\l\
 - _posY : unsigned int\l\
+- _width : unsigned int\l\
+- _height : unsigned int\l\
 - _typeId : unsigned int\l\
 - _skinId : unsigned int\l\
 - _pv : int\l\

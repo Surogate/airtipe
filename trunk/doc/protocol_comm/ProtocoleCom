@@ -99,20 +99,20 @@ leftParty	DataLoginId
 			- id
 			(login has left the party - sended only to concerned party members)
 
-colorChange	DataLoginColor
+playerColorChange	DataLoginColor
 			- login
 			- color
 			(login has choosed a new color for spaceCraft - sended only to concerned party members)
 
-ready		DataLogin
+playerReady		DataLogin
 			- login
 			(login is ready - sended only to concerned party members)
 
-notReady	DataLogin
+playerNotReady	DataLogin
 			- login
 			(login is not ready - sended only to concerned party members)
 
-starting	DataEmpty
+partyStarting	DataEmpty
 			(party is starting)
 
 sendMapDesc	DataMapDesc
