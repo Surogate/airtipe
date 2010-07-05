@@ -173,11 +173,22 @@ spawn		DataSpawn
 			- frameNum
 			(spawn a new monster with id [id] of type [type] at position x y on the frame number [frameNum])
 
+itemSpawn	DataSpawn
+			...
+
+bulletSpawn	DataSpawn
+			...
+
 move		DataMove
 			- id
 			- X
 			- Y
 			(move entity with id [id] at position x y)
+
+bulletMove	DataMove
+			- id
+			- X
+			- Y
 
 fight		DataAction
 			- id
