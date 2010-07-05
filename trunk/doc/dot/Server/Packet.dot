@@ -31,69 +31,69 @@ PacketHeader||\
 }"
 ]
 
-PacketLogin [
+DataLogin [
 label = "{\
-PacketLogin||\
+DataLogin||\
 + login : char[15]\l\
 }"
 ]
 
-PacketColor [
+DataColor [
 label = "{\
-PacketColor||\
+DataColor||\
 + color : colorCode\l\
 }"
 ]
 
-PacketCreateParty [
+DataCreateParty [
 label = "{\
-PacketCreateParty||\
+DataCreateParty||\
 + nbPlayersMin : unsigned int\l\
 + nbPlayerMax : unsigned int\l\
 }"
 ]
 
-PacketMap [
+DataMap [
 label = "{\
-PacketMap||\
+DataMap||\
 + mapName : char[15]\l\
 }"
 ]
 
-PacketReady [
+DataReady [
 label = "{\
-PacketReady||\
+DataReady||\
 + ready : bool\l\
 }"
 ]
 
-PacketAction [
+DataAction [
 label = "{\
-PacketAction||\
+DataAction||\
 + id : unsigned int\l\
 + dir : DirectionCode\l\
 }"
 ]
 
-PacketLoginId [
+DataLoginId [
 label = "{\
-PacketLoginId||\
+DataLoginId||\
 + login : char[15]\l\
 + id : unsigned int\l\
 }"
 ]
 
-PacketLoginColor [
+DataLoginColor [
 label = "{\
-PacketLoginColor||\
+DataLoginColor||\
 + login : char[15]\l\
 + color : ColorCode\l\
 }"
 ]
 
-PacketSpawn [
+DataSpawn [
 label = "{\
-PacketSpawn||\
+DataSpawn||\
 + id : unsigned int\l\
 + type : EntityType\l\
 + skinType : SkinType\l\
@@ -104,44 +104,55 @@ PacketSpawn||\
 }"
 ]
 
-PacketEmpty [
+DataEmpty [
 label = "{\
-PacketEmpty\
+DataEmpty\
 }"
 ]
 
-PacketMove [
+DataMove [
 label = "{\
-PacketMove||\
+DataMove||\
 + id : unsigned int\l\
 + x : unsigned int\l\
 + y : unsigned int\l\
 }"
 ]
 
-PacketId [
+DataId [
 label = "{\
-PacketId||\
+DataId||\
 + id : unsigned int\l\
 }"
 
 ]
 
-PacketFight [
+DataFight [
 label = "{\
-PacketFight||\
+DataFight||\
 + id : unsigned int\l\
 + dir : DirectionCode\l\
 }"
 
 ]
 
-PacketBullet [
+DataBullet [
 label = "{\
-PacketBullet||\
+DataBullet||\
 + bullet : BulletType\l\
 }"
 
+]
+
+DataMapDesc [
+label = "{\
+DataMapDesc||\
++ frameNum : unsigned int\l\
++ ceilType : GroundType\l\
++ ceilHeight : unsigned int\l\
++ floorType : GroundType\l\
++ floorHeight : unsigned int\l\
+}"
 ]
 
 edge [
@@ -154,19 +165,20 @@ PacketHeader -> APacket [arrowhead = "diamond" style = "solid"]
 AData -> APacket [arrowhead = "diamond" style = "solid"]
 
 // Heritage
-PacketLogin -> AData [arrowhead = "onormal" style = "solid"]
-PacketCreateParty -> AData [arrowhead = "onormal" style = "solid"]
-PacketMap -> AData [arrowhead = "onormal" style = "solid"]
-PacketEmpty -> AData [arrowhead = "onormal" style = "solid"]
-PacketReady -> AData [arrowhead = "onormal" style = "solid"]
-PacketAction -> AData [arrowhead = "onormal" style = "solid"]
-PacketColor -> AData [arrowhead = "onormal" style = "solid"]
-PacketLoginId -> AData [arrowhead = "onormal" style = "solid"]
-PacketLoginColor -> AData [arrowhead = "onormal" style = "solid"]
-PacketSpawn -> AData [arrowhead = "onormal" style = "solid"]
-PacketMove -> AData [arrowhead = "onormal" style = "solid"]
-PacketId -> AData [arrowhead = "onormal" style = "solid"]
-PacketFight -> AData [arrowhead = "onormal" style = "solid"]
-PacketBullet -> AData [arrowhead = "onormal" style = "solid"]
+DataMapDesc -> AData [arrowhead = "onormal" style = "solid"]
+DataLogin -> AData [arrowhead = "onormal" style = "solid"]
+DataCreateParty -> AData [arrowhead = "onormal" style = "solid"]
+DataMap -> AData [arrowhead = "onormal" style = "solid"]
+DataEmpty -> AData [arrowhead = "onormal" style = "solid"]
+DataReady -> AData [arrowhead = "onormal" style = "solid"]
+DataAction -> AData [arrowhead = "onormal" style = "solid"]
+DataColor -> AData [arrowhead = "onormal" style = "solid"]
+DataLoginId -> AData [arrowhead = "onormal" style = "solid"]
+DataLoginColor -> AData [arrowhead = "onormal" style = "solid"]
+DataSpawn -> AData [arrowhead = "onormal" style = "solid"]
+DataMove -> AData [arrowhead = "onormal" style = "solid"]
+DataId -> AData [arrowhead = "onormal" style = "solid"]
+DataFight -> AData [arrowhead = "onormal" style = "solid"]
+DataBullet -> AData [arrowhead = "onormal" style = "solid"]
 
 }
