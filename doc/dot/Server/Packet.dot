@@ -155,6 +155,59 @@ DataMapDesc||\
 }"
 ]
 
+EnumPacketCodes [
+label = "{\
+\<Enum\> - PacketCodes|\
+## C-\>S : General communication TCP\l\
+Login\l\
+CreateParty\l\
+addMap\l\
+validParty\l\
+join\l\
+colorChange\l\
+ready\l\
+start\l\
+stop\l\
+quit\l\l\
+## C-\>S : General communication UDP\l\
+move\l\
+fight\l\l\
+## S-\>C : General communication TCP\l\
+loginOK\l\
+createOK\l\
+sendMaps\l\
+sendMapsEnd\l\
+addMapOK\l\
+validPartyOK\l\
+joinOK\l\
+joinParty\l\
+leftParty\l\
+playerColorChange\l\
+playerReady\l\
+playerNotReady\l\
+partyStarting\l\
+sendMapDesc\l\
+sendMapDescEnd\l\
+stop\l\l\
+## S-\>C : Error codes TCP\l\
+loginAlreadyExists\l\
+badLoginFormat\l\
+loginKO\l\
+createKO\l\
+maxPlayerTooHigh\l\
+unknownMap\l\
+validPartyKO\l\l\
+## S-\>C : Game communication UDP\l\
+spawn\l\
+move\l\
+fight\l\
+die\l\
+gainHP\l\
+looseHP\l\
+buletType\l\
+}"
+]
+
 edge [
 fontname = "Bitstream Vera Sans"
 fontsize = 8
