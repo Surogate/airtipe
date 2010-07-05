@@ -302,6 +302,42 @@ AbsMutex|\
 
 }
 
+EnumItemType [
+label = "{\
+\<Enum\> - ItemType|\
+BonusHealth\l\
+DoubleLaser\l\
+...\l\
+}"
+]
+
+EnumSkinType [
+label = "{\
+\<Enum\> - SkinType|\
+Tentacle\l\
+Alien\l\
+...\l\
+}"
+]
+
+EnumGroundType [
+label = "{\
+\<Enum\> - GroundType|\
+CeilLevel1\l\
+FloorLevel1\l\
+...\l\
+}"
+]
+
+EnumBulletType [
+label = "{\
+\<Enum\> - BulletType|\
+Laser\l\
+DoubleLaser\l\
+...\l\
+}"
+]
+
 edge [
 fontname = "Bitstream Vera Sans"
 fontsize = 8
