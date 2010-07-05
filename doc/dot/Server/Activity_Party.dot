@@ -26,18 +26,18 @@ digraph uml {
 // Reading incoming data
 	"read UDP requests"
 		[shape=ellipse];
-	"read entities requests"
+	"read entities requests (monsters + bullets)"
 		[shape=ellipse];
 	"note: need a try lock system\l like 'read server messages'"
 		[shape=record, style=filled, fillcolor=yellow];
 	"read server messages"
 		[shape=ellipse];
 
-	"already exists clients"	-> "read UDP requests"
+	"already exists clients"						-> "read UDP requests"
 		[label=yes];
-	"read UDP requests"			-> "read entities requests";
-	"read entities requests"	-> "read server messages";
-	"read entities requests"	-> "note: need a try lock system\l like 'read server messages'"
+	"read UDP requests"								-> "read entities requests (monsters + bullets)";
+	"read entities requests (monsters + bullets)"	-> "read server messages";
+	"read entities requests (monsters + bullets)"	-> "note: need a try lock system\l like 'read server messages'"
 		[arrowhead=none, style=dashed];
 
 // Processing data

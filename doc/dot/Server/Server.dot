@@ -63,7 +63,8 @@ Party|\
 - _pf : PacketFactory &\l\
 - _pe : PhysicEngine\l\
 - _startTime : Timestamp\l\
-- _entities : list\<pair\<IEntity *, AbsThread *\>\>\l|\
+- _entities : list\<pair\<IEntity *, AbsThread *\>\>\l\
+- _bulletsThread : AbsThread\l|\
 - playerMove(pak : APacket const &) : APacket *\l\
 - playerFight(pak : APacket const &) : APacket *\l\
 - readEntities() : void\l\
@@ -86,6 +87,19 @@ PhysicEngine|\
 + getEntityCollisions() : list\<pair\<IEntity *, IEntity *\>\> &\l\
 + getObjectCollisions() : list\<pair\<Player &, IItem *\>\> &\l\
 - getCamera() : void\l\
+}"
+]
+
+// Class BulletEngine
+BulletEngine [
+label = "{\
+Bullet engine|\
+- _pf : PacketFactory&\l\
++ bullets : list\<IEntity *\>\l\
++ mutexBullets : AbsMutex\l\
++ moves : list\<APacket*\>\l\
++ mutexMoves : AbsMutex\l|\
++ run() : void\l\
 }"
 ]
 
@@ -285,6 +299,8 @@ PacketFactory -> Party [arrowhead = "diamond" style = "solid"]
 PhysicEngine -> Party [arrowhead = "diamond" style = "solid"]
 Ressource -> PhysicEngine [arrowhead = "diamond" style = "solid"]
 PacketFactory -> AEntity [arrowhead = "diamond" style = "solid"]
+BulletEngine -> Party [arrowhead = "diamond" style = "solid"]
+//AbsMutex -> BulletEngine [arrowhead = "diamond" style = "solid"]
 
 // Aggregation
 TCPSession -> TCPServer [arrowhead = "odiamond" style = "solid"]
