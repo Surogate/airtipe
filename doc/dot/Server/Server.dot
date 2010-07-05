@@ -259,9 +259,9 @@ label = "Diagram Packet.dot.png"
 
 APacket [
 label = "{\
-\<abstract\> - APacket||\
+\<abstract\> - APacket|\
 + header : PacketHeader\l\
-+ data : AData\l\
++ data : AData\l|\
 }"
 ]
 
