@@ -1,0 +1,92 @@
+digraph G {
+fontname = "Bitstream Vera Sans"
+fontsize = 8
+
+node [
+fontname = "Bitstream Vera Sans"
+fontsize = 8
+shape = "record"
+]
+
+//
+// GENERIC FACTORY SUBGRAPH
+//
+subgraph clusterGenericFactory {
+label = "Templated Factory with Error Policy Class"
+
+// Template class Factory
+Factory [
+label = "{\
+template \<class AbstractType,\l\
+		  typename IdentifierName\l\
+		  typename Creator\l\
+		  template\<typename, class\> class FactoryErrorPolicy\>\l\l\
+Factory|\
++ Register(id : const IdentifierType&, newProduct : AbstractProduct *, creator : Creator) : bool\l\
++ Unregister(id : const IdentifierType&) : bool\l\
++ CreateObject(id : const IdentifierType&) : AbstractProduct *\l|\
+typedef map\<IdentifierType, pair\<AbstractProduct *, Creator\> *\> AssocMap\l\
+AssocMap _associations\l\
+}"
+]
+
+// class DefaultFactoryError
+DefaultFactoryError [
+label = "{\
+template \<class IdentifierType, class ProductType\>\l\l\
+DefaultFactoryError|\
++ exception Exception\l|\
+# OnUnknownType(id : const IdentifierType &) : ProductType *\l\
+}"
+]
+
+// class NoThrowFactoryError
+NoThrowFactoryError [
+label = "{\
+template \<class IdentifierType, class ProductType\>\l\l\
+NoThrowFactoryError|\
+# OnUnknownType(id : const IdentifierType &) : ProductType *\l\
+}"
+]
+
+// class NoThrowFactoryError
+IFactoryError [
+label = "{\
+template \<class IdentifierType, class ProductType\>\l\l\
+IFactoryError|\
+# OnUnknownType(id : const IdentifierType &) : ProductType *\l\
+}"
+]
+
+// class Exception
+Exception [
+label = "{\
+Exception|\
+- _unknownId : IdentifierType\l|\
++ Exception(unknownId : const IdentifierType&)\l\
++ what() : const char*\l\
++ GetId() : const IdentifierType\l\
+}"
+]
+
+"std::exception" []
+
+}
+
+
+
+edge [
+fontname = "Bitstream Vera Sans"
+fontsize = 8
+]
+
+DefaultFactoryError -> IFactoryError [arrowhead = "onormal" style="dashed"]
+NoThrowFactoryError -> IFactoryError [arrowhead = "onormal" style="dashed"]
+
+Factory -> DefaultFactoryError [arrowhead = "onormal" style="solid"]
+Factory -> NoThrowFactoryError [arrowhead = "onormal" style="solid"]
+
+Exception -> DefaultFactoryError [arrowhead = "diamond" style="solid"]
+Exception -> "std::exception" [arrowhead = "onormal" style="solid"]
+
+}
