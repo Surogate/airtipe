@@ -21,7 +21,6 @@ class		EntityHomme : public IEntity
 	{
 		std::cout << "Je suis un homme" << std::endl;
 	}
-
 	IEntity * Clone()
 	{
 		return new EntityHomme;
