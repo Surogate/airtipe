@@ -15,12 +15,12 @@ label = "Diagram Ressources.dot.png"
 Ressource [
 label = "{\
 Ressource|\
-- _entityFactory : EntityFactory &\l\
-- _objectFactory : ItemFactory &\l\
+- _entityFactory : Factory\l\
+- _objectFactory : Factory\l\
 - _entities : vector\<IEntity *\>\l\
-- _objects : vector\<IItems *\>\l\
+- _objects : vector\<IEntity *\>\l\
 - _maps : vector\<Map *\>\l\
-- _players : vector\<Player *\>\l|\
+- _players : vector\<IEntity *\>\l|\
 + loadMaps(mapScript : fstream) : void\l\
 }"
 
@@ -28,35 +28,13 @@ Ressource|\
 
 }
 
-subgraph clusterRessources2 {
-label = "Diagram Ressources.dot.png"
-
-// Class Ressource
-AEntity [
+// Class Game
+Game [
 label = "{\
-\<abstract\> - AEntity|\
-- _id : unsigned int\l\
-- _posX : unsigned int\l\
-- _posY : unsigned int\l\
-- _typeId : unsigned int\l\
-- _skinId : unsigned int\l\
-- _pv : int\l\
-- _spawnFrameNum : unsigned int\l\
-- _pf : PacketFactory &\l\
-+ requests : list\<Packet *\>\l\
-+ mutexRequests : AbsMutex\l\
-}"
-]
-
-}
-
-// Class Party
-Party [
-label = "{\
-Party|\
-+ _serverActions : map\<PacketCode, PartyActionFunc\>\l\
+Game|\
++ _serverActions : map\<PacketCode, GameActionFunc\>\l\
 + _mutexServerActions : AbsMutex\l\
-- _actions : map\<PacketCode, PartyActionFunc\>\l\
+- _actions : map\<PacketCode, GameActionFunc\>\l\
 - _UDPServer : UDP\l\
 - _ressources : Ressource\l\
 - _players : map\<Player &, Client &\>\l\
@@ -80,12 +58,12 @@ PhysicEngine|\
 - _startTime : Timestamp\l\
 - _environmentCollisions : list\<IEntity *\>\l\
 - _entityCollisions : list\<pair\<IEntity *, IEntity *\>\>\l\
-- _objectCollisions : list\<pair\<Player &, IItem *\>\>\l|\
+- _objectCollisions : list\<pair\<IEntity *, IEntity *\>\>\l|\
 + PhysicEngine(ressources : Ressource &, startTime : Timestamp)\l\
 + checkCollision() : bool\l\
 + getEnvironmentCollisions() : list\<IEntity *\> &\l\
 + getEntityCollisions() : list\<pair\<IEntity *, IEntity *\>\> &\l\
-+ getObjectCollisions() : list\<pair\<Player &, IItem *\>\> &\l\
++ getObjectCollisions() : list\<pair\<IEntity &, IEntity *\>\> &\l\
 - getCamera() : void\l\
 }"
 ]
@@ -93,8 +71,8 @@ PhysicEngine|\
 // Class BulletEngine
 BulletEngine [
 label = "{\
-Bullet engine|\
-- _pf : PacketFactory&\l\
+BulletEngine|\
+- _ressources : Ressource &\l\
 + bullets : list\<IEntity *\>\l\
 + mutexBullets : AbsMutex\l\
 + moves : list\<APacket*\>\l\
@@ -108,42 +86,22 @@ Server [
 label = "{\
 Server|\
 - _pf : PacketFactory &\l\
-- _parties : map\<Party, AbsThread *\>\l\
-- _clients : map\<Client, AbsThread *\>\l\
+- _parties : list\<Game\>\l\
 - _actions : map\<PacketCode, ServerActionFunc\>\l|\
-- createParty(pak : APacket const &) : APacket *\l\
+- createGame(pak : APacket const &) : APacket *\l\
 + run() : void\l\
 + processData() : void\l\
 + accept() : bool\l\
 - login(pak : APacket const &) : APacket *\l\
 - create(pak : APacket const &) : APacket *\l\
 - addMap(pak : APacket const &) : APacket *\l\
-- validParty(pak : APacket const &) : APacket *\l\
+- validGame(pak : APacket const &) : APacket *\l\
 - join(pak : APacket const &) : APacket *\l\
 - colorChange(pak : APacket const &) : APacket *\l\
 - ready(pak : APacket const &) : APacket *\l\
 - start(pak : APacket const &) : APacket *\l\
 - stop(pak : APacket const &) : APacket *\l\
 - quit(pak : APacket const &) : APacket *\l\
-}"
-]
-
-// Class Client
-Client [
-label = "{\
-Client||\
-+ run() : void\l\
-}"
-]
-
-// Class PacketFactory
-PacketFactory [
-label = "{\
-\<singleton\> - PacketFactory|\
-- packets : map\<PaketCode, Packet\>\l|\
-+ getInstance() : PacketFactory &\l\
-+ getPacket(PacketCode) : IPacket &\l\
-+ typeExists(PacketCode) : bool\l\
 }"
 ]
 
@@ -165,7 +123,6 @@ TCPSession|\
 - _canWrite : bool\l\
 - _incoming : list\<Data\>\l\
 + outgoing : list\<Data\>\l\
-+ mutexOutgoing : AbsMutex\l|\
 + TCPSession(socket : int, server : TCPServer&, bufferSize : unsigned int)\l\
 + virtual run() : void\l\
 + poll() : bool\l\
@@ -212,7 +169,6 @@ TCPServer|\
 - _running : bool\l\
 - _sessions : map\<ITCPSession*, AbsThread*\>\l\
 + requests : list\<pair\<ITCPSession*, Data\>\>\l\
-+ mutexRequests : AbsMutex\l|\
 + TCPServer(port : short, bufferSize : unsigned int)\l\
 + init() : bool\l\
 + virtual run() : void\l\
@@ -281,36 +237,54 @@ label = "{\
 
 }
 
+subgraph clusterGenericFactory {
+label = "Diagram Factory.dot.png"
+
+// Template class Factory
+Factory [
+label = "{\
+template \<class AbstractType,\l\
+		  typename IdentifierName\l\
+		  typename Creator\l\
+		  template\<typename, class\> class FactoryErrorPolicy\>\l\l\
+Factory|\
++ Register(id : const IdentifierType&, newProduct : AbstractProduct *, creator : Creator) : bool\l\
++ Unregister(id : const IdentifierType&) : bool\l\
++ CreateObject(id : const IdentifierType&) : AbstractProduct *\l|\
+typedef map\<IdentifierType, pair\<AbstractProduct *, Creator\> *\> AssocMap\l\
+AssocMap _associations\l\
+}"
+]
+
+}
+
 edge [
 fontname = "Bitstream Vera Sans"
 fontsize = 8
 ]
 
 // Composition
-AbsMutex -> TCPServer [arrowhead = "diamond" style = "solid"]
-AbsMutex -> TCPSession [arrowhead = "diamond" style = "solid"]
-AbsThread -> Party [arrowhead = "diamond" style = "solid"]
-AbsMutex -> AEntity [arrowhead = "diamond" style = "solid"]
-AbsThread -> TCPServer [arrowhead = "diamond" style = "solid"]
-UDP -> Party [arrowhead = "diamond" style = "solid"]
-Ressource -> Party [arrowhead = "diamond" style = "solid"]
-PacketFactory -> Server [arrowhead = "diamond" style = "solid"]
-PacketFactory -> Party [arrowhead = "diamond" style = "solid"]
-PhysicEngine -> Party [arrowhead = "diamond" style = "solid"]
+AbsMutex -> BulletEngine [arrowhead = "diamond" style = "solid"]
+AbsMutex -> PhysicEngine [arrowhead = "diamond" style = "solid"]
+AbsMutex -> Ressource [arrowhead = "diamond" style = "solid"]
+AbsThread -> Game [arrowhead = "diamond" style = "solid"]
+UDP -> Game [arrowhead = "diamond" style = "solid"]
+Ressource -> Game [arrowhead = "diamond" style = "solid"]
+Factory -> Server [arrowhead = "diamond" style = "solid"]
+Factory -> Game [arrowhead = "diamond" style = "solid"]
+PhysicEngine -> Game [arrowhead = "diamond" style = "solid"]
 Ressource -> PhysicEngine [arrowhead = "diamond" style = "solid"]
-PacketFactory -> AEntity [arrowhead = "diamond" style = "solid"]
-BulletEngine -> Party [arrowhead = "diamond" style = "solid"]
+Ressource -> BulletEngine [arrowhead = "diamond" style = "solid"]
+BulletEngine -> Game [arrowhead = "diamond" style = "solid"]
 //AbsMutex -> BulletEngine [arrowhead = "diamond" style = "solid"]
 
 // Aggregation
 TCPSession -> TCPServer [arrowhead = "odiamond" style = "solid"]
-Client -> Server [arrowhead = "odiamond" style = "solid"]
-Client -> Party [arrowhead = "odiamond" style = "solid"]
-Party -> Server [arrowhead = "odiamond" style = "solid"]
-APacket -> PacketFactory [arrowhead = "odiamond" style = "solid"]
+TCPSession -> Game [arrowhead = "odiamond" style = "solid"]
+Game -> Server [arrowhead = "odiamond" style = "solid"]
+APacket -> Factory [arrowhead = "odiamond" style = "solid"]
 
 // Heritage
 Server -> TCPServer [arrowhead = "onormal" style = "solid"]
-Client -> TCPSession [arrowhead = "onormal" style = "solid"]
 
 }
