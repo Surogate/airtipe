@@ -4,15 +4,17 @@ Tous les commits doivent etre commentes
 Toute modification des declarations doivents etres reportes sur l'UML le plus tot possible
 
 CONCEPTION:
-- Pointer sur fonction -> pointer sur methode (threads et sockets)
-- PacketManager et PacketFactory
-- Finir le Server Core
-- Moteur physique et synchro de l'avancement de la map
+- Singleton sur Factory
+- Revoir Packets (Envoi de timestamp etc...)
+- MovementPolicy dans les Entite
+- Pool de thread + systeme de taches
+- Revoir quelques points du proto de comme
+- RFC
+- Ressource : LibHandler a revoir
+- Enlever thread et mutex de l'abstraction reseau
+- Politique de creation pour les Entites et Packets (new pour les Entite et PlacementNew pour les packets)
 
 CLIENT:
 
 SERVER:
 
-PROTOCOLE / RFC:
-- Finir le protocole
-- Faire la RFC

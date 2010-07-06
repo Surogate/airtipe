@@ -26,9 +26,8 @@ label = "{\
 + GetSkinType() : SkinType\l\
 + GetPV() : unsigned int\l\
 + SetPV(pv : unsigned int) : void\l\
-+ GetBullets() const : vector\<IEntity *\> const &\l\
-+ PushBullet(IEntity *) : void\l\
-+ DropBullet(IEntity *) : void\l\
++ GetBullet() const : IEntity const * const\l\
++ SetBullet(IEntity *) : void\l\
 + GetItems() const : vector\<IEntity *\> const &\l\
 + PushItem(IEntity *) : void\l\
 + DropItem(IEntity *) : void\l\
@@ -102,9 +101,9 @@ label = "{\
 Frame|\
 - _width : unsigned int\l\
 - _height : unsigned int\l\
-- _ceil : WallType\l\
+- _ceil : GroundType\l\
 - _ceilHeight : unsigned int\l\
-- _floor : WallType\l\
+- _floor : GroundType\l\
 - _floorHeight : unsigned int\l\
 - _monsters : map\<EntityType, pair\<x : int, y : int\>\>\l\
 - _objects : map\<ItemType, pair\<x : int, y : int\>\>\l\
@@ -157,7 +156,7 @@ label = "{\
 - _width : unsigned int\l\
 - _height : unsigned int\l\
 - _skinId : SkinType\l\
-- _bullets : vector\<IEntity *\>\l\
+- _bullet : IEntity *\l\
 - _items : vector\<IEntity *\>\l\
 - _pv : int\l\
 - _spawnFrameNum : unsigned int\l\
@@ -207,7 +206,7 @@ label = "{\
 - _width : unsigned int\l\
 - _height : unsigned int\l\
 - _skinId : SkinType\l\
-- _bullets : vector\<IEntity *\>\l\
+- _bullet : IEntity *\l\
 - _items : vector\<IEntity *\>\l\
 - _pv : int\l\
 - _spawnFrameNum : unsigned int\l\
@@ -249,7 +248,7 @@ label = "{\
 - _width : unsigned int\l\
 - _height : unsigned int\l\
 - _skinId : SkinType\l\
-- _bullets : vector\<IEntity *\>\l\
+- _bullet : IEntity *\l\
 - _items : vector\<IEntity *\>\l\
 - _pv : int\l\
 - _spawnFrameNum : unsigned int\l\
@@ -282,7 +281,7 @@ label = "{\
 - _width : unsigned int\l\
 - _height : unsigned int\l\
 - _skinId : SkinType\l\
-- _bullets : vector\<IEntity *\>\l\
+- _bullet : IEntity *\l\
 - _items : vector\<IEntity *\>\l\
 - _pv : int\l\
 - _spawnFrameNum : unsigned int\l\
@@ -326,9 +325,11 @@ fontsize = 8
 
 // Composition
 Factory -> Ressource [arrowhead = "diamond" style = "solid"]
-EnumSkinType -> IEntity [arrowhead = "diamond" style = "solid"]
-EnumGroundType -> Frame [arrowhead = "diamond" style = "solid"]
-EnumEntityType -> IEntity [arrowhead = "diamond" style = "solid"]
+
+// Uses
+EnumSkinType -> IEntity [arrowhead = "vee" style = "solid"]
+EnumGroundType -> Frame [arrowhead = "vee" style = "solid"]
+EnumEntityType -> IEntity [arrowhead = "vee" style = "solid"]
 
 
 // Aggregation
