@@ -32,21 +32,28 @@ Ressource|\
 Game [
 label = "{\
 Game|\
-+ _serverActions : map\<PacketCode, GameActionFunc\>\l\
-+ _mutexServerActions : AbsMutex\l\
-- _actions : map\<PacketCode, GameActionFunc\>\l\
 - _UDPServer : UDP\l\
 - _ressources : Ressource\l\
-- _players : map\<Player &, Client &\>\l\
 - _pf : PacketFactory &\l\
 - _pe : PhysicEngine\l\
 - _startTime : Timestamp\l\
-- _entities : list\<pair\<IEntity *, AbsThread *\>\>\l\
-- _bulletsThread : AbsThread\l|\
-- playerMove(pak : APacket const &) : APacket *\l\
-- playerFight(pak : APacket const &) : APacket *\l\
-- readEntities() : void\l\
-- checkCollision() : void\l\
+- _valid : bool\l\
+- _started : bool\l\
+- _actions : map\<PacketCode, GameActionFunc\>\l\
+- _players : map\<TCPSession*, Player&\>\l|\
+- PlayerMove(pak : Packet const &) : Packet *\l\
+- PlayerFight(pak : Packet const &) : Packet *\l\
+- ReadEntities() : void\l\
+- CheckCollision() : void\l\
++ Start()\l\
++ Stop()\l\
++ AddPlayer(player : TCPSession *) : void\l\
++ DelPlayer(player : TCPSession *) : void\l\
++ SetPlayerReady(player : TCPSession *, ready : bool) : void\l\
++ IsValid() : bool\l\
++ SetValid(valid : bool) : void\l\
++ ChangePlayerColor(player : TCPSession *, color : ColorType) : bool\l\
+- BroadcastPacket(pak : Packet *) : void\l\
 }"
 ]
 
@@ -57,6 +64,7 @@ PhysicEngine|\
 - _ressources : Ressources &\l\
 - _startTime : Timestamp\l\
 - _environmentCollisions : list\<IEntity *\>\l\
+- _outOfMapEntities : list\<IEntity *\>\l\
 - _entityCollisions : list\<pair\<IEntity *, IEntity *\>\>\l\
 - _objectCollisions : list\<pair\<IEntity *, IEntity *\>\>\l|\
 + PhysicEngine(ressources : Ressource &, startTime : Timestamp)\l\
@@ -64,6 +72,7 @@ PhysicEngine|\
 + getEnvironmentCollisions() : list\<IEntity *\> &\l\
 + getEntityCollisions() : list\<pair\<IEntity *, IEntity *\>\> &\l\
 + getObjectCollisions() : list\<pair\<IEntity &, IEntity *\>\> &\l\
++ getOutOfMapEntities() : list\<IEntity *\> &\l\
 - getCamera() : void\l\
 }"
 ]
@@ -75,7 +84,7 @@ BulletEngine|\
 - _ressources : Ressource &\l\
 + bullets : list\<IEntity *\>\l\
 + mutexBullets : AbsMutex\l\
-+ moves : list\<APacket*\>\l\
++ moves : list\<Packet*\>\l\
 + mutexMoves : AbsMutex\l|\
 + run() : void\l\
 }"
@@ -88,20 +97,20 @@ Server|\
 - _pf : PacketFactory &\l\
 - _parties : list\<Game\>\l\
 - _actions : map\<PacketCode, ServerActionFunc\>\l|\
-- createGame(pak : APacket const &) : APacket *\l\
+- createGame(pak : Packet const &) : Packet *\l\
 + run() : void\l\
 + processData() : void\l\
 + accept() : bool\l\
-- login(pak : APacket const &) : APacket *\l\
-- create(pak : APacket const &) : APacket *\l\
-- addMap(pak : APacket const &) : APacket *\l\
-- validGame(pak : APacket const &) : APacket *\l\
-- join(pak : APacket const &) : APacket *\l\
-- colorChange(pak : APacket const &) : APacket *\l\
-- ready(pak : APacket const &) : APacket *\l\
-- start(pak : APacket const &) : APacket *\l\
-- stop(pak : APacket const &) : APacket *\l\
-- quit(pak : APacket const &) : APacket *\l\
+- login(pak : Packet const &) : Packet *\l\
+- create(pak : Packet const &) : Packet *\l\
+- addMap(pak : Packet const &) : Packet *\l\
+- validGame(pak : Packet const &) : Packet *\l\
+- join(pak : Packet const &) : Packet *\l\
+- colorChange(pak : Packet const &) : Packet *\l\
+- ready(pak : Packet const &) : Packet *\l\
+- start(pak : Packet const &) : Packet *\l\
+- stop(pak : Packet const &) : Packet *\l\
+- quit(pak : Packet const &) : Packet *\l\
 }"
 ]
 
@@ -167,7 +176,7 @@ TCPServer|\
 - _socket : int\l\
 - _bufferSize : unsigned int\l\
 - _running : bool\l\
-- _sessions : map\<ITCPSession*, AbsThread*\>\l\
+- _sessions : list\<TCPSession*\>\l\
 + requests : list\<pair\<ITCPSession*, Data\>\>\l\
 + TCPServer(port : short, bufferSize : unsigned int)\l\
 + init() : bool\l\
@@ -224,12 +233,12 @@ AbsMutex|\
 //
 // APACKET SUBGRAPH
 //
-subgraph clusterAPacket {
+subgraph clusterPacket {
 label = "Diagram Packet.dot.png"
 
-APacket [
+Packet [
 label = "{\
-\<abstract\> - APacket|\
+Packet|\
 + header : PacketHeader\l\
 + data : AData\l|\
 }"
@@ -268,7 +277,6 @@ AbsMutex -> BulletEngine [arrowhead = "diamond" style = "solid"]
 AbsMutex -> PhysicEngine [arrowhead = "diamond" style = "solid"]
 AbsMutex -> Ressource [arrowhead = "diamond" style = "solid"]
 AbsThread -> Game [arrowhead = "diamond" style = "solid"]
-UDP -> Game [arrowhead = "diamond" style = "solid"]
 Ressource -> Game [arrowhead = "diamond" style = "solid"]
 Factory -> Server [arrowhead = "diamond" style = "solid"]
 Factory -> Game [arrowhead = "diamond" style = "solid"]
@@ -282,9 +290,10 @@ BulletEngine -> Game [arrowhead = "diamond" style = "solid"]
 TCPSession -> TCPServer [arrowhead = "odiamond" style = "solid"]
 TCPSession -> Game [arrowhead = "odiamond" style = "solid"]
 Game -> Server [arrowhead = "odiamond" style = "solid"]
-APacket -> Factory [arrowhead = "odiamond" style = "solid"]
+Packet -> Factory [arrowhead = "odiamond" style = "solid"]
 
 // Heritage
 Server -> TCPServer [arrowhead = "onormal" style = "solid"]
+Game -> UDP [arrowhead = "onormal" style = "solid"] 
 
 }
