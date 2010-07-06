@@ -12,136 +12,72 @@ shape = "record"
 IEntity [
 label = "{\
 \<interface\> - IEntity|\
-+ getId() : unsigned int\l\
-+ setId(id : unsigned int)\l\
-+ getPosX() : unsigned int\l\
-+ getPosY() : unsigned int\l\
-+ setPosX(x : unsigned int) : void\l\
-+ setPosY(y : unsigned int) : void\l\
-+ getWidth() : unsigned int\l\
-+ setWidth(unsigned int) : void\l\
-+ getHeight() : unsigned int\l\
-+ setHeight(unsigned int) : void\l\
-+ getType() : EntityType\l\
-+ getSkinType() : SkinType\l\
-+ getPV() : unsigned int\l\
-+ setPV(pv : unsigned int) : void\l\
-+ getBulletType() : BulletType\l\
-+ setBulletType(type ; BulletType) : void\l\
-+ getSpawnFrameNum() : unsigned int\l\
-+ setSpawnFrameNum(frameNum : unsigned int) : void\l\
-+ start(IN : actionList : list\<Action *\>, OUT : partyActionList : list\<Action *\> &)\l\
-+ clone() : IEntity *\l\
++ GetId() : unsigned int\l\
++ SetId(id : unsigned int)\l\
++ GetPosX() : unsigned int\l\
++ GetPosY() : unsigned int\l\
++ SetPosX(x : unsigned int) : void\l\
++ GetPosY(y : unsigned int) : void\l\
++ GetWidth() : unsigned int\l\
++ SetWidth(unsigned int) : void\l\
++ GetHeight() : unsigned int\l\
++ SetHeight(unsigned int) : void\l\
++ GetType() : EntityType\l\
++ GetSkinType() : SkinType\l\
++ GetPV() : unsigned int\l\
++ SetPV(pv : unsigned int) : void\l\
++ GetBullets() const : vector\<IEntity *\> const &\l\
++ PushBullet(IEntity *) : void\l\
++ DropBullet(IEntity *) : void\l\
++ GetItems() const : vector\<IEntity *\> const &\l\
++ PushItem(IEntity *) : void\l\
++ DropItem(IEntity *) : void\l\
++ AddItem(IEntity *) : void\l\
++ GetSpawnFrameNum() : unsigned int\l\
++ SetSpawnFrameNum(frameNum : unsigned int) : void\l\
++ GetType() : EntityType\l\
++ Start() : void\l\
++ Clone() : IEntity *\l\
 }"
 ]
 
-// Class player
-Player [
+subgraph clusterGenericFactory {
+label = "Diagram Factory.dot.png"
+
+// Template class Factory
+Factory [
 label = "{\
-Player|\
-- _id : unsigned int\l\
-- _login : string\l\
-- _posX : unsigned int\l\
-- _posY : unsigned int\l\
-- _typeId : unsigned int\l\
-- _skinId : unsigned int\l\
-- _pv : int\l\
-- _spawnFrameNum : unsigned int\l\
-- _ready : bool\l\
-- _color : Color\l|\
-+ Player()\l\
-+ getLogin() : string\l\
-+ setLogin(login : string) : void\l\
-+ isReady() : bool\l\
-+ setReady(ready : bool) : void\l\
-+ getColor() : Color\l\
-+ setColor(color : Color) : void\l\
+template \<class AbstractType,\l\
+		  typename IdentifierName\l\
+		  typename Creator\l\
+		  template\<typename, class\> class FactoryErrorPolicy\>\l\l\
+Factory|\
++ Register(id : const IdentifierType&, newProduct : AbstractProduct *, creator : Creator) : bool\l\
++ Unregister(id : const IdentifierType&) : bool\l\
++ CreateObject(id : const IdentifierType&) : AbstractProduct *\l|\
+typedef map\<IdentifierType, pair\<AbstractProduct *, Creator\> *\> AssocMap\l\
+AssocMap _associations\l\
 }"
 ]
 
-// Class EntityFactory
-EntityFactory [
-label = "{\
-\<singleton\> - EntityFactory|\
-#ifdef UNIX\l\
-	typedef libHandler void*\l\
-	typedef libProcAddr void*\l\
-#endif\l\
-#ifdef WIN32\l\
-	typedef libHandler HMODULE\l\
-	typedef libProcAddr FARPROC\l\
-#endif\l\
-- _entities : map<EntityType, IEntity>\l\
-- _libHandler : ISharedLybrary &\l\
-- \<static\> _currentId : unsigned int\l|\
-+ getInstance() : EntityFactory &\l\
-+ getEntity(EntityType) : IEntity &\l\
-+ typeExists(EntityType) : bool\l\
-- loadEntity(EntityType) : bool\l\
-}"
-]
+}
 
-//Class ItemFactory
-ItemFactory [
-label = "{\
-\<singleton\> - ItemFactory|\
-- _objects : map\<ItemType, IItem\>\l|\
-+ getInstance() : ItemFactory &\l\
-+ getObject(ItemType) : IItem &\l\
-+ typeExists(ItemType) : bool\l\
-}"
-]
-
-// Interface IItem
-IItem [
-label = "{\
-\<interface\> - IItem|\
-+ setChanges(IEntity &, partyActionList : list\<Action *\> &) : void\l\
-+ getType() : ItemType\l\
-+ clone() : IItem *\l\
-}"
-]
-
-//
-// ITEM SUBGRAPH
-//
-subgraph clusterItem {
-label = "Item Dynamic Library"
-
-// Class BonusHealth
-BonusHealth [
-label = "{ItemBonusHealth||}"
-]
-
-// Class Laser
-Laser [
-label = "{ItemLaser||}"
-]
-
-// Class DoubleLaser
-DoubleLaser [
-label = "{ItemDoubleLaser||}"
-]
-
-// Class Object0
-Object0 [
-label = "{...||}"
-]
-
-} // END : ITEM SUBGRAPH
-
-// Class Ressoruce
+// Class Ressource
 Ressource [
 label = "{\
 Ressource|\
-- _entityFactory : EntityFactory &\l\
-- _objectFactory : ItemFactory &\l\
-- _entities : vector\<IEntity *\>\l\
-- _objects : vector\<IItems *\>\l\
+- _monsterFactory : Factory\l\
+- _bulletFactory : Factory\l\
+- _itemFactory : Factory\l\
+- _playerFactory : Factory\l\
+- _monsters : vector\<AMonster *\>\l\
+- _bullets : vector\<ABullet *\>\l\
+- _items : vector\<AItem *\>\l\
 - _maps : vector\<Map *\>\l\
-- _players : vector\<Player *\>\l|\
+- _players : vector\<APlayer *\>\l|\
 + loadMaps(mapScript : fstream) : void\l\
 }"
+
 ]
 
 // Class Map
@@ -185,41 +121,46 @@ label = "SharedLibrary Abstraction (Unix/Win32)"
 ISharedLibrary [
 label = "{\
 \<interface\> - ISharedLibrary|\
-+ libHandler libLoad(string filename)\l\
-+ libProcAddr libGetProc(libHandler lib, string filename)\l\
-+ bool libFree(libHandler lib)\l\
++ libLoad(string filename) : LibHandler\l\
++ libGetProc(libHandler lib, string filename) : LibProcAddr\l\
++ LibFree(libHandler lib) : bool\l\
 }"
 ]
 
 // Class SharedLibrary_unix
-SharedLibrary_unix [
-label = "SharedLibrary"
+SharedLibrary_Unix [
+label = "SharedLibrary_Unix"
 ]
+
+// Class SharedLibrary_unix
+SharedLibrary_Win32[
+label = "SharedLibrary_Win32"
+]
+
 
 } // END SHARED LIBRARY ABS SUBGRAPH
 
 //
-// MONSTER LIBRARY SUBGRAPH
+// DINAMIC LIBRARY SUBGRAPH
 //
 subgraph clusterMonstersLibrary {
-label = "Monster Dynamic Library"
+label = "Entity Dynamic Libraries"
 
-// Abstract class AEntity
-AEntity [
+// Abstract class AMonster
+AMonster [
 label = "{\
-\<abstract\> - AEntity|\
+\<abstract\> - AMonster|\
 - _id : unsigned int\l\
+- _type : EntityType\l\
 - _posX : unsigned int\l\
 - _posY : unsigned int\l\
 - _width : unsigned int\l\
 - _height : unsigned int\l\
-- _typeId : unsigned int\l\
-- _skinId : unsigned int\l\
+- _skinId : SkinType\l\
+- _bullets : vector\<IEntity *\>\l\
+- _items : vector\<IEntity *\>\l\
 - _pv : int\l\
 - _spawnFrameNum : unsigned int\l\
-- _pf : PacketFactory &\l\
-+ requests : list\<Packet *\>\l\
-+ mutexRequests : AbsMutex\l\
 }"
 ]
 
@@ -241,11 +182,6 @@ Monster2 [
 label = "{Monster2||}"
 ]
 
-// Class Monster3
-Monster3 [
-label = "{...||}"
-]
-
 // Class BulletLaser
 BulletLaser [
 label = "{\
@@ -260,56 +196,100 @@ BulletDoubleLaser||\
 }"
 ]
 
-} // END : MONSTER LIBRARY SUBGRAPH
-
-//
-// PACKETFACTORY SUBGRAPH
-//
-subgraph clusterPacketFactory {
-label = "Diagram Server.dot.png"
-
-// Class PacketFactory
-PacketFactory [
+// Class player
+APlayer [
 label = "{\
-\<singleton\> - PacketFactory|\
-- packets : map\<PaketCode, Packet\>\l|\
-+ getInstance() : PacketFactory &\l\
-+ getPacket(PacketCode) : IPacket &\l\
-+ typeExists(PacketCode) : bool\l\
+\<abstract\> - APlayer|\
+- _id : unsigned int\l\
+- _type : EntityType\l\
+- _posX : unsigned int\l\
+- _posY : unsigned int\l\
+- _width : unsigned int\l\
+- _height : unsigned int\l\
+- _skinId : SkinType\l\
+- _bullets : vector\<IEntity *\>\l\
+- _items : vector\<IEntity *\>\l\
+- _pv : int\l\
+- _spawnFrameNum : unsigned int\l\
 }"
 ]
 
-}
-
-//
-// MUTEX SUBGRAPH
-//
-subgraph clusterMutex {
-label = "Diagram AbstractionMutex.dot.png"
-
-// Class AbsMutex
-AbsMutex [
+PlayerBlue [
 label = "{\
-AbsMutex|\
-- _mid : pthread_mutex_t*\l|\
-+ init() : bool\l\
-+ destroy() : void\l\
-+ lock() : bool\l\
-+ tryLock() : bool\l\
-+ unlock() : bool\l\
+PlayerBlue||\
 }"
 ]
 
-}
-
-EnumItemType [
+PlayerYellow [
 label = "{\
-\<Enum\> - ItemType|\
-BonusHealth\l\
-DoubleLaser\l\
-...\l\
+PlayerYellow||\
 }"
 ]
+
+PlayerGreen [
+label = "{\
+PlayerGreen||\
+}"
+]
+
+PlayerRed [
+label = "{\
+PlayerRed||\
+}"
+]
+
+// Class AItem
+AItem [
+label = "{\
+\<abstract\> - AItem|\
+- _id : unsigned int\l\
+- _type : EntityType\l\
+- _posX : unsigned int\l\
+- _posY : unsigned int\l\
+- _width : unsigned int\l\
+- _height : unsigned int\l\
+- _skinId : SkinType\l\
+- _bullets : vector\<IEntity *\>\l\
+- _items : vector\<IEntity *\>\l\
+- _pv : int\l\
+- _spawnFrameNum : unsigned int\l\
+}"
+]
+
+// Class BonusHealth
+BonusHealth [
+label = "{ItemBonusHealth||}"
+]
+
+// Class Laser
+Laser [
+label = "{ItemLaser||}"
+]
+
+// Class DoubleLaser
+DoubleLaser [
+label = "{ItemDoubleLaser||}"
+]
+
+// Class ABullet
+ABullet [
+label = "{\
+\<abstract\> - ABullet|\
+- _id : unsigned int\l\
+- _type : EntityType\l\
+- _posX : unsigned int\l\
+- _posY : unsigned int\l\
+- _width : unsigned int\l\
+- _height : unsigned int\l\
+- _skinId : SkinType\l\
+- _bullets : vector\<IEntity *\>\l\
+- _items : vector\<IEntity *\>\l\
+- _pv : int\l\
+- _spawnFrameNum : unsigned int\l\
+}"
+]
+
+} // END : DYNAMIC LIBRARY SUBGRAPH
 
 EnumSkinType [
 label = "{\
@@ -329,12 +309,13 @@ FloorLevel1\l\
 }"
 ]
 
-EnumBulletType [
+EnumEntityType [
 label = "{\
-\<Enum\> - BulletType|\
-Laser\l\
-DoubleLaser\l\
-...\l\
+\<Enum\> - EntityType|\
+Monster\l\
+Item\l\
+Player\l\
+Bullet\l\
 }"
 ]
 
@@ -344,35 +325,42 @@ fontsize = 8
 ]
 
 // Composition
-AbsMutex -> AEntity [arrowhead = "diamond" style = "solid"]
-EntityFactory -> Ressource [arrowhead = "diamond" style = "solid"]
-ItemFactory -> Ressource [arrowhead = "diamond" style = "solid"]
-ISharedLibrary -> EntityFactory [arrowhead = "diamond" style = "solid"]
-IItem -> ItemFactory [arrowhead = "diamond" style = "solid"]
-PacketFactory -> AEntity [arrowhead = "diamond" style = "solid"]
+Factory -> Ressource [arrowhead = "diamond" style = "solid"]
+EnumSkinType -> IEntity [arrowhead = "diamond" style = "solid"]
+EnumGroundType -> Frame [arrowhead = "diamond" style = "solid"]
+EnumEntityType -> IEntity [arrowhead = "diamond" style = "solid"]
+
 
 // Aggregation
-IEntity -> EntityFactory [arrowhead = "odiamond" style = "solid"]
-IEntity -> Ressource [arrowhead = "odiamond" style = "solid"]
+AMonster -> Ressource [arrowhead = "odiamond" style = "solid"]
+AItem -> Ressource [arrowhead = "odiamond" style = "solid"]
+ABullet -> Ressource [arrowhead = "odiamond" style = "solid"]
+APlayer -> Ressource [arrowhead = "odiamond" style = "solid"]
 Map -> Ressource [arrowhead = "odiamond" style = "solid"]
-IItem -> Ressource [arrowhead = "odiamond" style = "solid"]
 Frame -> Map [arrowhead = "odiamond" style = "solid"]
-Player -> Ressource [arrowhead = "odiamond" style = "solid"]
 
 // Heritage
-SharedLibrary_unix -> ISharedLibrary [arrowhead = "onormal" style = "solid"]
-Monster1 -> AEntity [arrowhead = "onormal" style = "solid"]
-Monster2 -> AEntity [arrowhead = "onormal" style = "solid"]
-Monster3 -> AEntity [arrowhead = "onormal" style = "solid"]
-BulletLaser -> AEntity [arrowhead = "onormal" style = "solid"]
-BulletDoubleLaser -> AEntity [arrowhead = "onormal" style = "solid"]
+Monster1 -> AMonster [arrowhead = "onormal" style = "solid"]
+Monster2 -> AMonster [arrowhead = "onormal" style = "solid"]
+BulletLaser -> ABullet [arrowhead = "onormal" style = "solid"]
+BulletDoubleLaser -> ABullet [arrowhead = "onormal" style = "solid"]
+PlayerBlue -> APlayer [arrowhead = "onormal" style = "solid"]
+PlayerYellow -> APlayer [arrowhead = "onormal" style = "solid"]
+PlayerRed -> APlayer [arrowhead = "onormal" style = "solid"]
+PlayerGreen -> APlayer [arrowhead = "onormal" style = "solid"]
+BonusHealth -> AItem [arrowhead = "onormal" style = "solid"]
+Laser -> AItem [arrowhead = "onormal" style = "solid"]
+DoubleLaser -> AItem [arrowhead = "onormal" style = "solid"]
+Ressource -> SharedLibrary_Unix [arrowhead = "onormal" style = "solid"]
+Ressource -> SharedLibrary_Win32 [arrowhead = "onromal" style = "solid"]
+
 
 // Implement interface
-Player -> IEntity [arrowhead = "onormal" style = "dashed"]
-AEntity -> IEntity [arrowhead = "onormal" style = "dashed"]
-BonusHealth -> IItem [arrowhead = "onormal" style = "dashed"]
-Laser -> IItem [arrowhead = "onormal" style = "dashed"]
-DoubleLaser -> IItem [arrowhead = "onormal" style = "dashed"]
-Object0 -> IItem [arrowhead = "onormal" style = "dashed"]
+SharedLibrary_Unix -> ISharedLibrary [arrowhead = "onormal" style = "dashed"]
+SharedLibrary_Win32 -> ISharedLibrary [arrowhead = "onormal" style = "dashed"]
+APlayer -> IEntity [arrowhead = "onormal" style = "dashed"]
+AItem -> IEntity [arrowhead = "onormal" style = "dashed"]
+ABullet -> IEntity [arrowhead = "onormal" style = "dashed"]
+AMonster -> IEntity [arrowhead = "onormal" style = "dashed"]
 
 }

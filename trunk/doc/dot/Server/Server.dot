@@ -15,12 +15,15 @@ label = "Diagram Ressources.dot.png"
 Ressource [
 label = "{\
 Ressource|\
-- _entityFactory : Factory\l\
-- _objectFactory : Factory\l\
-- _entities : vector\<IEntity *\>\l\
-- _objects : vector\<IEntity *\>\l\
+- _monsterFactory : Factory\l\
+- _bulletFactory : Factory\l\
+- _itemFactory : Factory\l\
+- _playerFactory : Factory\l\
+- _monsters : vector\<AMonster *\>\l\
+- _bullets : vector\<ABullet *\>\l\
+- _items : vector\<AItem *\>\l\
 - _maps : vector\<Map *\>\l\
-- _players : vector\<IEntity *\>\l|\
+- _players : vector\<APlayer *\>\l|\
 + loadMaps(mapScript : fstream) : void\l\
 }"
 
@@ -40,9 +43,9 @@ Game|\
 - _valid : bool\l\
 - _started : bool\l\
 - _actions : map\<PacketCode, GameActionFunc\>\l\
-- _players : map\<TCPSession*, pair\<id : unsigned int, player : Player &\>\>\l|\
-- PlayerMove(pak : Packet const &) : Packet *\l\
-- PlayerFight(pak : Packet const &) : Packet *\l\
+- _players : map\<TCPSession*, pair\<id : unsigned int, player : APlayer &\>\>\l|\
+- APlayerMove(pak : Packet const &) : Packet *\l\
+- APlayerFight(pak : Packet const &) : Packet *\l\
 - ReadClients() : void\l\
 - RespondClients() : void\l\
 - CheckCollision() : void\l\
@@ -51,13 +54,13 @@ Game|\
 + MoveEntities() : void\l\
 + CheckCollisions : void\l\
 + BroadcastMapState() : void\l\
-+ AddPlayer(player : TCPSession *) : void\l\
-+ DelPlayer(player : TCPSession *) : void\l\
-+ SetPlayerReady(player : TCPSession *, ready : bool) : void\l\
++ AddAPlayer(player : TCPSession *) : void\l\
++ DelAPlayer(player : TCPSession *) : void\l\
++ SetAPlayerReady(player : TCPSession *, ready : bool) : void\l\
 + IsValid() : bool\l\
 + IsStarted() : bool\l\
 + SetValid(valid : bool) : void\l\
-+ ChangePlayerColor(player : TCPSession *, color : ColorType) : bool\l\
++ ChangeAPlayerColor(player : TCPSession *, color : ColorType) : bool\l\
 - BroadcastPacket(pak : Packet *) : void\l\
 }"
 ]
