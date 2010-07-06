@@ -40,17 +40,22 @@ Game|\
 - _valid : bool\l\
 - _started : bool\l\
 - _actions : map\<PacketCode, GameActionFunc\>\l\
-- _players : map\<TCPSession*, Player&\>\l|\
+- _players : map\<TCPSession*, pair\<id : unsigned int, player : Player &\>\>\l|\
 - PlayerMove(pak : Packet const &) : Packet *\l\
 - PlayerFight(pak : Packet const &) : Packet *\l\
-- ReadEntities() : void\l\
+- ReadClients() : void\l\
+- RespondClients() : void\l\
 - CheckCollision() : void\l\
-+ Start()\l\
-+ Stop()\l\
++ Start() : bool\l\
++ Stop() : bool\l\
++ MoveEntities() : void\l\
++ CheckCollisions : void\l\
++ BroadcastMapState() : void\l\
 + AddPlayer(player : TCPSession *) : void\l\
 + DelPlayer(player : TCPSession *) : void\l\
 + SetPlayerReady(player : TCPSession *, ready : bool) : void\l\
 + IsValid() : bool\l\
++ IsStarted() : bool\l\
 + SetValid(valid : bool) : void\l\
 + ChangePlayerColor(player : TCPSession *, color : ColorType) : bool\l\
 - BroadcastPacket(pak : Packet *) : void\l\
