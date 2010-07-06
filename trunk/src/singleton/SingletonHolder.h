@@ -23,10 +23,10 @@ class		SingletonHolder
 	public:
 		static T*	getInstance()
 		{
-			if (ThreadPolicy::trylock())
+			if (!_instance)
 			{
-				if (!_instance)
-					_instance = CreationPolicy<T>::create();
+				ThreadPolicy::lock();
+				_instance = CreationPolicy<T>::create();
 				ThreadPolicy::unlock();
 			}
 			return (_instance);
@@ -34,12 +34,18 @@ class		SingletonHolder
 
 		static void		destroy()
 		{
-			CreationPolicy<T>::destroy(_instance);
-			_instance = 0;
+			if (_instance)
+			{
+				ThreadPolicy::lock();
+				CreationPolicy<T>::destroy(_instance);
+				_instance = 0;
+				ThreadPolicy::unlock();
+			}
 		}
 
 	private:
 		SingletonHolder() {}
+		~SingletonHolder() { destroy(); }
 
 	private:
 		static T*	_instance;
