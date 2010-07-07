@@ -78,7 +78,7 @@ DataSynchro||\
 + y : unsigned int\l\
 + pv : unsigned int\l\
 + time : Timestamp\l\
-+ bulletSkin : SkinType
++ bulletSkin : SkinType\l\
 + movementType : MovementType\l\
 + startTime : Timestamp\l\
 }"
