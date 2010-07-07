@@ -6,7 +6,8 @@
  * \date	06/07/2010 23:49:32
  */
 
-#include	"smartPtr.h"
+#include	"SmartPointer.h"
+#include	"Counter.h"
 #include	<iostream>
 
 class	Test
@@ -23,17 +24,26 @@ class	Test
 		int		_a;
 };
 
-int main()
+int		main()
 {
-	int 			toto = 5;
-	SmartPtr<int>	sp(&toto);
+	SmartPointer<int>	sp(new int(5));
+	std::cout << *sp << std::endl;
+	*sp = 7;
 	std::cout << *sp << std::endl;
 
-	Test			c(10);
-	SmartPtr<Test>	sp2(&c);
-	sp2->display();
+	SmartPointer<Test>	sp3;
 
-	SmartPtr<Test>	sp3 = sp2;
+	{
+		SmartPointer<Test>	sp2(new Test(10));
+		sp2->display();
+		sp3 = sp2;
+	} // destroying sp2 here, but keeped reference for sp3
+
+	sp3->display();
+	sp3->setA(2);
+
+	SmartPointer<Test>	sp4(sp3);
+	sp4->display();
 
 	return (0);
 }
