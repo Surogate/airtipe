@@ -31,25 +31,35 @@ PacketHeader||\
 }"
 ]
 
+DataEntity [
+label = "{\
+DataEntity||\
++ id : unsigned int\l\
++ pv : unsigned int\l\
++ x : unsigned int\l\
++ y : unsigned int\l\
++ type : EntityType\l\
++ skinType : SkinType\l\
++ bulletType : SkinType\l\
++ movementType : MovementType\l\
++ spawnFrameNum : unsigned int\l\
++ startTime : Timestamp\l\
+}"
+]
+
 DataLogin [
 label = "{\
 DataLogin||\
++ id : unsigned int\l\
 + login : char[15]\l\
 }"
 ]
 
-DataColor [
+DataSpaceCraft [
 label = "{\
-DataColor||\
-+ color : colorCode\l\
-}"
-]
-
-DataCreateParty [
-label = "{\
-DataCreateParty||\
-+ nbPlayersMin : unsigned int\l\
-+ nbPlayerMax : unsigned int\l\
+DataSpaceCraft||\
++ id : unsigned int\l\
++ spaceCraft : SkinType\l\
 }"
 ]
 
@@ -60,62 +70,21 @@ DataMap||\
 }"
 ]
 
-DataReady [
+DataSynchro [
 label = "{\
-DataReady||\
-+ ready : bool\l\
-}"
-]
-
-DataAction [
-label = "{\
-DataAction||\
+DataSynchro||\
 + id : unsigned int\l\
-+ dir : DirectionCode\l\
-}"
-]
-
-DataLoginId [
-label = "{\
-DataLoginId||\
-+ login : char[15]\l\
-+ id : unsigned int\l\
-}"
-]
-
-DataLoginColor [
-label = "{\
-DataLoginColor||\
-+ login : char[15]\l\
-+ color : ColorCode\l\
-}"
-]
-
-DataSpawn [
-label = "{\
-DataSpawn||\
-+ id : unsigned int\l\
-+ type : EntityType\l\
-+ skinType : SkinType\l\
-+ bulletType : BulletType\l\
 + x : unsigned int\l\
 + y : unsigned int\l\
-+ frameNum : unsigned int\l\
++ time : Timestamp\l\
++ movementType : MovementType\l\
++ startTime : Timestamp\l\
 }"
 ]
 
 DataEmpty [
 label = "{\
 DataEmpty\
-}"
-]
-
-DataMove [
-label = "{\
-DataMove||\
-+ id : unsigned int\l\
-+ x : unsigned int\l\
-+ y : unsigned int\l\
 }"
 ]
 
@@ -127,32 +96,12 @@ DataId||\
 
 ]
 
-DataFight [
+DataShoot [
 label = "{\
-DataFight||\
+DataShoot||\
 + id : unsigned int\l\
-+ dir : DirectionCode\l\
 }"
 
-]
-
-DataBullet [
-label = "{\
-DataBullet||\
-+ bullet : BulletType\l\
-}"
-
-]
-
-DataMapDesc [
-label = "{\
-DataMapDesc||\
-+ frameNum : unsigned int\l\
-+ ceilType : GroundType\l\
-+ ceilHeight : unsigned int\l\
-+ floorType : GroundType\l\
-+ floorHeight : unsigned int\l\
-}"
 ]
 
 EnumPacketCodes [
@@ -164,14 +113,14 @@ CreateParty\l\
 addMap\l\
 validParty\l\
 join\l\
-colorChange\l\
+chooseSpacecraft\l\
 ready\l\
 start\l\
 stop\l\
 quit\l\l\
 ## C-\>S : General communication UDP\l\
 move\l\
-fight\l\l\
+shoot\l\l\
 ## S-\>C : General communication TCP\l\
 loginOK\l\
 createOK\l\
@@ -186,15 +135,14 @@ playerColorChange\l\
 playerReady\l\
 playerNotReady\l\
 partyStarting\l\
-sendMapDesc\l\
-sendMapDescEnd\l\
+sendGrounds\l\
+sendGroundsEnd\l\
 stop\l\l\
 ## S-\>C : Error codes TCP\l\
 loginAlreadyExists\l\
 badLoginFormat\l\
 loginKO\l\
 createKO\l\
-maxPlayerTooHigh\l\
 unknownMap\l\
 validPartyKO\l\l\
 ## S-\>C : Game communication UDP\l\
@@ -202,9 +150,8 @@ spawn\l\
 move\l\
 fight\l\
 die\l\
-gainHP\l\
-looseHP\l\
 buletType\l\
+sync\l\
 }"
 ]
 
@@ -218,20 +165,13 @@ PacketHeader -> APacket [arrowhead = "diamond" style = "solid"]
 AData -> APacket [arrowhead = "diamond" style = "solid"]
 
 // Heritage
-DataMapDesc -> AData [arrowhead = "onormal" style = "solid"]
+DataEntity -> AData [arrowhead = "onormal" style = "solid"]
 DataLogin -> AData [arrowhead = "onormal" style = "solid"]
-DataCreateParty -> AData [arrowhead = "onormal" style = "solid"]
 DataMap -> AData [arrowhead = "onormal" style = "solid"]
 DataEmpty -> AData [arrowhead = "onormal" style = "solid"]
-DataReady -> AData [arrowhead = "onormal" style = "solid"]
-DataAction -> AData [arrowhead = "onormal" style = "solid"]
-DataColor -> AData [arrowhead = "onormal" style = "solid"]
-DataLoginId -> AData [arrowhead = "onormal" style = "solid"]
-DataLoginColor -> AData [arrowhead = "onormal" style = "solid"]
-DataSpawn -> AData [arrowhead = "onormal" style = "solid"]
-DataMove -> AData [arrowhead = "onormal" style = "solid"]
 DataId -> AData [arrowhead = "onormal" style = "solid"]
-DataFight -> AData [arrowhead = "onormal" style = "solid"]
-DataBullet -> AData [arrowhead = "onormal" style = "solid"]
+DataSpaceCraft -> AData [arrowhead = "onormal" style = "solid"]
+DataSynchro -> AData [arrowhead = "onormal" style = "solid"]
+DataShoot -> AData [arrowhead = "onormal" style = "solid"]
 
 }
