@@ -43,7 +43,7 @@ AbsThread_Win32 [
 label = "{\
 AbsThread_Win32|\
 - _tid : HANDLE\l\
-= _started : bool\l|\
+- _started : bool\l|\
 + launch(startRoutine, void* args) : bool\l\
 + join() : bool\l\
 + exit() : void\l\
