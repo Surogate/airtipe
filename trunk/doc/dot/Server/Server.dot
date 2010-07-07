@@ -94,7 +94,6 @@ Server|\
 - _actions : map\<PacketCode, ServerActionFunc\>\l|\
 - createGame(pak : Packet const &) : Packet *\l\
 + run() : void\l\
-+ processData() : void\l\
 + accept() : bool\l\
 - login(pak : Packet const &) : Packet *\l\
 - create(pak : Packet const &) : Packet *\l\
@@ -123,13 +122,8 @@ TCPSession|\
 - _server : TCPServer&\l\
 - _bufferSize : unsigned int\l\
 - _broken : bool\l\
-- _canRead : bool\l\
-- _canWrite : bool\l\
-- _incoming : list\<Data\>\l\
-+ outgoing : list\<Data\>\l\
+- _incoming : list\<Data\>\l|\
 + TCPSession(socket : int, server : TCPServer&, bufferSize : unsigned int)\l\
-+ virtual run() : void\l\
-+ poll() : bool\l\
 + write(Data, unsigned int) : int\l\
 + read(Data, unsigned int) : int\l\
 + close() : bool\l\
@@ -148,9 +142,12 @@ label = "Diagram Network.dot.png"
 UDP [
 label = "{\
 UDP|\
-- _socket : int\l|\
+- _socket : int\l\
+- _receivers : list\<sockaddr*\>\l|\
 + send(Data, unsigned int) : int\l\
 + receive(unsigned int) : int\l\
++ sendTo(Data, unsigned int, sockaddr*) : int\l\
++ receiveFrom(Data, unsigned int, sockaddr*) : int\l\
 + close() : void\l\
 }"
 ]
@@ -172,11 +169,12 @@ TCPServer|\
 - _bufferSize : unsigned int\l\
 - _running : bool\l\
 - _sessions : list\<TCPSession*\>\l\
-+ requests : list\<pair\<ITCPSession*, Data\>\>\l\
+- _requests : list\<pair\<ITCPSession*, Data\>\>\l|\
 + TCPServer(port : short, bufferSize : unsigned int)\l\
 + init() : bool\l\
 + virtual run() : void\l\
-+ virtual processData() : void\l\
++ poll() : void\l\
++ poll_one() : void\l\
 + close() : void\l\
 + virtual accept() : bool\l\
 }"

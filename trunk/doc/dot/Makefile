@@ -3,7 +3,6 @@ SRCS		=	Server/Server.dot			\
 				Server/Network.dot			\
 				Server/Packet.dot			\
 				Server/Ressources.dot		\
-				Server/Activity_Party.dot	\
 				Common/Factory.dot			\
 				Common/SmartPointer.dot		\
 				Common/Singleton.dot
