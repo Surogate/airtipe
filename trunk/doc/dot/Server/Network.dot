@@ -18,8 +18,6 @@ label = "TCPSession Abstraction (Unix/Win32)"
 ITCPSession [
 label = "{\
 \<interface\> - ITCPSession|\
-+ run() : void\l\
-+ poll() : bool\l\
 + write(Data, unsigned int) : int\l\
 + read(Data, unsigned int) : int\l\
 + close() : bool\l\
@@ -34,14 +32,8 @@ TCPSession_Unix|\
 - _server : TCPServer&\l\
 - _bufferSize : unsigned int\l\
 - _broken : bool\l\
-- _canRead : bool\l\
-- _canWrite : bool\l\
-- _incoming : list\<Data\>\l\
-+ outgoing : list\<Data\>\l\
-+ mutexOutgoing : AbsMutex\l|\
+- _incoming : list\<Data\>\l|\
 + TCPSession(socket : int, server : TCPServer&, bufferSize : unsigned int)\l\
-+ virtual run() : void\l\
-+ poll() : bool\l\
 + write(Data, unsigned int) : int\l\
 + read(Data, unsigned int) : int\l\
 + close() : bool\l\
@@ -56,14 +48,8 @@ TCPSession_Win32|\
 - _server : TCPServer&\l\
 - _bufferSize : unsigned int\l\
 - _broken : bool\l\
-- _canRead : bool\l\
-- _canWrite : bool\l\
-- _incoming : list\<Data\>\l\
-+ outgoing : list\<Data\>\l\
-+ mutexOutgoing : AbsMutex\l|\
+- _incoming : list\<Data\>\l|\
 + TCPSession(socket : int, server : TCPServer&, bufferSize : unsigned int)\l\
-+ virtual run() : void\l\
-+ poll() : bool\l\
 + write(Data, unsigned int) : int\l\
 + read(Data, unsigned int) : int\l\
 + close() : bool\l\
@@ -84,7 +70,9 @@ label = "{\
 \<interface\> - IUDP|\
 typedef void* Data\l\l\
 + send(Data, unsigned int) : int\l\
-+ receive(unsigned int) : int\l\
++ receive(Data, unsigned int) : int\l\
++ sendTo(Data, unsigned int, sockaddr*) : int\l\
++ receiveFrom(Data, unsigned int, sockaddr*) : int\l\
 + close() : void\l\
 }"
 ]
@@ -93,9 +81,12 @@ typedef void* Data\l\l\
 UDP_Unix [
 label = "{\
 UDP_Unix|\
-- _socket : int\l|\
+- _socket : int\l\
+- _receivers : list\<sockaddr*\>\l|\
 + send(Data, unsigned int) : int\l\
 + receive(unsigned int) : int\l\
++ sendTo(Data, unsigned int, sockaddr*) : int\l\
++ receiveFrom(Data, unsigned int, sockaddr*) : int\l\
 + close() : void\l\
 }"
 ]
@@ -104,13 +95,15 @@ UDP_Unix|\
 UDP_Win32 [
 label = "{\
 UDP_Win32|\
-- _socket : SOCKET\l|\
+- _socket : SOCKET\l\
+- _receivers : list\<sockaddr*\>\l|\
 + send(Data, unsigned int) : int\l\
 + receive(unsigned int) : int\l\
++ sendTo(Data, unsigned int, sockaddr*) : int\l\
++ receiveFrom(Data, unsigned int, sockaddr*) : int\l\
 + close() : void\l\
 }"
 ]
-
 
 } // END : UDP SUBGRAPH
 
@@ -127,7 +120,8 @@ label = "{\
 typedef void* Data\l\l\
 + init() : bool\l\
 + run() : void\l\
-+ processData() : void\l\
++ poll() : void\l\
++ poll_one() : void\l\
 + close() : void\l\
 + accept() : bool\l\
 }"
@@ -142,12 +136,12 @@ TCPServer_Unix|\
 - _bufferSize : unsigned int\l\
 - _running : bool\l\
 - _sessions : list\<ITCPSession*\>\l\
-+ requests : list\<pair\<ITCPSession*, Data\>\>\l\
-+ mutexRequests : AbsMutex\l|\
+- requests : list\<pair\<ITCPSession*, Data\>\>\l\
 + TCPServer(port : short, bufferSize : unsigned int)\l\
 + init() : bool\l\
 + virtual run() : void\l\
-+ virtual processData() : void\l\
++ poll() : void\l\
++ poll_one() : void\l\
 + close() : void\l\
 + virtual accept() : bool\l\
 }"
@@ -162,12 +156,12 @@ TCPServer_Win32|\
 - _bufferSize : unsigned int\l\
 - _running : bool\l\
 - _sessions : list\<ITCPSession*\>\l\
-+ requests : list\<pair\<ITCPSession*, Data\>\>\l\
-+ mutexRequests : AbsMutex\l|\
+- requests : list\<pair\<ITCPSession*, Data\>\>\l\
 + TCPServer(port : short, bufferSize : unsigned int)\l\
 + init() : bool\l\
 + virtual run() : void\l\
-+ virtual processData() : void\l\
++ poll() : void\l\
++ poll_one() : void\l\
 + close() : void\l\
 + virtual accept() : bool\l\
 }"
