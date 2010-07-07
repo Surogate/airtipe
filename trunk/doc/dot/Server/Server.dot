@@ -85,19 +85,6 @@ PhysicEngine|\
 }"
 ]
 
-// Class BulletEngine
-BulletEngine [
-label = "{\
-BulletEngine|\
-- _ressources : Ressource &\l\
-+ bullets : list\<IEntity *\>\l\
-+ mutexBullets : AbsMutex\l\
-+ moves : list\<Packet*\>\l\
-+ mutexMoves : AbsMutex\l|\
-+ run() : void\l\
-}"
-]
-
 // Class Server
 Server [
 label = "{\
@@ -197,6 +184,17 @@ TCPServer|\
 
 } // END : TCPSERVER SUBGRAPH
 
+ThreadPool [
+label = "{\
+ThreadPool|\
+- _maxThreads : unsigned int\l\
+- _maxRoutine : unsigned int\l\
+- _threads : vector\<AbsThread\>[_maxThreads]\l\
+- _in : map\<RoutineID, startRoutine\>\l\
+- _mutexIn : AbsMutex\l|\
++ run() : void\l\
+}"
+]
 
 //
 // THREAD SUBGRAPH
@@ -281,18 +279,16 @@ fontsize = 8
 ]
 
 // Composition
-AbsMutex -> BulletEngine [arrowhead = "diamond" style = "solid"]
 AbsMutex -> PhysicEngine [arrowhead = "diamond" style = "solid"]
 AbsMutex -> Ressource [arrowhead = "diamond" style = "solid"]
-AbsThread -> Game [arrowhead = "diamond" style = "solid"]
 Ressource -> Game [arrowhead = "diamond" style = "solid"]
 Factory -> Server [arrowhead = "diamond" style = "solid"]
 Factory -> Game [arrowhead = "diamond" style = "solid"]
 PhysicEngine -> Game [arrowhead = "diamond" style = "solid"]
 Ressource -> PhysicEngine [arrowhead = "diamond" style = "solid"]
-Ressource -> BulletEngine [arrowhead = "diamond" style = "solid"]
-BulletEngine -> Game [arrowhead = "diamond" style = "solid"]
-//AbsMutex -> BulletEngine [arrowhead = "diamond" style = "solid"]
+ThreadPool -> Server [arrowhead = "diamond" style = "solid"]
+AbsThread -> ThreadPool [arrowhead = "diamond" style = "solid"]
+AbsMutex -> ThreadPool [arrowhead = "diamond" style = "solid"]
 
 // Aggregation
 TCPSession -> TCPServer [arrowhead = "odiamond" style = "solid"]
