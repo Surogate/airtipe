@@ -6,13 +6,15 @@ Toute modification des declarations doivents etres reportes sur l'UML le plus to
 CONCEPTION:
 - Singleton sur Factory
 - Revoir Packets (Envoi de timestamp etc...)
+- MovementPolicy dans les Entite
+- Systeme de taches
 - Revoir quelques points du proto de comm
 - RFC
 - Ressource : LibHandler a revoir
-- Revoir abstraction reseau
 - Politique de creation pour les Entites et Packets (new pour les Entite et PlacementNew pour les packets)
 
 CLIENT:
 
 SERVER:
+- network a revoir
 
