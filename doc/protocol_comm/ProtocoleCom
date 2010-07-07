@@ -5,13 +5,12 @@
 
 
 login		DataLogin
+			- id
 			- login
 			(login on server)
 
-create		DataCreateParty
-			- nbPlayersMin
-			- nbPlayerMax
-			(creation of a party with minPlayer maxPlayer)
+create		DataEmpty
+			(create new Game)
 
 addMap		DataMap
 			- mapName
@@ -21,16 +20,20 @@ validParty	DataEmpty
 			(valid the party)
 
 join		DataLogin
+			- id
 			- partyOwnerLogin
 			(join a party)
 
-colorChange	DataColor
-			- color
-			(change color of the spacecraft)
+chooseSpaceCraft	DataSpaceCraft
+					- id
+					- SkinType
+					(choose a spacecraft)
 
-ready		DataReady
-			- true/false
-			(toggle ready flag of the player - the party can begin when minimum player have join and are ready)
+ready		DataEmpty
+			(set ready flag of the player to true - the party can begin when minimum player have join and are ready)
+
+notReady	DataEmpty
+			(set ready flag of the player to false)
 
 start		DataEmpty
 			(start the party - only the owner)
@@ -45,15 +48,20 @@ quit		DataEmpty
 ### GAME COMMUNIACATION UDP
 
 
-move		DataAction
+move		DataSynchro
 			- id of player
-			- dir of movement
+			- x
+			- y
+			- pv
+			- time
+			- bulletSkin
+			- MovementType
+			- startTime
 			(Move action)
 
-fight		DataAction
+shoot		DataShoot
 			- id
-			- dir
-			(Fight action)
+			(Shoot action)
 
 ########## SERVER TO CLIENT ##########
 
@@ -61,9 +69,9 @@ fight		DataAction
 ### GENERAL COMMUNICATION TCP
 
 
-loginOK		DataLoginId
-			- login
+loginOK		DataLogin
 			- id
+			- login
 			(login ok)
 
 createOK	DataEmpty
@@ -89,47 +97,59 @@ joinOK		DataEmpty
 ### BROADCAST GENERAL COMMUNICATION TCP
 
 
-joinParty	DataLoginId
-			- login
+joinGame	DataLogin
 			- id
+			- login
 			(login has join the party - sended only to concerned party members)
 
-leftParty	DataLoginId
-			- login
+leftParty	DataLogin
 			- id
+			- login
 			(login has left the party - sended only to concerned party members)
 
-playerColorChange	DataLoginColor
-			- login
-			- color
-			(login has choosed a new color for spaceCraft - sended only to concerned party members)
+playerChooseSpaceCraft	DataSpaceCraft
+						- id
+						- skinType
+						(login has choosed a new spaceCraft - sended only to concerned party members)
 
 playerReady		DataLogin
-			- login
-			(login is ready - sended only to concerned party members)
+				- id
+				- login
+				(login is ready - sended only to concerned party members)
 
-playerNotReady	DataLogin
-			- login
-			(login is not ready - sended only to concerned party members)
+playerNotReady		DataLogin
+					- id
+					- login
+					(login is not ready - sended only to concerned party members)
 
 partyStarting	DataEmpty
-			(party is starting)
+				(party is starting)
 
-sendMapDesc	DataMapDesc
-			- frameNum
-			- ceilType
-			- ceilHeight
-			- floorType
-			- floorHeight
-			(Sending Environment)
+sendMapDesc		DataEntity
+				- id
+				- pv
+				- x
+				- y
+				- type
+				- skin
+				- bulletSkin
+				- movementType
+				- spawnFrameNum
+				- startTime
+				(Sending Environment)
 
-sendMapDescEnd	DataMapDesc
-			- frameNum
-			- ceilType
-			- ceilHeight
-			- floorType
-			- floorHeight
-			(End of sending environment)
+sendMapDescEnd	DataEntity
+				- id
+				- pv
+				- x
+				- y
+				- type
+				- skin
+				- bulletSkin
+				- movementType
+				- spawnFrameNum
+				- startTime
+				(End of sending environment)
 
 stop		DataEmpty
 			(the party is done - when owner stop the party or when the server decide to stop it (Win - Loose))
@@ -163,46 +183,41 @@ validPartyKO	DataEmpty
 
 ### GAME COMMUNICATION UDP (sended only to concerned party members)
 
-spawn		DataSpawn
+spawn		DataEntity
 			- id
+			- pv
+			- x
+			- y
 			- type
-			- skinType
-			- bulletType
-			- X
-			- Y
-			- frameNum
-			(spawn a new monster with id [id] of type [type] at position x y on the frame number [frameNum])
+			- skin
+			- bulletSkin
+			- movementType
+			- spawnFrameNum
+			- startTime
 
-itemSpawn	DataSpawn
-			...
-
-bulletSpawn	DataSpawn
-			...
-
-move		DataMove
-			- id
-			- X
-			- Y
+move		DataSynchro
+			- id of
+			- x
+			- y
+			- pv
+			- time
+			- bulletSkin
+			- MovementType
+			- startTime
 			(move entity with id [id] at position x y)
 
-bulletMove	DataMove
-			- id
-			- X
-			- Y
+synchro		DataSynchro
+			- id of
+			- x
+			- y
+			- pv
+			- time
+			- bulletSkin
+			- MovementType
+			- startTime
 
-fight		DataAction
+shoot		DataShoot
 			- id
-			- dir
 
 die			DataId
 			- id
-
-gainHP		DataId
-			- id
-
-looseHP		DataId
-			- id
-
-bulletType	DataBullet
-			- bulletType
-
