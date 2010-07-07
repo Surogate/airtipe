@@ -7,20 +7,25 @@ TAG		= $(MTAG)-$(STAG)
 
 ############### PROJECT
 
-NAME		= R-type
+NAME		= R-type_server
 
 
 ############### DIRECTORIES
 
-DIR_SRC		= ./src/
-DIR_INC		= ./inc/
-DIR_LIB		= ./lib/
-DIR_BIN		= ./bin/
+DIR_SRC			= ./src/
+DIR_SRC_COMMON	= ../src/
+DIR_INC			= ./inc/
+DIR_INC_COMMON	= ../include/
+DIR_LIB			= ./lib/
+DIR_BIN			= ./bin/
 
 ############### FILES
 
 SRC		= \
-		$(DIR_SRC)main.cpp			\
+		$(DIR_SRC)main.cpp								\
+		$(DIR_SRC)Server.cpp							\
+		$(DIR_SRC_COMMON)network/CTCPServer_Unix.cpp	\
+		$(DIR_SRC_COMMON)network/CTCPSession_Unix.cpp
 
 INC		= \
 
@@ -31,11 +36,11 @@ OBJ			= $(SRC:.cpp=.o)
 ############### FLAGS ###############
 #########  DEFINES
 
-DEFINE_i386-Darwin	=
+DEFINE_i386-Darwin	= -D UNIX
 
-DEFINE_i386-FreeBSD	=
+DEFINE_i386-FreeBSD	= -D UNIX
 
-DEFINE_i686-Linux	=
+DEFINE_i686-Linux	= -D UNIX
 
 DEFINE			= $(DEFINE_$(TAG))
 
@@ -50,7 +55,7 @@ IFLAGS_i686-Linux	= \
 
 IFLAGS				= \
 			$(IFLAGS_$(TAG)) 	\
-			-I$(DIR_INC)
+			-I$(DIR_INC) -I$(DIR_INC_COMMON)
 
 #########  LIBRARIES
 
@@ -66,11 +71,6 @@ LFLAGS_i686-Linux	= \
 LFLAGS				= \
 					$(LFLAGS_$(TAG))	\
 					-L$(DIR_LIB)		\
-					-lsfml-graphics		\
-					-lGLU				\
-					-lGL				\
-					-lsfml-window		\
-					-lsfml-system
 
 #########  COMPILE FLAGS
 

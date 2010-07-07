@@ -11,6 +11,7 @@
 
 # include	"network/TCPData.h"
 typedef TCPData Data;
+
 /*!
  * \class	Abstraction for sychronous TCP server
  */

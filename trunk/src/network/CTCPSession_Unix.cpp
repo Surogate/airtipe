@@ -17,7 +17,7 @@
 #include	"network/CTCPServer_Unix.h"
 
 CTCPSession_Unix::CTCPSession_Unix(int socket) :
-	_socket(socket),
+	_socket(socket)
 {
 	fcntl(this->_socket, F_SETFL, O_NONBLOCK);
 }
