@@ -34,6 +34,7 @@ Ressource|\
 Game [
 label = "{\
 Game|\
+friend class Server\l\l\
 - _UDPServer : UDP\l\
 - _ressources : Ressource\l\
 - _pf : PacketFactory &\l\
@@ -48,18 +49,18 @@ Game|\
 - ReadClients() : void\l\
 - RespondClients() : void\l\
 - CheckCollision() : void\l\
-+ Start() : bool\l\
-+ Stop() : bool\l\
-+ MoveEntities() : void\l\
-+ CheckCollisions : void\l\
-+ BroadcastMapState() : void\l\
-+ AddAPlayer(player : TCPSession *) : void\l\
-+ DelAPlayer(player : TCPSession *) : void\l\
-+ SetAPlayerReady(player : TCPSession *, ready : bool) : void\l\
-+ IsValid() : bool\l\
-+ IsStarted() : bool\l\
-+ SetValid(valid : bool) : void\l\
-+ ChangeAPlayerColor(player : TCPSession *, color : ColorType) : bool\l\
+- Start() : bool\l\
+- Stop() : bool\l\
+- MoveEntities() : void\l\
+- CheckCollisions : void\l\
+- BroadcastMapState() : void\l\
+- AddAPlayer(player : TCPSession *) : void\l\
+- DelAPlayer(player : TCPSession *) : void\l\
+- SetAPlayerReady(player : TCPSession *, ready : bool) : void\l\
+- IsValid() : bool\l\
+- IsStarted() : bool\l\
+- SetValid(valid : bool) : void\l\
+- ChangeAPlayerColor(player : TCPSession *, color : ColorType) : bool\l\
 - BroadcastPacket(pak : Packet *) : void\l\
 }"
 ]
