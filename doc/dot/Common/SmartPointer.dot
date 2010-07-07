@@ -1,0 +1,43 @@
+digraph G {
+fontname = "Bitstream Vera Sans"
+fontsize = 8
+
+node [
+fontname = "Bitstream Vera Sans"
+fontsize = 8
+shape = "record"
+]
+
+SmartPointer [
+label = "{\
+template \<class T\>\l\
+SmartPointer|\
+- _counter : Counter\l|\
++ SmartPointer()\l\
++ SmartPointer(p: T*)\l\
++ SmartPointer(sp : SmartPointer const &)\l\
++ operator-\>() : T*\l\
++ operator-\>() const : T const *\l\
++ operator*() : T&\l\
++ operator*() const : T\l\
++ operator=(SmartPointer\<T\> const & sp) : SmartPointer\<T\>&\l\
+- destroy() : void\l\
+}"
+]
+
+Counter [
+label = "{\
+template \<class T\>\l\
+Counter|\
+friend class SmartPointer\<T\>\l\l\
+- count : unsigned int\l\
+- ref : T* const\l|\
+- Counter(T* p)\l\
+- create() : unsigned int\l\
+- release() : unsigned int\l\
+}"
+]
+
+Counter -> SmartPointer [arrowhead = "diamond" style="solid"]
+
+}
