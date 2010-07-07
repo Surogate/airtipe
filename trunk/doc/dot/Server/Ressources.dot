@@ -246,6 +246,8 @@ label = "{\
 - _skinId : SkinType\l\
 - _bullet : IEntity *\l\
 - _started : Timestamp\l\
+- _playerKiller : bool\l\
+- _monsterKiller : bool\l\
 - _items : vector\<IEntity *\>\l\
 - _pv : int\l\
 - _spawnFrameNum : unsigned int\l\
@@ -265,6 +267,8 @@ label = "{\
 - _skinId : SkinType\l\
 - _bullet : IEntity *\l\
 - _started : Timestamp\l\
+- _playerKiller : bool\l\
+- _monsterKiller : bool\l\
 - _items : vector\<IEntity *\>\l\
 - _pv : int\l\
 - _spawnFrameNum : unsigned int\l\
@@ -284,6 +288,8 @@ label = "{\
 - _skinId : SkinType\l\
 - _bullet : IEntity *\l\
 - _started : Timestamp\l\
+- _playerKiller : bool\l\
+- _monsterKiller : bool\l\
 - _items : vector\<IEntity *\>\l\
 - _pv : int\l\
 - _spawnFrameNum : unsigned int\l\
