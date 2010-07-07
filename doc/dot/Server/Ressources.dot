@@ -67,16 +67,16 @@ AssocMap _associations\l\
 Ressource [
 label = "{\
 Ressource|\
-- _monsterFactory : Factory\l\
-- _bulletFactory : Factory\l\
-- _itemFactory : Factory\l\
-- _playerFactory : Factory\l\
-- _monsters : vector\<AMonster *\>\l\
-- _bullets : vector\<ABullet *\>\l\
-- _items : vector\<AItem *\>\l\
+- \<static\> currentId : unsigned int\l\
+- _entityFactory : Factory\l\
+- _monsters : vector\<AEntity *\>\l\
+- _bullets : vector\<AEntity *\>\l\
+- _items : vector\<AEntity *\>\l\
 - _maps : vector\<Map *\>\l\
-- _players : vector\<APlayer *\>\l|\
-+ loadMaps(mapScript : fstream) : void\l\
+- _players : vector\<AEntity *\>\l\
+- _libs : map\<AEntity, libHandler\>\l|\
++ LoadMaps(mapScript : fstream) : void\l\
++ LoadLibraries(path : string) : void\l\
 }"
 
 ]
@@ -85,7 +85,7 @@ Ressource|\
 Map [
 label = "{\
 Map|\
-- _frames : deque\<Frame\>\l\
+- _frames : que\<Frame\>\l\
 - _mapScript : fstream &\l\
 - _loaded : bool\l|\
 + Map(mapScript : fstream &)\l\
@@ -103,12 +103,10 @@ label = "{\
 Frame|\
 - _width : unsigned int\l\
 - _height : unsigned int\l\
-- _ceil : GroundType\l\
-- _ceilHeight : unsigned int\l\
-- _floor : GroundType\l\
-- _floorHeight : unsigned int\l\
-- _monsters : map\<EntityType, pair\<x : int, y : int\>\>\l\
-- _objects : map\<ItemType, pair\<x : int, y : int\>\>\l\
+- _ceil : AEntity\l\
+- _floor : AEntity\l\
+- _monsters : map\<entityId : unsigned int, pair\<x : int, y : int\>\>\l\
+- _items : map\<entityId : unsigned int, pair\<x : int, y : int\>\>\l\
 }"
 ]
 
@@ -212,10 +210,11 @@ label = "{ItemDoubleLaser||}"
 
 } // END : DYNAMIC LIBRARY SUBGRAPH
 
-// Abstract class AMonster
-AMonster [
+// Abstract class AEntity
+AEntity [
 label = "{\
-\<abstract\> - AMonster|\
+template \< template\<typename\> class MovementPolicy = NoMovement \>\l\l\
+\<abstract\> - AEntity|\
 - _id : unsigned int\l\
 - _type : EntityType\l\
 - _posX : unsigned int\l\
@@ -224,7 +223,6 @@ label = "{\
 - _height : unsigned int\l\
 - _skinId : SkinType\l\
 - _bullet : IEntity *\l\
-- _started : Timestamp\l\
 - _playerKiller : bool\l\
 - _monsterKiller : bool\l\
 - _items : vector\<IEntity *\>\l\
@@ -233,73 +231,11 @@ label = "{\
 }"
 ]
 
-// Class player
-APlayer [
+MovementPolicy [
 label = "{\
-\<abstract\> - APlayer|\
-- _id : unsigned int\l\
-- _type : EntityType\l\
-- _posX : unsigned int\l\
-- _posY : unsigned int\l\
-- _width : unsigned int\l\
-- _height : unsigned int\l\
-- _skinId : SkinType\l\
-- _bullet : IEntity *\l\
-- _started : Timestamp\l\
-- _playerKiller : bool\l\
-- _monsterKiller : bool\l\
-- _items : vector\<IEntity *\>\l\
-- _pv : int\l\
-- _spawnFrameNum : unsigned int\l\
-}"
-]
-
-// Class AItem
-AItem [
-label = "{\
-\<abstract\> - AItem|\
-- _id : unsigned int\l\
-- _type : EntityType\l\
-- _posX : unsigned int\l\
-- _posY : unsigned int\l\
-- _width : unsigned int\l\
-- _height : unsigned int\l\
-- _skinId : SkinType\l\
-- _bullet : IEntity *\l\
-- _started : Timestamp\l\
-- _playerKiller : bool\l\
-- _monsterKiller : bool\l\
-- _items : vector\<IEntity *\>\l\
-- _pv : int\l\
-- _spawnFrameNum : unsigned int\l\
-}"
-]
-
-// Class ABullet
-ABullet [
-label = "{\
-\<abstract\> - ABullet|\
-- _id : unsigned int\l\
-- _type : EntityType\l\
-- _posX : unsigned int\l\
-- _posY : unsigned int\l\
-- _width : unsigned int\l\
-- _height : unsigned int\l\
-- _skinId : SkinType\l\
-- _bullet : IEntity *\l\
-- _started : Timestamp\l\
-- _playerKiller : bool\l\
-- _monsterKiller : bool\l\
-- _items : vector\<IEntity *\>\l\
-- _pv : int\l\
-- _spawnFrameNum : unsigned int\l\
-}"
-]
-
-AMovement [
-label = "{\
-AMovement|\
+MovementPolicy|\
 - _timeStart : Timestamp\l|\
++ GetMovementType() : MovementType\l\
 + GetPosition() : pair\<x : unsigned int, y : unsigned int\>\l\
 + GetPositionAt(time : Timestamp) : pair\<x : unsigned int, y : unsigned int\>\l\
 }"
@@ -322,16 +258,19 @@ label = "{\
 \<Enum\> - SkinType|\
 Tentacle\l\
 Alien\l\
-...\l\
+Spider\l\
+BigBoss-1\l\
+BigBoss-2\l\
+BigBoss-3\l\
 }"
 ]
 
-EnumGroundType [
+EnumMovementType [
 label = "{\
-\<Enum\> - GroundType|\
-CeilLevel1\l\
-FloorLevel1\l\
-...\l\
+\<Enum\> - MovementType|\
+Circular\l\
+Vectorial\l\
+NoMovement\l\
 }"
 ]
 
@@ -342,6 +281,7 @@ Monster\l\
 Item\l\
 Player\l\
 Bullet\l\
+Ground\l\
 }"
 ]
 
@@ -352,49 +292,40 @@ fontsize = 8
 
 // Composition
 Factory -> Ressource [arrowhead = "diamond" style = "solid"]
-AMovement -> APlayer [arrowhead = "diamond" style = "solid"]
-AMovement -> AItem [arrowhead = "diamond" style = "solid"]
-AMovement -> ABullet [arrowhead = "diamond" style = "solid"]
-AMovement -> AMonster [arrowhead = "diamond" style = "solid"]
+AEntity -> Frame [arrowhead = "diamond" style = "solid"]
 
 // Uses
 EnumSkinType -> IEntity [arrowhead = "vee" style = "solid"]
-EnumGroundType -> Frame [arrowhead = "vee" style = "solid"]
 EnumEntityType -> IEntity [arrowhead = "vee" style = "solid"]
-
+EnumMovementType -> MovementPolicy [arrowhead = "vee" style = "solid"]
 
 // Aggregation
-AMonster -> Ressource [arrowhead = "odiamond" style = "solid"]
-AItem -> Ressource [arrowhead = "odiamond" style = "solid"]
-ABullet -> Ressource [arrowhead = "odiamond" style = "solid"]
-APlayer -> Ressource [arrowhead = "odiamond" style = "solid"]
+AEntity -> Ressource [arrowhead = "odiamond" style = "solid"]
 Map -> Ressource [arrowhead = "odiamond" style = "solid"]
 Frame -> Map [arrowhead = "odiamond" style = "solid"]
 
 // Heritage
-Monster1 -> AMonster [arrowhead = "onormal" style = "solid"]
-Monster2 -> AMonster [arrowhead = "onormal" style = "solid"]
-BulletLaser -> ABullet [arrowhead = "onormal" style = "solid"]
-BulletDoubleLaser -> ABullet [arrowhead = "onormal" style = "solid"]
-PlayerBlue -> APlayer [arrowhead = "onormal" style = "solid"]
-PlayerYellow -> APlayer [arrowhead = "onormal" style = "solid"]
-PlayerRed -> APlayer [arrowhead = "onormal" style = "solid"]
-PlayerGreen -> APlayer [arrowhead = "onormal" style = "solid"]
-BonusHealth -> AItem [arrowhead = "onormal" style = "solid"]
-Laser -> AItem [arrowhead = "onormal" style = "solid"]
-DoubleLaser -> AItem [arrowhead = "onormal" style = "solid"]
+Monster1 -> AEntity [arrowhead = "onormal" style = "solid"]
+Monster2 -> AEntity [arrowhead = "onormal" style = "solid"]
+BulletLaser -> AEntity [arrowhead = "onormal" style = "solid"]
+BulletDoubleLaser -> AEntity [arrowhead = "onormal" style = "solid"]
+PlayerBlue -> AEntity [arrowhead = "onormal" style = "solid"]
+PlayerYellow -> AEntity [arrowhead = "onormal" style = "solid"]
+PlayerRed -> AEntity [arrowhead = "onormal" style = "solid"]
+PlayerGreen -> AEntity [arrowhead = "onormal" style = "solid"]
+BonusHealth -> AEntity [arrowhead = "onormal" style = "solid"]
+Laser -> AEntity [arrowhead = "onormal" style = "solid"]
+DoubleLaser -> AEntity [arrowhead = "onormal" style = "solid"]
 Ressource -> SharedLibrary_Unix [arrowhead = "onormal" style = "solid"]
 Ressource -> SharedLibrary_Win32 [arrowhead = "onromal" style = "solid"]
-CircularMovement -> AMovement [arrowhead = "onromal" style = "solid"]
-VectorialMovement -> AMovement [arrowhead = "onromal" style = "solid"]
-NoMovement -> AMovement [arrowhead = "onromal" style = "solid"]
+CircularMovement -> MovementPolicy [arrowhead = "onromal" style = "solid"]
+VectorialMovement -> MovementPolicy [arrowhead = "onromal" style = "solid"]
+NoMovement -> MovementPolicy [arrowhead = "onromal" style = "solid"]
+AEntity -> MovementPolicy [arrowhead = "onormal" style = "solid"]
 
 // Implement interface
 SharedLibrary_Unix -> ISharedLibrary [arrowhead = "onormal" style = "dashed"]
 SharedLibrary_Win32 -> ISharedLibrary [arrowhead = "onormal" style = "dashed"]
-APlayer -> IEntity [arrowhead = "onormal" style = "dashed"]
-AItem -> IEntity [arrowhead = "onormal" style = "dashed"]
-ABullet -> IEntity [arrowhead = "onormal" style = "dashed"]
-AMonster -> IEntity [arrowhead = "onormal" style = "dashed"]
+AEntity -> IEntity [arrowhead = "onormal" style = "dashed"]
 
 }
