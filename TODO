@@ -1,5 +1,5 @@
-Tous les fichiers doivent avoir un header javadoc (voir existants)
-Tous les fichiers de declaration (.h) doivent etre commentes en javadoc egalement
+Tous les fichiers doivent avoir un header doxygen (voir existants)
+Tous les fichiers de declaration (.h) doivent etre commentes en doxygen egalement
 Tous les commits doivent etre commentes
 Toute modification des declarations doivents etres reportes sur l'UML le plus tot possible
 

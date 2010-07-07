@@ -8,6 +8,9 @@ fontsize = 8
 shape = "record"
 ]
 
+subgraph clusterSmartPointer {
+label = "Templated SmartPointer"
+
 SmartPointer [
 label = "{\
 template \<class T\>\l\
@@ -37,6 +40,8 @@ friend class SmartPointer\<T\>\l\l\
 - release() : unsigned int\l\
 }"
 ]
+
+}
 
 Counter -> SmartPointer [arrowhead = "diamond" style="solid"]
 
