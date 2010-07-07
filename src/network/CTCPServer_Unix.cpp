@@ -10,21 +10,9 @@
 #include	<cstdlib>
 #include	<cstring>
 #include	<fcntl.h>
-#include	<sys/types.h>
 #include	<sys/socket.h>
 #include	<arpa/inet.h>
 #include	"network/CTCPServer_Unix.h"
-
-static void*	runClient(void* args)
-{
-	TCPSession* session = NULL;
-	if (args != NULL)
-	{
-		session = static_cast<TCPSession*>(args);
-		session->run();
-	}
-	return (NULL);
-}
 
 CTCPServer_Unix::CTCPServer_Unix(short port, unsigned int bufferSize) :
 	_port(port),
@@ -57,6 +45,7 @@ bool	CTCPServer_Unix::init()
 		std::cerr << "socket failed" << std::endl;
 		return (false);
 	}
+	// non blocking
 	fcntl(this->_socket, F_SETFL, O_NONBLOCK);
 	// bind
 	res = bind(this->_socket, (sockaddr*)&saddr, sizeof(saddr));
@@ -86,8 +75,102 @@ void	CTCPServer_Unix::run()
 	{
 		if (this->accept())
 			std::cout << "new client" << std::endl;
-		this->processData();
+		if (this->poll())
+		{
+			this->readValidClients();
+			this->respondToValidClients();
+		}
+		this->process();
 	}
+}
+
+void	CTCPServer_Unix::process()
+{
+	while (!this->_in.empty())
+	{
+		this->_out.push_back(this->_in.front());
+		this->_in.pop_front();
+	}
+}
+
+void	CTCPServer_Unix::readValidClients()
+{
+	std::list<TCPSession*>::iterator	it = this->_sessions.begin();
+	while (it != this->_sessions.end())
+	{
+		if (FD_ISSET((*it)->getSocket(), &this->_fdr))
+		{
+			Data*	data = new Data(this->_bufferSize);
+			int res = (*it)->read(*data);
+			if (res != -1)
+			{
+				std::cout << "read: " << static_cast<char*>(data->data) << std::endl;
+				this->_in.push_back(std::pair<TCPSession*, Data*>(*it, data));
+			}
+			else
+			{
+				std::cout << "client disconnected" << std::endl;
+				it = this->_sessions.erase(it);
+				return;
+			}
+		}
+		++it;
+	}
+}
+
+void	CTCPServer_Unix::respondToValidClients()
+{
+	std::list<std::pair<TCPSession*, Data*> >::iterator	it = this->_out.begin();
+	while (it != this->_out.end())
+	{
+		if (FD_ISSET(it->first->getSocket(), &this->_fdw))
+		{
+			int res = it->first->write(*(it->second));
+			if (res == static_cast<int>(it->second->size))
+			{
+				std::cout << "message sent: " << static_cast<char*>(it->second->data) << std::endl;
+				it = this->_out.erase(it);
+				return;
+			}
+			else
+			{
+				std::cout << "write failed (or partially failed) ... retrying later" << std::endl;
+			}
+		}
+		++it;
+	}
+}
+
+int		CTCPServer_Unix::resetFdSets()
+{
+	int	maxSocket = 0;
+	FD_ZERO(&this->_fdr);
+	FD_ZERO(&this->_fdw);
+	std::list<TCPSession*>::iterator	it = this->_sessions.begin();
+	std::list<TCPSession*>::iterator	ite = this->_sessions.end();
+	while (it != ite)
+	{
+		if ((*it)->getSocket() > maxSocket)
+			maxSocket = (*it)->getSocket();
+		FD_SET((*it)->getSocket(), &this->_fdr);
+		FD_SET((*it)->getSocket(), &this->_fdw);
+		++it;
+	}
+	return (maxSocket);
+}
+
+bool	CTCPServer_Unix::poll()
+{
+	int maxSocket = this->resetFdSets();
+	if (maxSocket != 0)
+	{
+		int ret = select(maxSocket + 1, &this->_fdr, &this->_fdw, NULL, 0);
+		if (ret)
+			return (true);
+		else if (ret == -1)
+			std::cerr << "select failed" << std::endl;
+	}
+	return (false);
 }
 
 bool	CTCPServer_Unix::accept()
@@ -97,33 +180,10 @@ bool	CTCPServer_Unix::accept()
 	int newSock = ::accept(this->_socket, &saddr, &saddrSize);
 	if (newSock >= 0)
 	{
-		TCPSession*		session = new TCPSession(newSock, *this, this->_bufferSize);
-		AbsThread*		th = new AbsThread;
-		this->_sessions.insert(std::pair<TCPSession*, AbsThread*>(session, th));
-		th->launch(&runClient, session);
+		this->_sessions.push_back(new TCPSession(newSock));
 		return (true);
 	}
 	return (false);
-}
-
-void	CTCPServer_Unix::processData()
-{
-	if (this->requests.size() > 0 && this->mutexRequests.tryLock())
-	{
-		while (!this->requests.empty())
-		{
-			TCPSession*	session = this->requests.begin()->first;
-			if (session->mutexOutgoing.tryLock())
-			{
-				void* response = new char[this->_bufferSize];
-				memcpy(response, this->requests.begin()->second, this->_bufferSize);
-				session->outgoing.push_back(response);
-				this->requests.erase(this->requests.begin());
-				session->mutexOutgoing.unlock();
-			}
-		}
-		this->mutexRequests.unlock();
-	}
 }
 
 void	CTCPServer_Unix::close()

@@ -9,12 +9,10 @@
 #ifndef		CTCPSERVER_UNIX_H__
 # define	CTCPSERVER_UNIX_H__
 
-# include	<map>
 # include	<list>
+# include	<sys/types.h>
 # include	"network/ITCPServer.h"
 # include	"network/CTCPSession_Unix.h"
-# include	"thread/CAbsThread_Unix.h"
-# include	"thread/CAbsMutex_Unix.h"
 
 /*!
  * \class	Concrete implementation of a TCP server for Unix
@@ -46,6 +44,14 @@ class		CTCPServer_Unix : ITCPServer
 		 */
 		virtual void	run();
 
+		bool		poll();
+
+		void		readValidClients();
+
+		void		respondToValidClients();
+
+		virtual void		process();
+
 		/*!
 		 * \brief	Try accepting a new client (should be non blocking)
 		 * \return	true if someone has been accepted. else false.
@@ -53,14 +59,12 @@ class		CTCPServer_Unix : ITCPServer
 		virtual bool		accept();
 
 		/*!
-		 * \brief	The function to redefine to do something with data incoming from clients threads
-		 */
-		virtual void		processData();
-
-		/*!
 		 * \brief	Close the server and all opened client sessions
 		 */
 		void		close();
+
+	private:
+		int		resetFdSets();
 
 	private:
 		/*!
@@ -86,18 +90,13 @@ class		CTCPServer_Unix : ITCPServer
 		/*!
 		 * \brief	A list of client sessions
 		 */
-		std::map<TCPSession*, AbsThread*>		_sessions;
+		std::list<TCPSession*>		_sessions;
 
-	public:
-		/*!
-		 * \brief	A list of clients requests (need a mutex for access)
-		 */
-		std::list<std::pair<TCPSession*, Data> >	requests;
+		std::list<std::pair<TCPSession*, Data*> >		_in;
+		std::list<std::pair<TCPSession*, Data*> >		_out;
 
-		/*!
-		 * \brief	Mutex for requests
-		 */
-		AbsMutex		mutexRequests;
+		fd_set		_fdr;
+		fd_set		_fdw;
 };
 
 /*!
