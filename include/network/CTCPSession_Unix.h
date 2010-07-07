@@ -64,12 +64,12 @@ class		CTCPSession_Unix : ITCPSession
 		 */
 		int		getSocket() const;
 
-	private:
+	protected:
 		/*!
 		 * \brief	The client socket
 		 */
 		int		_socket;
-}
+};
 
 /*!
  * \brief	A typedef to keep abstraction at use

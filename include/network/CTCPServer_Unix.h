@@ -17,7 +17,7 @@
 /*!
  * \class	Concrete implementation of a TCP server for Unix
  */
-class		CTCPServer_Unix : ITCPServer
+class		CTCPServer_Unix : public ITCPServer
 {
 	public:
 		/*!
@@ -63,10 +63,10 @@ class		CTCPServer_Unix : ITCPServer
 		 */
 		void		close();
 
-	private:
+	protected:
 		int		resetFdSets();
 
-	private:
+	protected:
 		/*!
 		 * \brief	The server port
 		 */
