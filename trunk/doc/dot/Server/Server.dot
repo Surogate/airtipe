@@ -37,7 +37,7 @@ Game|\
 friend class Server\l\l\
 - _UDPServer : UDP\l\
 - _ressources : Ressource\l\
-- _pf : PacketFactory &\l\
+- _pf : DataFactory &\l\
 - _pe : PhysicEngine\l\
 - _startTime : Timestamp\l\
 - _valid : bool\l\
@@ -89,7 +89,7 @@ PhysicEngine|\
 Server [
 label = "{\
 Server|\
-- _pf : PacketFactory &\l\
+- _pf : DataFactory &\l\
 - _parties : list\<Game\>\l\
 - _actions : map\<PacketCode, ServerActionFunc\>\l|\
 - createGame(pak : Packet const &) : Packet *\l\
@@ -160,7 +160,7 @@ UDP|\
 subgraph clusterTCPServer {
 label = "Diagram Network.dot.png"
 
-// Class TCPServer
+// Class TCPServer_Unix
 TCPServer [
 label = "{\
 TCPServer|\
@@ -168,8 +168,8 @@ TCPServer|\
 - _socket : int\l\
 - _bufferSize : unsigned int\l\
 - _running : bool\l\
-- _sessions : list\<TCPSession*\>\l\
-- _requests : list\<pair\<ITCPSession*, Data\>\>\l|\
+- _sessions : list\<ITCPSession*\>\l\
+- requests : list\<pair\<ITCPSession*, Data\>\>\l\
 + TCPServer(port : short, bufferSize : unsigned int)\l\
 + init() : bool\l\
 + virtual run() : void\l\
@@ -242,9 +242,7 @@ label = "Diagram Packet.dot.png"
 
 Packet [
 label = "{\
-Packet|\
-+ header : PacketHeader\l\
-+ data : AData\l|\
+Data||\
 }"
 ]
 
