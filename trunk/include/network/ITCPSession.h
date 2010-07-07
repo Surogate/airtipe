@@ -9,10 +9,8 @@
 #ifndef		ITCPSESSION_H__
 # define	ITCPSESSION_H__
 
-/*!
- * \brief	The block of data, write or read
- */
-typedef void*	Data;
+# include	"network/TCPData.h"
+typedef TCPData Data;
 
 /*!
  * \brief	Interface over a server-side client session on a TCP server
@@ -21,23 +19,12 @@ class		ITCPSession
 {
 	public:
 		/*!
-		 * \brief	To run the session
-		 */
-		virtual void	run() = 0;
-
-		/*!
-		 * \brief	To demultiplex data on the socket.
-		 * \return	true if there is something to do. else false.
-		 */
-		virtual bool	poll() = 0;
-
-		/*!
 		 * \brief	Write some data to the client owning the session
 		 * \param	in: the data to write
 		 * \param	size to write (in bytes)
 		 * \return	the size wrote (in bytes). -1 if an error occured
 		 */
-		virtual int		write(Data data, unsigned int size) = 0;
+		virtual int		write(Data& data) = 0;
 
 		/*!
 		 * \brief	Read some data from the client owning the session
@@ -45,7 +32,7 @@ class		ITCPSession
 		 * \paran	size to read (in bytes)
 		 * \return	the size read (in bytes). -1 if an error occured
 		 */
-		virtual int		read(Data data, unsigned int size) = 0;
+		virtual int		read(Data& data) = 0;
 
 		/*!
 		 * \brief	Close the session

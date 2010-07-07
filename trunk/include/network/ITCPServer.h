@@ -9,6 +9,8 @@
 #ifndef		ITCPSERVER_H__
 # define	ITCPSERVER_H__
 
+# include	"network/TCPData.h"
+typedef TCPData Data;
 /*!
  * \class	Abstraction for sychronous TCP server
  */
@@ -26,16 +28,14 @@ class		ITCPServer
 		 */
 		virtual void	run() = 0;
 
+		virtual bool	poll() = 0;
+
+		virtual void	process() = 0;
 		/*!
 		 * \brief	Try accepting a new client (should be non blocking)
 		 * \return	true if a new client has been accepted. else false
 		 */
 		virtual bool	accept() = 0;
-
-		/*!
-		 * \brief	The function to redefine to do something with data incoming from clients threads
-		 */
-		virtual void	processData() = 0;
 
 		/*!
 		 * \brief	Close the server and all opened client sessions
