@@ -8,6 +8,15 @@ fontsize = 8
 shape = "record"
 ]
 
+TCPData [
+label = "{\
+TCPData|\
++ data : void*\l\
++ size : unsigned int\l|\
++ TCPData(unsigned int)\l\
+}"
+]
+
 //
 // TCPSESSION SUBGRAPH
 //
@@ -18,8 +27,8 @@ label = "TCPSession Abstraction (Unix/Win32)"
 ITCPSession [
 label = "{\
 \<interface\> - ITCPSession|\
-+ write(Data, unsigned int) : int\l\
-+ read(Data, unsigned int) : int\l\
++ write(TCPData) : int\l\
++ read(TCPData) : int\l\
 + close() : bool\l\
 }"
 ]
@@ -28,14 +37,10 @@ label = "{\
 TCPSession_Unix [
 label = "{\
 TCPSession_Unix|\
-- _socket : int\l\
-- _server : TCPServer&\l\
-- _bufferSize : unsigned int\l\
-- _broken : bool\l\
-- _incoming : list\<Data\>\l|\
-+ TCPSession(socket : int, server : TCPServer&, bufferSize : unsigned int)\l\
-+ write(Data, unsigned int) : int\l\
-+ read(Data, unsigned int) : int\l\
+- _socket : int\l|\
++ TCPSession(socket : int)\l\
++ write(TCPData) : int\l\
++ read(TCPData) : int\l\
 + close() : bool\l\
 }"
 ]
@@ -44,14 +49,10 @@ TCPSession_Unix|\
 TCPSession_Win32 [
 label = "{\
 TCPSession_Win32|\
-- _socket : SOCKET\l\
-- _server : TCPServer&\l\
-- _bufferSize : unsigned int\l\
-- _broken : bool\l\
-- _incoming : list\<Data\>\l|\
-+ TCPSession(socket : int, server : TCPServer&, bufferSize : unsigned int)\l\
-+ write(Data, unsigned int) : int\l\
-+ read(Data, unsigned int) : int\l\
+- _socket : SOCKET\l|\
++ TCPSession(socket : int)\l\
++ write(TCPData) : int\l\
++ read(TCPData) : int\l\
 + close() : bool\l\
 }"
 ]
@@ -117,13 +118,12 @@ label = "TCPServer Abstraction (Unix/Win32)"
 ITCPServer [
 label = "{\
 \<interface\> - ITCPServer|\
-typedef void* Data\l\l\
 + init() : bool\l\
 + run() : void\l\
-+ poll() : void\l\
-+ poll_one() : void\l\
-+ close() : void\l\
++ process() : void\l\
 + accept() : bool\l\
++ poll() : void\l\
++ close() : void\l\
 }"
 ]
 
@@ -136,14 +136,17 @@ TCPServer_Unix|\
 - _bufferSize : unsigned int\l\
 - _running : bool\l\
 - _sessions : list\<ITCPSession*\>\l\
-- requests : list\<pair\<ITCPSession*, Data\>\>\l\
+- _in : list\<pair\<ITCPSession*, TCPData\>\>\l\
+- _out : list\<pair\<ITCPSession*, TCPData\>\>\l\
+- _fdr : fd_set\l\
+- _fdw : fd_set\l|\
 + TCPServer(port : short, bufferSize : unsigned int)\l\
 + init() : bool\l\
 + virtual run() : void\l\
-+ poll() : void\l\
-+ poll_one() : void\l\
-+ close() : void\l\
++ virtual process() : void\l\
 + virtual accept() : bool\l\
++ poll() : void\l\
++ close() : void\l\
 }"
 ]
 
@@ -156,14 +159,17 @@ TCPServer_Win32|\
 - _bufferSize : unsigned int\l\
 - _running : bool\l\
 - _sessions : list\<ITCPSession*\>\l\
-- requests : list\<pair\<ITCPSession*, Data\>\>\l\
+- _in : list\<pair\<ITCPSession*, TCPData\>\>\l\
+- _out : list\<pair\<ITCPSession*, TCPData\>\>\l\
+- _fdr : fd_set\l\
+- _fdw : fd_set\l|\
 + TCPServer(port : short, bufferSize : unsigned int)\l\
 + init() : bool\l\
 + virtual run() : void\l\
-+ poll() : void\l\
-+ poll_one() : void\l\
-+ close() : void\l\
++ virtual process() : void\l\
 + virtual accept() : bool\l\
++ poll() : void\l\
++ close() : void\l\
 }"
 ]
 
