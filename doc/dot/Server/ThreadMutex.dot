@@ -18,7 +18,8 @@ label = "Thread Abstraction (Unix/Win32)"
 IAbsThread [
 label = "{\
 \<interface\> - IAbsThread|\
-typedef void* (*startRoutine)(void*)\l|\
+typedef void* (*startRoutine)(void*)\l\l\
+- _started : bool\l|\
 + launch(startRoutine, void* args) : bool\l\
 + join() : bool\l\
 + exit() : void\l\
@@ -29,7 +30,8 @@ typedef void* (*startRoutine)(void*)\l|\
 AbsThread_Unix [
 label = "{\
 AbsThread_Unix|\
-- _tid : pthread_t*\l|\
+- _tid : pthread_t*\l\
+- _started : bool\l|\
 + launch(startRoutine, void* args) : bool\l\
 + join() : bool\l\
 + exit() : void\l\
@@ -40,7 +42,8 @@ AbsThread_Unix|\
 AbsThread_Win32 [
 label = "{\
 AbsThread_Win32|\
-- _tid : HANDLE\l|\
+- _tid : HANDLE\l\
+= _started : bool\l|\
 + launch(startRoutine, void* args) : bool\l\
 + join() : bool\l\
 + exit() : void\l\
