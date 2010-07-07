@@ -4,7 +4,8 @@ SRCS		=	Server/Server.dot			\
 				Server/Packet.dot			\
 				Server/Ressources.dot		\
 				Server/Activity_Party.dot	\
-				Common/Factory.dot
+				Common/Factory.dot			\
+				Common/Singleton.dot
 
 DOT			=	dot
 

@@ -1,0 +1,53 @@
+digraph G {
+fontname = "Bitstream Vera Sans"
+fontsize = 8
+
+node [
+fontname = "Bitstream Vera Sans"
+fontsize = 8
+shape = "record"
+]
+
+subgraph clusterGenericFactory {
+label = "Templated Singleton"
+
+// Template class SingletonHolder
+SingletonHolder [
+label = "{\
+template \<class T,\l\
+		  template \<class\> class CreationPolicy = PolicyCreatorNew,\l\
+		  class ThreadPolicy = PolicyThreadSingle\l\
+		  \>\l\
+SingletonHolder|\
+- \<static\> _instance : T*\l|\
++ \<static\> getInstance() : T*\l\
++ \<static\> destroy() : void\l\
+- SingletonHolder()\l\
+- ~SingletonHolder()\l\
+}"
+]
+
+// Class Templated PolicyCreatorNew
+PolicyCreatorNew [
+label = "{\
+template \<class T\>\l\
+PolicyCreatorNew||\
++ \<static\> Create() : T*\l\
++ \<static\> Destroy(toDelete : T *) : void\l\
+}"
+]
+
+// Class PolicyThreadSingle
+PolicyThreadSingle [
+label = "{\
+PolicyThreadSingle||\
++ \<static\> Lock() : void\l\
++ \<static\> Trylock() : bool\l\
++ \<static\> unlock() : void\l\
+}"
+]
+
+}
+
+}
+
