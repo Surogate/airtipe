@@ -227,7 +227,8 @@ template \< template\<typename\> class MovementPolicy = NoMovement \>\l\l\
 - _monsterKiller : bool\l\
 - _items : vector\<IEntity *\>\l\
 - _pv : int\l\
-- _spawnFrameNum : unsigned int\l\
+- _spawnFrameNum : unsigned int\l|\
++ Clone() : AEntity *\l\
 }"
 ]
 

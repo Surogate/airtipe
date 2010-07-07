@@ -237,12 +237,28 @@ AbsMutex|\
 //
 // APACKET SUBGRAPH
 //
+subgraph clusterData {
+label = "Diagram Packet.dot.png"
+
+Data [
+label = "{\
+Data||\
+}"
+]
+
+}
+
+//
+// APACKET SUBGRAPH
+//
 subgraph clusterPacket {
 label = "Diagram Packet.dot.png"
 
 Packet [
 label = "{\
-Data||\
+Packet||\
++ header : PacketHeader\l\
++ data : Data\l\
 }"
 ]
 
@@ -290,7 +306,11 @@ AbsMutex -> ThreadPool [arrowhead = "diamond" style = "solid"]
 TCPSession -> TCPServer [arrowhead = "odiamond" style = "solid"]
 TCPSession -> Game [arrowhead = "odiamond" style = "solid"]
 Game -> Server [arrowhead = "odiamond" style = "solid"]
-Packet -> Factory [arrowhead = "odiamond" style = "solid"]
+Data -> Factory [arrowhead = "odiamond" style = "solid"]
+
+// Uses
+Packet -> Game [arrowhead = "vee" style = "solid"]
+Packet -> Server [arrowhead = "vee" style = "solid"]
 
 // Heritage
 Server -> TCPServer [arrowhead = "onormal" style = "solid"]
