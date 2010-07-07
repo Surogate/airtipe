@@ -15,20 +15,19 @@ label = "Diagram Ressources.dot.png"
 Ressource [
 label = "{\
 Ressource|\
-- _monsterFactory : Factory\l\
-- _bulletFactory : Factory\l\
-- _itemFactory : Factory\l\
-- _playerFactory : Factory\l\
-- _monsters : vector\<AMonster *\>\l\
-- _bullets : vector\<ABullet *\>\l\
-- _items : vector\<AItem *\>\l\
+- \<static\> currentId : unsigned int\l\
+- _entityFactory : Factory\l\
+- _monsters : vector\<AEntity *\>\l\
+- _bullets : vector\<AEntity *\>\l\
+- _items : vector\<AEntity *\>\l\
 - _maps : vector\<Map *\>\l\
-- _players : vector\<APlayer *\>\l|\
-+ loadMaps(mapScript : fstream) : void\l\
+- _players : vector\<AEntity *\>\l\
+- _libs : map\<AEntity, libHandler\>\l|\
++ LoadMaps(mapScript : fstream) : void\l\
++ LoadLibraries(path : string) : void\l\
 }"
 
 ]
-
 }
 
 // Class Game
