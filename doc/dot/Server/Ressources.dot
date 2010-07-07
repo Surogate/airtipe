@@ -35,6 +35,8 @@ label = "{\
 + GetSpawnFrameNum() : unsigned int\l\
 + SetSpawnFrameNum(frameNum : unsigned int) : void\l\
 + GetType() : EntityType\l\
++ IsMonsterKiller() : bool\l\
++ IsPlayerKiller() : bool\l\
 + Start() : void\l\
 + Clone() : IEntity *\l\
 }"
@@ -145,32 +147,6 @@ label = "SharedLibrary_Win32"
 subgraph clusterMonstersLibrary {
 label = "Entity Dynamic Libraries"
 
-// Abstract class AMonster
-AMonster [
-label = "{\
-\<abstract\> - AMonster|\
-- _id : unsigned int\l\
-- _type : EntityType\l\
-- _posX : unsigned int\l\
-- _posY : unsigned int\l\
-- _width : unsigned int\l\
-- _height : unsigned int\l\
-- _skinId : SkinType\l\
-- _bullet : IEntity *\l\
-- _items : vector\<IEntity *\>\l\
-- _pv : int\l\
-- _spawnFrameNum : unsigned int\l\
-}"
-]
-
-// Entry points
-EntryDynamicLibrary [
-label = "{\
-\<not a class\> - entry points|\
-getInstance() ; IEntity &\l\
-}"
-]
-
 // Class Monster1
 Monster1 [
 label = "{Monster1||}"
@@ -192,24 +168,6 @@ BulletLaser||\
 BulletDoubleLaser [
 label = "{\
 BulletDoubleLaser||\
-}"
-]
-
-// Class player
-APlayer [
-label = "{\
-\<abstract\> - APlayer|\
-- _id : unsigned int\l\
-- _type : EntityType\l\
-- _posX : unsigned int\l\
-- _posY : unsigned int\l\
-- _width : unsigned int\l\
-- _height : unsigned int\l\
-- _skinId : SkinType\l\
-- _bullet : IEntity *\l\
-- _items : vector\<IEntity *\>\l\
-- _pv : int\l\
-- _spawnFrameNum : unsigned int\l\
 }"
 ]
 
@@ -237,24 +195,6 @@ PlayerRed||\
 }"
 ]
 
-// Class AItem
-AItem [
-label = "{\
-\<abstract\> - AItem|\
-- _id : unsigned int\l\
-- _type : EntityType\l\
-- _posX : unsigned int\l\
-- _posY : unsigned int\l\
-- _width : unsigned int\l\
-- _height : unsigned int\l\
-- _skinId : SkinType\l\
-- _bullet : IEntity *\l\
-- _items : vector\<IEntity *\>\l\
-- _pv : int\l\
-- _spawnFrameNum : unsigned int\l\
-}"
-]
-
 // Class BonusHealth
 BonusHealth [
 label = "{ItemBonusHealth||}"
@@ -270,6 +210,67 @@ DoubleLaser [
 label = "{ItemDoubleLaser||}"
 ]
 
+} // END : DYNAMIC LIBRARY SUBGRAPH
+
+// Abstract class AMonster
+AMonster [
+label = "{\
+\<abstract\> - AMonster|\
+- _id : unsigned int\l\
+- _type : EntityType\l\
+- _posX : unsigned int\l\
+- _posY : unsigned int\l\
+- _width : unsigned int\l\
+- _height : unsigned int\l\
+- _skinId : SkinType\l\
+- _bullet : IEntity *\l\
+- _started : Timestamp\l\
+- _playerKiller : bool\l\
+- _monsterKiller : bool\l\
+- _items : vector\<IEntity *\>\l\
+- _pv : int\l\
+- _spawnFrameNum : unsigned int\l\
+}"
+]
+
+// Class player
+APlayer [
+label = "{\
+\<abstract\> - APlayer|\
+- _id : unsigned int\l\
+- _type : EntityType\l\
+- _posX : unsigned int\l\
+- _posY : unsigned int\l\
+- _width : unsigned int\l\
+- _height : unsigned int\l\
+- _skinId : SkinType\l\
+- _bullet : IEntity *\l\
+- _started : Timestamp\l\
+- _items : vector\<IEntity *\>\l\
+- _pv : int\l\
+- _spawnFrameNum : unsigned int\l\
+}"
+]
+
+// Class AItem
+AItem [
+label = "{\
+\<abstract\> - AItem|\
+- _id : unsigned int\l\
+- _type : EntityType\l\
+- _posX : unsigned int\l\
+- _posY : unsigned int\l\
+- _width : unsigned int\l\
+- _height : unsigned int\l\
+- _skinId : SkinType\l\
+- _bullet : IEntity *\l\
+- _started : Timestamp\l\
+- _items : vector\<IEntity *\>\l\
+- _pv : int\l\
+- _spawnFrameNum : unsigned int\l\
+}"
+]
+
 // Class ABullet
 ABullet [
 label = "{\
@@ -282,13 +283,33 @@ label = "{\
 - _height : unsigned int\l\
 - _skinId : SkinType\l\
 - _bullet : IEntity *\l\
+- _started : Timestamp\l\
 - _items : vector\<IEntity *\>\l\
 - _pv : int\l\
 - _spawnFrameNum : unsigned int\l\
 }"
 ]
 
-} // END : DYNAMIC LIBRARY SUBGRAPH
+AMovement [
+label = "{\
+AMovement|\
+- _timeStart : Timestamp\l|\
++ GetPosition() : pair\<x : unsigned int, y : unsigned int\>\l\
++ GetPositionAt(time : Timestamp) : pair\<x : unsigned int, y : unsigned int\>\l\
+}"
+]
+
+CircularMovement [
+label = "{CircularMovement}"
+]
+
+VectorialMovement [
+label = "{VectorialMovement}"
+]
+
+NoMovement [
+label = "{NoMovement}"
+]
 
 EnumSkinType [
 label = "{\
@@ -325,6 +346,10 @@ fontsize = 8
 
 // Composition
 Factory -> Ressource [arrowhead = "diamond" style = "solid"]
+AMovement -> APlayer [arrowhead = "diamond" style = "solid"]
+AMovement -> AItem [arrowhead = "diamond" style = "solid"]
+AMovement -> ABullet [arrowhead = "diamond" style = "solid"]
+AMovement -> AMonster [arrowhead = "diamond" style = "solid"]
 
 // Uses
 EnumSkinType -> IEntity [arrowhead = "vee" style = "solid"]
@@ -354,7 +379,9 @@ Laser -> AItem [arrowhead = "onormal" style = "solid"]
 DoubleLaser -> AItem [arrowhead = "onormal" style = "solid"]
 Ressource -> SharedLibrary_Unix [arrowhead = "onormal" style = "solid"]
 Ressource -> SharedLibrary_Win32 [arrowhead = "onromal" style = "solid"]
-
+CircularMovement -> AMovement [arrowhead = "onromal" style = "solid"]
+VectorialMovement -> AMovement [arrowhead = "onromal" style = "solid"]
+NoMovement -> AMovement [arrowhead = "onromal" style = "solid"]
 
 // Implement interface
 SharedLibrary_Unix -> ISharedLibrary [arrowhead = "onormal" style = "dashed"]
