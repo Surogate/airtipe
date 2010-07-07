@@ -5,7 +5,6 @@ Toute modification des declarations doivents etres reportes sur l'UML le plus to
 
 CONCEPTION:
 - Singleton sur Factory
-- Revoir quelques points du proto de comm
 - RFC
 - Politique de creation pour les Entites et Packets (new pour les Entite et PlacementNew pour les packets)
 

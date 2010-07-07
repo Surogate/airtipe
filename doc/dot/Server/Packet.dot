@@ -8,17 +8,17 @@ fontsize = 8
 shape = "record"
 ]
 
-APacket [
+Packet [
 label = "{\
-\<abstract\> - APacket||\
+Packet||\
 + header : PacketHeader\l\
-+ data : AData\l\
++ data : Data\l\
 }"
 ]
 
-AData [
+Data [
 label = "{\
-\<abstract\> - AData||\
+Data||\
 }"
 ]
 
@@ -163,17 +163,17 @@ fontsize = 8
 ]
 
 // Composition
-PacketHeader -> APacket [arrowhead = "diamond" style = "solid"]
-AData -> APacket [arrowhead = "diamond" style = "solid"]
+PacketHeader -> Packet [arrowhead = "diamond" style = "solid"]
+Data -> Packet [arrowhead = "diamond" style = "solid"]
 
 // Heritage
-DataEntity -> AData [arrowhead = "onormal" style = "solid"]
-DataLogin -> AData [arrowhead = "onormal" style = "solid"]
-DataMap -> AData [arrowhead = "onormal" style = "solid"]
-DataEmpty -> AData [arrowhead = "onormal" style = "solid"]
-DataId -> AData [arrowhead = "onormal" style = "solid"]
-DataSpaceCraft -> AData [arrowhead = "onormal" style = "solid"]
-DataSynchro -> AData [arrowhead = "onormal" style = "solid"]
-DataShoot -> AData [arrowhead = "onormal" style = "solid"]
+DataEntity -> Data [arrowhead = "onormal" style = "solid"]
+DataLogin -> Data [arrowhead = "onormal" style = "solid"]
+DataMap -> Data [arrowhead = "onormal" style = "solid"]
+DataEmpty -> Data [arrowhead = "onormal" style = "solid"]
+DataId -> Data [arrowhead = "onormal" style = "solid"]
+DataSpaceCraft -> Data [arrowhead = "onormal" style = "solid"]
+DataSynchro -> Data [arrowhead = "onormal" style = "solid"]
+DataShoot -> Data [arrowhead = "onormal" style = "solid"]
 
 }
