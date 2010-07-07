@@ -9,7 +9,6 @@
 #ifndef		COUNTER_H__
 # define	COUNTER_H__
 
-#include <iostream>
 template	<class T>
 class		SmartPointer;
 
@@ -23,10 +22,7 @@ class		Counter
 		~Counter()
 		{
 			if (this->count == 0)
-			{
-				std::cout << "delete" << std::endl;
 				delete this->ref;
-			}
 		}
 
 	private:

@@ -13,7 +13,6 @@
 
 # include	"Counter.h"
 
-#include <iostream>
 template	<class T>
 class		SmartPointer
 {
@@ -36,7 +35,6 @@ class		SmartPointer
 
 		~SmartPointer()
 		{
-			std::cout << "destroy" << std::endl;
 			this->destroy();
 		}
 
