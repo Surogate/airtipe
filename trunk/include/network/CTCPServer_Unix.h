@@ -44,19 +44,19 @@ class		CTCPServer_Unix : ITCPServer
 		 */
 		virtual void	run();
 
-		bool		poll();
-
-		void		readValidClients();
-
-		void		respondToValidClients();
-
 		virtual void		process();
-
+		
 		/*!
 		 * \brief	Try accepting a new client (should be non blocking)
 		 * \return	true if someone has been accepted. else false.
 		 */
 		virtual bool		accept();
+
+		bool		poll();
+
+		void		readValidClients();
+
+		void		respondToValidClients();
 
 		/*!
 		 * \brief	Close the server and all opened client sessions
