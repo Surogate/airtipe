@@ -5,6 +5,7 @@ SRCS		=	Server/Server.dot			\
 				Server/Ressources.dot		\
 				Server/Activity_Party.dot	\
 				Common/Factory.dot			\
+				Common/SmartPointer.dot		\
 				Common/Singleton.dot
 
 DOT			=	dot
