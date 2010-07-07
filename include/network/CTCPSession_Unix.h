@@ -18,7 +18,7 @@ typedef		CTCPServer_Unix		TCPServer;
 /*!
  * \brief	Concrete implementation of a TCP session for Unix
  */
-class		CTCPSession_Unix : ITCPSession
+class		CTCPSession_Unix : public ITCPSession
 {
 	public:
 		/*!

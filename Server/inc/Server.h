@@ -9,15 +9,20 @@
 #ifndef		SERVER_H__
 # define	SERVER_H__
 
-#ifdef		UNIX
-# include	"network/CTCPServer_Unix.h"
-#endif
+# include	"Client.h"
+
+# ifdef		UNIX
+#  include	"network/CTCPServer_Unix.h"
+# endif
 
 class		Server : public TCPServer
 {
 	public:
 		Server(short port, unsigned int bufferSize);
 		virtual ~Server();
+
+	public:
+		bool	accept();
 };
 
 #endif		// SERVER_H__
