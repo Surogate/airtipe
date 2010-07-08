@@ -9,6 +9,8 @@
 #ifndef		SERVER_H__
 # define	SERVER_H__
 
+# include	<map>
+
 # include	"Client.h"
 # include	"packets/PacketManager.h"
 
@@ -26,7 +28,22 @@ class		Server : public TCPServer
 		bool	accept();
 
 	private:
+		typedef Packet * (Server::*Action)(Packet * pak);
+		std::map<PacketCode, Action>	_actions;
 		PacketManager	_pm;
+
+	private:
+		Packet *	ActionLogin(Packet * pak);
+		Packet *	ActionCreateGame(Packet * pak);
+		Packet *	ActionAddMap(Packet * pak);
+		Packet *	ActionValidGame(Packet * pak);
+		Packet *	ActionJoinGame(Packet * pak);
+		Packet *	ActionChooseSpacecraft(Packet * pak);
+		Packet *	ActionReady(Packet * pak);
+		Packet *	ActionNotReady(Packet * pak);
+		Packet *	ActionStartGame(Packet * pak);
+		Packet *	ActionStopGame(Packet * pak);
+		Packet *	ActionQuitGame(Packet * pak);
 };
 
 #endif		// SERVER_H__

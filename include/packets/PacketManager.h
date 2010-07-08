@@ -14,6 +14,14 @@
 # include	"factory/DefaultFactoryError.hpp"
 # include	"factory/NoThrowFactoryError.hpp"
 # include	"packets/Packet.h"
+# include	"packets/DataEmpty.h"
+# include	"packets/DataId.h"
+# include	"packets/DataSynchro.h"
+# include	"packets/DataLogin.h"
+# include	"packets/DataMap.h"
+# include	"packets/DataSpacecraft.h"
+# include	"packets/DataEntity.h"
+
 
 class		PacketManager
 {
@@ -23,7 +31,10 @@ class		PacketManager
 	public:
 		PacketManager();
 		~PacketManager();
-		Packet * createPacket(PacketCode);
+		Packet * CreatePacket(PacketCode);
+		Packet * CreatePacket(PacketCode, AData *);
+		AData * CreateData(PacketCode);
+		AData * interpretData(PacketCode, void * buff);
 
 	private:
 		DataFactory *	_dataFactory;

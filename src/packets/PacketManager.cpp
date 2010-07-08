@@ -7,17 +7,11 @@
  */
 
 #include	"packets/PacketManager.h"
-#include	"packets/DataEmpty.h"
-#include	"packets/DataId.h"
-#include	"packets/DataSynchro.h"
-#include	"packets/DataLogin.h"
-#include	"packets/DataMap.h"
-#include	"packets/DataSpacecraft.h"
-#include	"packets/DataEntity.h"
 
 PacketManager::PacketManager()
 {
 	this->_dataFactory = SingletonFactory::getInstance();
+
 	this->_dataFactory->Register(Login, new DataLogin, &AData::Clone);
 	this->_dataFactory->Register(CreateGame, new DataEmpty, &AData::Clone);
 	this->_dataFactory->Register(AddMap, new DataMap, &AData::Clone);
@@ -62,8 +56,24 @@ PacketManager::~PacketManager()
 
 }
 
-Packet * PacketManager::createPacket(PacketCode code)
+Packet * PacketManager::CreatePacket(PacketCode code)
 {
 	return (new Packet(code, this->_dataFactory->CreateObject(code)));
+}
+
+
+Packet * PacketManager::CreatePacket(PacketCode code, AData * data)
+{
+	return (new Packet(code, data));
+}
+
+AData * PacketManager::CreateData(PacketCode code)
+{
+	return (this->_dataFactory->CreateObject(code));
+}
+
+AData * PacketManager::interpretData(PacketCode, void * buff)
+{
+	return new (buff) AData;
 }
 

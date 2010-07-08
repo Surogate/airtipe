@@ -14,8 +14,8 @@
 class		PacketHeader
 {
 	public:
-		PacketHeader() : code(NoCode), timestamp(0), dataSize(0) {}
-		PacketHeader(PacketCode code) : code(code), timestamp(0), dataSize(0) {}
+		PacketHeader();
+		PacketHeader(PacketCode code);
 		PacketCode		code;
 		int				timestamp; // A Modifier biensur
 		unsigned int 	dataSize;
