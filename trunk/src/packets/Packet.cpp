@@ -26,6 +26,11 @@ Packet::Packet(PacketHeader* header, AData* data)
 	this->datas = data;
 }
 
+Packet::Packet(PacketHeader* header)
+{
+	this->header = header;
+}
+
 Packet::~Packet()
 {
 

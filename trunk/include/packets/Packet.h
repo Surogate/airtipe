@@ -22,6 +22,7 @@ class		Packet
 		Packet();
 		Packet(PacketCode, AData* datas);
 		Packet(PacketHeader*, AData*);
+		Packet(PacketHeader*);
 		~Packet();
 		PacketHeader*	header;
 		AData*			datas;

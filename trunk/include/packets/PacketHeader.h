@@ -18,7 +18,7 @@ class		PacketHeader
 		PacketHeader(PacketCode code);
 		PacketCode		code;
 		int				timestamp; // A Modifier biensur
-		unsigned int 	dataSize;
+		int 			dataSize;
 };
 
 #endif		// PACKETHEADER_H__
