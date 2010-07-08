@@ -59,7 +59,7 @@ void	Server::readValidClients()
 				if (res == sizeof(PacketHeader))
 				{
 					PacketHeader *	header = new (headerData->data) PacketHeader;
-					std::cout << "[RECV] code:" << header->code << " timestamp:" << header->timestamp << " datasize:" << header->dataSize << std::endl;
+					std::cerr << "[RECV] code:" << header->code << " timestamp:" << header->timestamp << " datasize:" << header->dataSize << std::endl;
 					if (header->dataSize > 0)
 					{
 						Data *		packetData = new Data(header->dataSize);
@@ -68,22 +68,21 @@ void	Server::readValidClients()
 						{
 							if (res == header->dataSize)
 							{
-								std::cout << res << std::endl;
 								AData * data = (AData *) packetData->data;
 								this->_in.push_back(std::pair<TCPSession*, void*>(*it, new Packet(header, data)));
 							}
 							else
-								std::cout << "[ERROR] Packet broken" << std::endl;
+								std::cerr << "[ERROR] Packet broken" << std::endl;
 						}
 						delete packetData;
 					}
 				}
 				else
-					std::cout << "[ERROR] Packet broken" << std::endl;
+					std::cerr << "[ERROR] Packet broken" << std::endl;
 			}
 			else
 			{
-				std::cout << "client disconnected" << std::endl;
+				std::cerr << "client disconnected" << std::endl;
 				it = this->_sessions.erase(it);
 				return;
 			}
@@ -117,7 +116,7 @@ void		Server::process()
 			++it;
 		}
 		if (!found)
-			std::cout << "[RECV] Unknown Packet" << std::endl;
+			std::cerr << "[RECV] Unknown Packet" << std::endl;
 		this->_in.pop_front();
 	}
 }
@@ -125,79 +124,83 @@ void		Server::process()
 Packet *	Server::ActionLogin(Packet * pak)
 {
 	DataLogin* data = new (pak->datas) DataLogin;
-	std:: cout << "[RECV] ActionLogin" << std::endl;
-	std::cout << "\tid: " << data->id << std::endl;
-	std::cout << "\tlogin: " << data->login << std::endl;
+	std::cerr << "[RECV] ActionLogin" << std::endl;
+	std::cerr << "\tid: " << data->id << std::endl;
+	std::cerr << "\tlogin: " << data->login << std::endl;
 	return NULL;
 }
 
-Packet *	Server::ActionCreateGame(Packet * pak)
+Packet *	Server::ActionCreateGame(Packet *)
 {
-	pak = pak;
-	std:: cout << "[RECV] ActionCreateGame" << std::endl;
+	std:: cerr << "[RECV] ActionCreateGame" << std::endl;
 	return NULL;
 }
 
 Packet *	Server::ActionAddMap(Packet * pak)
 {
-	pak = pak;
-	std:: cout << "[RECV] ActionAddMap" << std::endl;
+	DataMap* data = new (pak->datas) DataMap;
+	std::cerr << "[RECV] ActionAddMap" << std::endl;
+	std::cerr << "\tmap: " << data->mapName << std::endl;
 	return NULL;
 }
 
-Packet *	Server::ActionValidGame(Packet * pak)
+Packet *	Server::ActionValidGame(Packet *)
 {
-	pak = pak;
-	std:: cout << "[RECV] ActionValidGame" << std::endl;
+	std:: cerr << "[RECV] ActionValidGame" << std::endl;
 	return NULL;
 }
 
 Packet *	Server::ActionJoinGame(Packet * pak)
 {
-	pak = pak;
-	std:: cout << "[RECV] ActionJoinGame" << std::endl;
+	DataLogin* data = new (pak->datas) DataLogin;
+	std::cerr << "[RECV] ActionJoinGame" << std::endl;
+	std::cerr << "\tid: " << data->id << std::endl;
+	std::cerr << "\tlogin: " << data->login << std::endl;
 	return NULL;
 }
 
 Packet *	Server::ActionChooseSpacecraft(Packet * pak)
 {
-	pak = pak;
-	std:: cout << "[RECV] ActionChooseSpacecraft" << std::endl;
+	DataSpacecraft* data = new (pak->datas) DataSpacecraft;
+	std::cerr << "[RECV] ActionChooseSpacecraft" << std::endl;
+	std::cerr << "\tid: " << data->id << std::endl;
+	std::cerr << "\tskin: " << data->skin << std::endl;
 	return NULL;
 }
 
 Packet *	Server::ActionReady(Packet * pak)
 {
-	pak = pak;
-	std:: cout << "[RECV] ActionReady" << std::endl;
+	DataLogin* data = new (pak->datas) DataLogin;
+	std:: cerr << "[RECV] ActionReady" << std::endl;
+	std::cerr << "\tid: " << data->id << std::endl;
+	std::cerr << "\tlogin: " << data->login << std::endl;
 	return NULL;
 }
 
 Packet *	Server::ActionNotReady(Packet * pak)
 {
-	pak = pak;
-	std:: cout << "[RECV] ActionNotReady" << std::endl;
+	DataLogin* data = new (pak->datas) DataLogin;
+	std:: cerr << "[RECV] ActionNotReady" << std::endl;
+	std::cerr << "\tid: " << data->id << std::endl;
+	std::cerr << "\tlogin: " << data->login << std::endl;
 	return NULL;
 }
 
-Packet *	Server::ActionStartGame(Packet * pak)
+Packet *	Server::ActionStartGame(Packet *)
 {
-	pak = pak;
-	std:: cout << "[RECV] ActionStartGame" << std::endl;
+	std:: cerr << "[RECV] ActionStartGame" << std::endl;
 	return NULL;
 }
 
-Packet *	Server::ActionStopGame(Packet * pak)
+Packet *	Server::ActionStopGame(Packet *)
 {
-	pak = pak;
-	std:: cout << "[RECV] ActionStopGame" << std::endl;
+	std:: cerr << "[RECV] ActionStopGame" << std::endl;
 	return NULL;
 }
 
-Packet *	Server::ActionQuitGame(Packet * pak)
+Packet *	Server::ActionQuitGame(Packet *)
 {
-	pak = pak;
-	std:: cout << "[RECV] ActionQuitGame" << std::endl;
+	std:: cerr << "[RECV] ActionQuitGame" << std::endl;
 	return NULL;
 }
 
