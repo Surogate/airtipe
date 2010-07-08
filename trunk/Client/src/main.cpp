@@ -21,6 +21,7 @@ int		main()
 	DataLogin* data = new (packet->datas) DataLogin;
 	data->id = 9;
 	memcpy(data->login, "azeazeazeazeae", 15);
+	data->login[14] = 0;
 	if (!client.Net.c.failed())
 	{
 		packet->header->dataSize = sizeof(*data);
