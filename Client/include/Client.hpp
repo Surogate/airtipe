@@ -6,16 +6,17 @@
  */
 
 #ifndef		__CLIENT_HPP__
-#define		__CLIENT_HPP__
+# define		__CLIENT_HPP__
 
-#include "Graphics.hpp"
-#include "NetWork.hpp"
+# include "Graphics.hpp"
+# include "NetWork.hpp"
+# include "TCPClient.hpp"
 
-
-class		Client
+class			Client
 {
-  Graphics	Wind;
-  NetWork	Net;
+public:
+  	Graphics	Wind;
+  	NetWork		Net;
 
 public:
   Client();

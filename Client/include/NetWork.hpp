@@ -8,12 +8,17 @@
 #ifndef		__NETWORK_H__
 #define		__NETWORK_H__
 
+# include	"TCPClient.hpp"
+
 class NetWork
 {
 public:
-  NetWork();
-  ~NetWork();
-  void getEvent();
+
+	TCPClient	c;
+
+  	NetWork();
+  	~NetWork();
+  	void getEvent();
 };
 
 #endif		/* __NETWORK_H__ */

@@ -41,7 +41,7 @@ void	Graphics::sprite_destroy()
 
 void	Graphics::load()
 {
-  if (!this->_Image.LoadFromFile("../ressources/sprites/r-typesheet42.png"))
+  if (!this->_Image.LoadFromFile("../../ressources/sprites/r-typesheet42.png"))
     return ;
   this->_Player.SetImage(this->_Image);
   this->_Player.SetPosition(this->_width, this->_height);
