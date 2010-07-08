@@ -13,29 +13,30 @@
 #include <time.h>
 #include <vector>
 
-struct utime {
+struct mtime {
     long int sec;
-    long int usec;
+    long int msec;
     bool valid;
-    bool operator==(utime& comp);
-    bool operator!=(utime& comp);
-    utime& operator+(utime& comp);
-    utime& operator-(utime& comp);
+    bool operator==(mtime& comp);
+    bool operator!=(mtime& comp);
+    mtime& operator+(mtime& comp);
+    mtime& operator-(mtime& comp);
 };
 
 class ITimerManager {
 public:
-    typedef unsigned int timeHdl;
+    typedef int timeHdl;
     
     virtual ~ITimerManager();
-    virtual void SetActualTime(const utime timestamps) = 0; // modifie l'horloge interne
-    virtual utime GetActualTime() const = 0;
+    virtual void SetActualTime(const mtime timestamps) = 0; // modifie l'horloge interne
+    virtual mtime GetActualTime() = 0;
     virtual const timeHdl setTimer() = 0;
-    virtual utime GetTimeFrom(const timeHdl& hdler) const = 0;
+    virtual mtime GetTimeFrom(const timeHdl& hdler) const = 0;
     virtual inline bool isValid(const timeHdl& hdler) const = 0;
-    virtual utime GetTimeBetween(const timeHdl& hdl1, const timeHdl& hdl2) const = 0;
-    virtual utime GetUnTimeBetween(const timeHdl& hdl1, const timeHdl& hdl2) const = 0;
-    virtual utime GetTimeFromLast() const = 0;
+    virtual mtime GetTimeBetween(const timeHdl& hdl1, const timeHdl& hdl2) const = 0;
+    virtual mtime GetUnTimeBetween(const timeHdl& hdl1, const timeHdl& hdl2) const = 0;
+    virtual mtime GetTimeFromLast() const = 0;
+    virtual const bool good() const = 0;
 };
 
 #endif	/* _TIMERMANAGER_HPP */
