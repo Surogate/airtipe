@@ -14,7 +14,6 @@ Server::Server(short port, unsigned int bufferSize) :
 {
 	this->_actions.insert(std::pair<PacketCode, Action>(Login, &Server::ActionLogin));
 	this->_actions.insert(std::pair<PacketCode, Action>(CreateGame, &Server::ActionCreateGame));
-
 	this->_actions.insert(std::pair<PacketCode, Action>(AddMap, &Server::ActionAddMap));
 	this->_actions.insert(std::pair<PacketCode, Action>(ValidGame, &Server::ActionValidGame));
 	this->_actions.insert(std::pair<PacketCode, Action>(JoinGame, &Server::ActionJoinGame));
@@ -64,7 +63,7 @@ void	Server::readValidClients()
 					if (res != -1)
 					{
 						AData * data = (AData *) packetData->data;
-						this->Exec(new Packet(header, data));
+						this->_in.push_back(std::pair<TCPSession*, void*>(*it, new Packet(header, data)));
 					}
 					delete packetData;
 				}
@@ -75,24 +74,29 @@ void	Server::readValidClients()
 				it = this->_sessions.erase(it);
 				return;
 			}
+			delete headerData;
 		}
 		++it;
 	}
 }
 
-void		Server::Exec(Packet * pak)
+void		Server::process()
 {
-	std::map<PacketCode, Action>::const_iterator	it = this->_actions.begin();
+	std::map<PacketCode, Action>::const_iterator	it;
 	std::map<PacketCode, Action>::const_iterator	ite = this->_actions.end();
+	Packet * pak;
 
-	while (it != ite)
+	while (!this->_in.empty())
 	{
-		if (it->first == pak->header->code)
+		pak = new (this->_in.front().second) Packet;
+		it = this->_actions.begin();
+		while (it != ite)
 		{
-			(this->*(it->second))(pak);
-			return;
+			if (it->first == pak->header->code)
+				(this->*(it->second))(pak);
+			++it;
 		}
-		++it;
+		this->_in.pop_front();
 	}
 }
 
