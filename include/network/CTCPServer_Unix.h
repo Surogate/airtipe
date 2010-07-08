@@ -54,9 +54,9 @@ class		CTCPServer_Unix : public ITCPServer
 
 		bool		poll();
 
-		void		readValidClients();
+		virtual void		readValidClients();
 
-		void		respondToValidClients();
+		virtual void		respondToValidClients();
 
 		/*!
 		 * \brief	Close the server and all opened client sessions

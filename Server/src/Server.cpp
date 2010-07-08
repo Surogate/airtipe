@@ -44,13 +44,66 @@ bool	Server::accept()
 	return (false);
 }
 
-Packet *	Server::ActionLogin(Packet * pak)
+void	Server::readValidClients()
 {
-	pak = pak;
-	std:: cout << "Action: Login" << std::endl;
-	return NULL;
+	std::list<TCPSession*>::iterator	it = this->_sessions.begin();
+	while (it != this->_sessions.end())
+	{
+		if (FD_ISSET((*it)->getSocket(), &this->_fdr))
+		{
+			Data*	headerData = new Data(sizeof(PacketHeader));
+			int res = (*it)->read(*headerData);
+			if (res != -1)
+			{
+				PacketHeader *	header = new (headerData->data) PacketHeader;
+				std::cout << "[RECV] code:" << header->code << " timestamp:" << header->timestamp << " datasize:" << header->dataSize << std::endl;
+				if (header->dataSize > 0)
+				{
+					Data *		packetData = new Data(header->dataSize);
+					res = (*it)->read(*packetData);
+					if (res != -1)
+					{
+						AData * data = (AData *) packetData->data;
+						this->Exec(new Packet(header, data));
+					}
+					delete packetData;
+				}
+			}
+			else
+			{
+				std::cout << "client disconnected" << std::endl;
+				it = this->_sessions.erase(it);
+				return;
+			}
+		}
+		++it;
+	}
 }
 
+void		Server::Exec(Packet * pak)
+{
+	std::map<PacketCode, Action>::const_iterator	it = this->_actions.begin();
+	std::map<PacketCode, Action>::const_iterator	ite = this->_actions.end();
+
+	while (it != ite)
+	{
+		if (it->first == pak->header->code)
+		{
+			(this->*(it->second))(pak);
+			return;
+		}
+		++it;
+	}
+}
+
+Packet *	Server::ActionLogin(Packet * pak)
+{
+	DataLogin* data = new (pak->datas) DataLogin;
+	std:: cout << "Action: Login" << std::endl;
+	std::cout << "Id: " << data->id << std::endl;
+	std::cout << "login: " << data->login << std::endl;
+	return NULL;
+}
 
 Packet *	Server::ActionCreateGame(Packet * pak)
 {
