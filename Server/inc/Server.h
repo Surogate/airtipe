@@ -1,6 +1,6 @@
 /*!
  * \file	Server.h
- * \brief	The central compoent of RType server. It manage all TCP requests
+ * \brief	
  * \author	Bertran Pierre - bertra_b@epitech.eu
  * \version	0.1
  * \date	07/07/2010 19:54:00
@@ -18,32 +18,13 @@
 #  include	"network/CTCPServer_Unix.h"
 # endif
 
-/*!
- * \brief	The central compoent of RType server. It manage all TCP requests
- * It inherits from the concrete system implementation of TCPServer a redefine some functionnality:
- * - Uses Clients instead of TCPSession (also derived from TCPSession)
- * - Add 2 time read for Rtype packet functionnality
- * - obviously process in a smarter way clients requests
- */
 class		Server : public TCPServer
 {
 	public:
-		/*!
-		 * \brief	Constructor
-		 * \param	The port number to use for listen TCP clients
-		 * \param	The maximum size of used buffers
-		 */
 		Server(short port, unsigned int bufferSize);
-
-		/*!
-		 * Destructor
-		 */
-		virtual ~Server();
+		virtual	~Server();
 
 	public:
-		/*!
-		 * \brief	redefinition of virtual method from TCPServer to mange Client instead of TCPSession
-		 */
 		bool	accept();
 		void	readValidClients();
 
@@ -53,7 +34,7 @@ class		Server : public TCPServer
 		PacketManager	_pm;
 
 	private:
-		void		Exec(Packet * pak);
+		void		process();
 		Packet *	ActionLogin(Packet * pak);
 		Packet *	ActionCreateGame(Packet * pak);
 		Packet *	ActionAddMap(Packet * pak);

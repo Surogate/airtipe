@@ -10,9 +10,7 @@
 
 Packet::Packet()
 {
-	this->header = new PacketHeader;
-	this->datas = new AData;
-	this->header->dataSize = sizeof(AData);
+
 }
 
 Packet::Packet(PacketCode code, AData* datas)

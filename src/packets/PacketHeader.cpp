@@ -8,7 +8,7 @@
 
 #include	"packets/PacketHeader.h"
 
-PacketHeader::PacketHeader() : code(NoCode), timestamp(0), dataSize(0)
+PacketHeader::PacketHeader()
 {
 
 }

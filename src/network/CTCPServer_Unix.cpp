@@ -88,7 +88,7 @@ void	CTCPServer_Unix::process()
 {
 	while (!this->_in.empty())
 	{
-		this->_out.push_back(this->_in.front());
+	//	this->_out.push_back(this->_in.front());
 		this->_in.pop_front();
 	}
 }
@@ -105,7 +105,7 @@ void	CTCPServer_Unix::readValidClients()
 			if (res != -1)
 			{
 				std::cout << "read: " << static_cast<char*>(data->data) << std::endl;
-				this->_in.push_back(std::pair<TCPSession*, Data*>(*it, data));
+				this->_in.push_back(std::pair<TCPSession*, void*>(*it, data));
 			}
 			else
 			{
