@@ -59,8 +59,11 @@ void	Server::readValidClients()
 				if (res == sizeof(PacketHeader))
 				{
 					PacketHeader *	header = new (headerData->data) PacketHeader;
-					std::cerr << "[RECV] code:" << header->code << " timestamp:" << header->timestamp << " datasize:" << header->dataSize << std::endl;
-					if (header->dataSize > 0)
+					std::cerr << "[RECV] code:" << header->code
+						<< " timestamp:" << header->timestamp
+						<< " datasize:" << header->dataSize
+						<< std::endl;
+					if (header->dataSize > 0 && header->dataSize < 1000)
 					{
 						Data *		packetData = new Data(header->dataSize);
 						res = (*it)->read(*packetData);
@@ -74,6 +77,12 @@ void	Server::readValidClients()
 							else
 								std::cerr << "[ERROR] Packet broken" << std::endl;
 						}
+						else
+						{
+							std::cerr << "client disconnected" << std::endl;
+							this->_sessions.erase(it);
+							return;
+						}
 						delete packetData;
 					}
 				}
@@ -83,13 +92,12 @@ void	Server::readValidClients()
 			else
 			{
 				std::cerr << "client disconnected" << std::endl;
-				it = this->_sessions.erase(it);
+				this->_sessions.erase(it);
 				return;
 			}
 			delete headerData;
 		}
-		if (it != this->_sessions.end())
-			++it;
+		++it;
 	}
 }
 
@@ -111,6 +119,8 @@ void		Server::process()
 			{
 				(this->*(it->second))(pak);
 				found = true;
+				delete [] pak->header;
+				delete pak;
 				break;
 			}
 			++it;
@@ -127,6 +137,7 @@ Packet *	Server::ActionLogin(Packet * pak)
 	std::cerr << "[RECV] ActionLogin" << std::endl;
 	std::cerr << "\tid: " << data->id << std::endl;
 	std::cerr << "\tlogin: " << data->login << std::endl;
+	delete [] data;
 	return NULL;
 }
 
@@ -141,6 +152,7 @@ Packet *	Server::ActionAddMap(Packet * pak)
 	DataMap* data = new (pak->datas) DataMap;
 	std::cerr << "[RECV] ActionAddMap" << std::endl;
 	std::cerr << "\tmap: " << data->mapName << std::endl;
+	delete [] data;
 	return NULL;
 }
 
@@ -156,6 +168,7 @@ Packet *	Server::ActionJoinGame(Packet * pak)
 	std::cerr << "[RECV] ActionJoinGame" << std::endl;
 	std::cerr << "\tid: " << data->id << std::endl;
 	std::cerr << "\tlogin: " << data->login << std::endl;
+	delete [] data;
 	return NULL;
 }
 
@@ -165,6 +178,7 @@ Packet *	Server::ActionChooseSpacecraft(Packet * pak)
 	std::cerr << "[RECV] ActionChooseSpacecraft" << std::endl;
 	std::cerr << "\tid: " << data->id << std::endl;
 	std::cerr << "\tskin: " << data->skin << std::endl;
+	delete [] data;
 	return NULL;
 }
 
@@ -174,6 +188,7 @@ Packet *	Server::ActionReady(Packet * pak)
 	std:: cerr << "[RECV] ActionReady" << std::endl;
 	std::cerr << "\tid: " << data->id << std::endl;
 	std::cerr << "\tlogin: " << data->login << std::endl;
+	delete [] data;
 	return NULL;
 }
 
@@ -183,6 +198,7 @@ Packet *	Server::ActionNotReady(Packet * pak)
 	std:: cerr << "[RECV] ActionNotReady" << std::endl;
 	std::cerr << "\tid: " << data->id << std::endl;
 	std::cerr << "\tlogin: " << data->login << std::endl;
+	delete [] data;
 	return NULL;
 }
 
