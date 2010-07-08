@@ -20,7 +20,6 @@ AData [
 label = "{\
 AData||\
 Create() : AData *\l\
-Create(buf : void *) : AData *\l\
 }"
 ]
 
@@ -37,7 +36,7 @@ Create(buf : void *) : AData *\l\
 
 DataEntity [
 label = "{\
-DataEntity||\
+DataEntity|\
 + id : unsigned int\l\
 + pv : unsigned int\l\
 + x : unsigned int\l\
@@ -47,36 +46,36 @@ DataEntity||\
 + bulletType : SkinType\l\
 + movementType : MovementType\l\
 + spawnFrameNum : unsigned int\l\
-+ startTime : Timestamp\l\
++ startTime : Timestamp\l|\
 }"
 ]
 
 DataLogin [
 label = "{\
-DataLogin||\
+DataLogin|\
 + id : unsigned int\l\
-+ login : char[15]\l\
++ login : char[15]\l|\
 }"
 ]
 
 DataSpaceCraft [
 label = "{\
-DataSpaceCraft||\
+DataSpaceCraft|\
 + id : unsigned int\l\
-+ spaceCraft : SkinType\l\
++ spaceCraft : SkinType\l|\
 }"
 ]
 
 DataMap [
 label = "{\
-DataMap||\
-+ mapName : char[15]\l\
+DataMap|\
++ mapName : char[15]\l|\
 }"
 ]
 
 DataSynchro [
 label = "{\
-DataSynchro||\
+DataSynchro|\
 + id : unsigned int\l\
 + x : unsigned int\l\
 + y : unsigned int\l\
@@ -84,28 +83,20 @@ DataSynchro||\
 + time : Timestamp\l\
 + bulletSkin : SkinType\l\
 + movementType : MovementType\l\
-+ startTime : Timestamp\l\
++ startTime : Timestamp\l|\
 }"
 ]
 
 DataEmpty [
 label = "{\
-DataEmpty\
+DataEmpty||\
 }"
 ]
 
 DataId [
 label = "{\
-DataId||\
-+ id : unsigned int\l\
-}"
-
-]
-
-DataShoot [
-label = "{\
-DataShoot||\
-+ id : unsigned int\l\
+DataId|\
++ id : unsigned int\l|\
 }"
 
 ]
@@ -116,48 +107,47 @@ label = "{\
 ## C-\>S : General communication TCP\l\
 Login\l\
 CreateParty\l\
-addMap\l\
-validParty\l\
-join\l\
-chooseSpacecraft\l\
-ready\l\
-start\l\
-stop\l\
-quit\l\l\
+AddMap\l\
+ValidParty\l\
+Join\l\
+ChooseSpacecraft\l\
+Ready\l\
+Start\l\
+Stop\l\
+Quit\l\l\
 ## C-\>S : General communication UDP\l\
-move\l\
-shoot\l\l\
+Move\l\
+Shoot\l\l\
 ## S-\>C : General communication TCP\l\
-loginOK\l\
-createOK\l\
-sendMaps\l\
-sendMapsEnd\l\
-addMapOK\l\
-validPartyOK\l\
-joinOK\l\
-joinParty\l\
-leftParty\l\
-playerColorChange\l\
-playerReady\l\
-playerNotReady\l\
-partyStarting\l\
-sendGrounds\l\
-sendGroundsEnd\l\
-stop\l\l\
+LoginOK\l\
+CreateOK\l\
+SendMaps\l\
+SendMapsEnd\l\
+AddMapOK\l\
+ValidPartyOK\l\
+JoinOK\l\
+JoinParty\l\
+LeftParty\l\
+PlayerColorChange\l\
+PlayerReady\l\
+PlayerNotReady\l\
+PartyStarting\l\
+SendGrounds\l\
+SendGroundsEnd\l\
+Stop\l\l\
 ## S-\>C : Error codes TCP\l\
-loginAlreadyExists\l\
-badLoginFormat\l\
-loginKO\l\
-createKO\l\
-unknownMap\l\
-validPartyKO\l\l\
+LoginAlreadyExists\l\
+BadLoginFormat\l\
+LoginKO\l\
+CreateKO\l\
+UnknownMap\l\
+ValidPartyKO\l\l\
 ## S-\>C : Game communication UDP\l\
-spawn\l\
-move\l\
-fight\l\
-die\l\
-buletType\l\
-sync\l\
+EntitySpawn\l\
+EntityMove\l\
+EntityFight\l\
+EntityDie\l\
+EntitySynchro\l\
 }"
 ]
 
@@ -178,6 +168,5 @@ DataEmpty -> AData [arrowhead = "onormal" style = "solid"]
 DataId -> AData [arrowhead = "onormal" style = "solid"]
 DataSpaceCraft -> AData [arrowhead = "onormal" style = "solid"]
 DataSynchro -> AData [arrowhead = "onormal" style = "solid"]
-DataShoot -> AData [arrowhead = "onormal" style = "solid"]
 
 }

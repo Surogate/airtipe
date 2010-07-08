@@ -10,6 +10,7 @@
 # define	SERVER_H__
 
 # include	"Client.h"
+# include	"packets/PacketManager.h"
 
 # ifdef		UNIX
 #  include	"network/CTCPServer_Unix.h"
@@ -19,10 +20,13 @@ class		Server : public TCPServer
 {
 	public:
 		Server(short port, unsigned int bufferSize);
-		virtual ~Server();
+		virtual	~Server();
 
 	public:
 		bool	accept();
+
+	private:
+		PacketManager	_pm;
 };
 
 #endif		// SERVER_H__

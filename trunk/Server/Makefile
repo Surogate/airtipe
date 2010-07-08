@@ -26,7 +26,9 @@ SRC		= \
 		$(DIR_SRC)Server.cpp							\
 		$(DIR_SRC)Client.cpp							\
 		$(DIR_SRC_COMMON)network/CTCPServer_Unix.cpp	\
-		$(DIR_SRC_COMMON)network/CTCPSession_Unix.cpp
+		$(DIR_SRC_COMMON)network/CTCPSession_Unix.cpp	\
+		$(DIR_SRC_COMMON)packets/PacketManager.cpp		\
+		$(DIR_SRC_COMMON)packets/Packet.cpp
 
 INC		= \
 
@@ -75,7 +77,7 @@ LFLAGS				= \
 
 #########  COMPILE FLAGS
 
-CFLAGS			+= -O3 -W -Wall -ansi -pedantic $(DEFINE) $(IFLAGS)
+CFLAGS			+= -O3 -W -Wall $(DEFINE) $(IFLAGS)
 
 ############### BINARIES ###############
 

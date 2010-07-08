@@ -31,9 +31,8 @@ class Factory : public FactoryErrorPolicy<IdentifierType, AbstractProduct>
 				return (associations_.erase(id) == 1);
 			}
 			std::pair<AbstractProduct *, Creator> * newPair;
-			newPair= new std::pair<AbstractProduct *, Creator>(newProduct, creator);
-			return associations_.insert(std::pair<const IdentifierType&,
-					std::pair<AbstractProduct *, Creator> * >(id, newPair)).second;
+			newPair = new std::pair<AbstractProduct *, Creator >(newProduct, creator);
+			return associations_.insert(std::pair<const IdentifierType&, std::pair<AbstractProduct *, Creator > * >(id, newPair)).second;
 		}
 
 		bool Unregister(const IdentifierType& id)
@@ -52,8 +51,10 @@ class Factory : public FactoryErrorPolicy<IdentifierType, AbstractProduct>
 			return (pProduct);
 		}
 	private:
-		typedef std::map<IdentifierType, std::pair<AbstractProduct *, Creator> * > AssocMap;
+		typedef std::map<IdentifierType, std::pair<AbstractProduct *, Creator > * > AssocMap;
 		AssocMap associations_;
 };
+
+
 
 #endif			// FACTORY_H__
