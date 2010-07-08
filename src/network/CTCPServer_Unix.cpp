@@ -42,7 +42,7 @@ bool	CTCPServer_Unix::init()
 	this->_socket = socket(saddr.sin_family, SOCK_STREAM, 0);
 	if (this->_socket < 0)
 	{
-		std::cerr << "socket failed" << std::endl;
+		std::cerr << "[ERROR] socket failed" << std::endl;
 		return (false);
 	}
 	// non blocking
@@ -51,7 +51,7 @@ bool	CTCPServer_Unix::init()
 	res = bind(this->_socket, (sockaddr*)&saddr, sizeof(saddr));
 	if (res == -1)
 	{
-		std::cerr << "bind failed" << std::endl;
+		std::cerr << "[ERROR] bind failed" << std::endl;
 		::close(this->_socket);
 		this->_socket = -1;
 		return (false);
@@ -60,7 +60,7 @@ bool	CTCPServer_Unix::init()
 	res = listen(this->_socket, 10);
 	if (res != 0)
 	{
-		std::cerr << "listen failed" << std::endl;
+		std::cerr << "[ERROR] listen failed" << std::endl;
 		::close(this->_socket);
 		this->_socket = -1;
 		return (false);
@@ -74,7 +74,7 @@ void	CTCPServer_Unix::run()
 	while (this->_running)
 	{
 		if (this->accept())
-			std::cout << "new client" << std::endl;
+			std::cout << "[NOTICE] new client" << std::endl;
 		if (this->poll())
 		{
 			this->readValidClients();
@@ -104,12 +104,12 @@ void	CTCPServer_Unix::readValidClients()
 			int res = (*it)->read(*data);
 			if (res != -1)
 			{
-				std::cout << "read: " << static_cast<char*>(data->data) << std::endl;
+				std::cout << "[RECV] message: " << static_cast<char*>(data->data) << std::endl;
 				this->_in.push_back(std::pair<TCPSession*, void*>(*it, data));
 			}
 			else
 			{
-				std::cout << "client disconnected" << std::endl;
+				std::cout << "[NOTICE] client disconnected" << std::endl;
 				it = this->_sessions.erase(it);
 				return;
 			}
@@ -128,13 +128,13 @@ void	CTCPServer_Unix::respondToValidClients()
 			int res = it->first->write(*(it->second));
 			if (res == static_cast<int>(it->second->size))
 			{
-				std::cout << "message sent: " << static_cast<char*>(it->second->data) << std::endl;
+				std::cout << "[SENT] message: " << static_cast<char*>(it->second->data) << std::endl;
 				it = this->_out.erase(it);
 				return;
 			}
 			else
 			{
-				std::cout << "write failed (or partially failed) ... retrying later" << std::endl;
+				std::cout << "[ERROR] write failed (or partially failed) ... retrying later" << std::endl;
 			}
 		}
 		++it;
@@ -168,7 +168,7 @@ bool	CTCPServer_Unix::poll()
 		if (ret)
 			return (true);
 		else if (ret == -1)
-			std::cerr << "select failed" << std::endl;
+			std::cerr << "[ERROR] select failed" << std::endl;
 	}
 	return (false);
 }
