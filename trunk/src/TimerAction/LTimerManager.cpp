@@ -8,16 +8,18 @@
 
 #include "LTimerManager.hpp"
 
+#ifndef WIN32
+
 LTimerManager::LTimerManager()
-{
+: error(false) {
     listTime_.clear();
-    gettimeofday(&actionval_, 0);
-    actionTime_.sec = actionval_.tv_sec;
-    actionTime_.usec = actionval_.tv_usec;
+    if (gettimeofday(&actionval_, 0) < 0)
+        error = true;
+    setTime(actionTime_, actionval_);
 }
 
 LTimerManager::LTimerManager(const LTimerManager& cpy)
-: actionval_(cpy.actionval_), actionTime_(cpy.actionTime_), listTime_(cpy.listTime_) {
+: actionval_(cpy.actionval_), actionTime_(cpy.actionTime_), listTime_(cpy.listTime_), error(cpy.error) {
 }
 
 LTimerManager::~LTimerManager() {
@@ -28,21 +30,24 @@ LTimerManager& LTimerManager::operator=(const LTimerManager& cpy) {
         actionval_ = cpy.actionval_;
         actionTime_ = cpy.actionTime_;
         listTime_ = cpy.listTime_;
+        error = cpy.error;
     }
     return *this;
 }
 
-void LTimerManager::SetActualTime(const utime timestamps) {
+void LTimerManager::SetActualTime(const mtime timestamps) {
     actionTime_ = timestamps;
-    gettimeofday(&actionval_, 0);
+    if (gettimeofday(&actionval_, 0) < 0)
+        error = true;
 }
 
-utime LTimerManager::GetActualTime() const {
-    utime ret = actionTime_;
+mtime LTimerManager::GetActualTime() {
+    mtime ret = actionTime_;
     timeval actual;
-    if (gettimeofday(&actual, 0) < 0)
+    if (gettimeofday(&actual, 0) < 0) {
         ret.valid = false;
-    else
+        return ret;
+    } else
         ret.valid = true;
     timeval res;
     timersub(&actual, &actionval_, &res);
@@ -58,8 +63,8 @@ const ITimerManager::timeHdl LTimerManager::setTimer() {
     return listTime_.size() - 1;
 }
 
-utime LTimerManager::GetTimeFrom(const ITimerManager::timeHdl& hdler) const {
-    utime ret;
+mtime LTimerManager::GetTimeFrom(const ITimerManager::timeHdl& hdler) const {
+    mtime ret;
     timeval actual;
 
     if (isValid(hdler) && gettimeofday(&actual, 0) >= 0) {
@@ -77,8 +82,8 @@ inline bool LTimerManager::isValid(const ITimerManager::timeHdl& hdler) const {
     return hdler < listTime_.size();
 }
 
-utime LTimerManager::GetTimeBetween(const ITimerManager::timeHdl& hdl1, const ITimerManager::timeHdl& hdl2) const {
-    utime ret;
+mtime LTimerManager::GetTimeBetween(const ITimerManager::timeHdl& hdl1, const ITimerManager::timeHdl& hdl2) const {
+    mtime ret;
 
     if (isValid(hdl1) && isValid(hdl2))
     {
@@ -92,8 +97,8 @@ utime LTimerManager::GetTimeBetween(const ITimerManager::timeHdl& hdl1, const IT
     return ret;
 }
 
-utime LTimerManager::GetUnTimeBetween(const ITimerManager::timeHdl& hdl1, const ITimerManager::timeHdl& hdl2) const {
-    utime ret;
+mtime LTimerManager::GetUnTimeBetween(const ITimerManager::timeHdl& hdl1, const ITimerManager::timeHdl& hdl2) const {
+    mtime ret;
 
     if (isValid(hdl1) && isValid(hdl2))
     {
@@ -110,8 +115,8 @@ utime LTimerManager::GetUnTimeBetween(const ITimerManager::timeHdl& hdl1, const 
     return ret;
 }
 
-utime LTimerManager::GetTimeFromLast() const {
-    utime ret;
+mtime LTimerManager::GetTimeFromLast() const {
+    mtime ret;
     if (listTime_.empty())
     {
         ret.valid = false;
@@ -120,15 +125,21 @@ utime LTimerManager::GetTimeFromLast() const {
     return GetTimeFrom(listTime_.size() - 1);
 }
 
-void LTimerManager::setTime(utime& ret, timeval& val) const {
+void LTimerManager::setTime(mtime& ret, const timeval& val) {
     ret.sec = val.tv_sec;
-    ret.usec = val.tv_usec;
+    ret.msec = val.tv_usec / 1000;
 }
 
-void LTimerManager::addTime(utime& ret, timeval& val) const
-{
-    ret.sec += val.tv_sec;
-    long int usec = ret.usec + val.tv_usec;
-    ret.sec += usec / 1000000;
-    ret.usec += usec % 1000000;
+void LTimerManager::setTime(mtime& ret, const timeval& val) const {
+    ret.sec = val.tv_sec;
+    ret.msec = val.tv_usec / 1000;
 }
+
+void LTimerManager::addTime(mtime& ret, const timeval& val) {
+    ret.sec += val.tv_sec;
+    long int usec = ret.msec * 1000 + val.tv_usec;
+    ret.sec += usec / 1000000;
+    ret.msec += (usec % 1000000) / 1000;
+}
+
+#endif //WIN32

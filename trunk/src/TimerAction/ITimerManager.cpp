@@ -11,28 +11,28 @@
 ITimerManager::~ITimerManager() {
 }
 
-bool utime::operator==(utime& comp) {
-    return ((sec == comp.sec) && (usec == comp.usec));
+bool mtime::operator==(mtime& comp) {
+    return ((sec == comp.sec) && (msec == comp.msec));
 }
 
-bool utime::operator!=(utime& comp) {
+bool mtime::operator!=(mtime& comp) {
     return !operator==(comp);
 }
 
-utime& utime::operator+(utime& comp) {
-    usec += comp.usec;
-    sec += comp.sec + usec / 1000000;
-    usec = usec % 1000000;
+mtime& mtime::operator+(mtime& comp) {
+    msec += comp.msec;
+    sec += comp.sec + msec / 1000;
+    msec = msec % 1000;
     return *this;
 }
 
-utime& utime::operator-(utime& comp) {
-    usec -= comp.usec;
+mtime& mtime::operator-(mtime& comp) {
+    msec -= comp.msec;
     sec -= comp.sec;
-    if (usec < 0)
+    if (msec < 0)
     {
         sec -= 1;
-        usec = 1000000 + usec;
+        msec = 1000 + msec;
     }
     return *this;
 }

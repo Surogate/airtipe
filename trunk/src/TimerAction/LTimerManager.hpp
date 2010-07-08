@@ -20,22 +20,25 @@ public:
     virtual ~LTimerManager();
     LTimerManager & operator=(const LTimerManager&);
 
-    void SetActualTime(const utime timestamps);
-    utime GetActualTime() const;
+    void SetActualTime(const mtime timestamps);
+    mtime GetActualTime();
     const timeHdl setTimer();
-    utime GetTimeFrom(const timeHdl& hdler) const;
+    mtime GetTimeFrom(const timeHdl& hdler) const;
     inline bool isValid(const timeHdl& hdler) const;
-    utime GetTimeBetween(const timeHdl& hdl1, const timeHdl& hdl2) const;
-    utime GetUnTimeBetween(const timeHdl& hdl1, const timeHdl& hdl2) const;
-    utime GetTimeFromLast() const;
+    mtime GetTimeBetween(const timeHdl& hdl1, const timeHdl& hdl2) const;
+    mtime GetUnTimeBetween(const timeHdl& hdl1, const timeHdl& hdl2) const;
+    mtime GetTimeFromLast() const;
+    const bool good() const;
 
 private:
-    utime actionTime_;
+    bool error;
+    mtime actionTime_;
     timeval actionval_;
     std::vector<timeval> listTime_;
 
-    void setTime(utime& ret, timeval& val) const;
-    void addTime(utime& ret, timeval& val) const;
+    void setTime(mtime& ret, const timeval& val);
+    void setTime(mtime& ret, const timeval& val) const;
+    void addTime(mtime& ret, const timeval& val);
 };
 
 # endif // !WIN32
