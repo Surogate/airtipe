@@ -28,6 +28,7 @@ SRC		= \
 		$(DIR_SRC_COMMON)network/CTCPServer_Unix.cpp	\
 		$(DIR_SRC_COMMON)network/CTCPSession_Unix.cpp	\
 		$(DIR_SRC_COMMON)packets/PacketManager.cpp		\
+		$(DIR_SRC_COMMON)packets/PacketHeader.cpp		\
 		$(DIR_SRC_COMMON)packets/Packet.cpp
 
 INC		= \
