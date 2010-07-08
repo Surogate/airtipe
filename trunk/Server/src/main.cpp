@@ -12,10 +12,11 @@
 int		main()
 {
 	Server	server(22255, 16);
+	std::cout << "[STARTING] Server started on 127.0.0.1 22255" << std::endl;
 
 	if (server.init())
 	{
-		std::cout << "Server listening" << std::endl;
+		std::cout << "[NOTICE] server listening" << std::endl;
 		server.run();
 	}
 	return (0);

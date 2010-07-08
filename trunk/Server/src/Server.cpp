@@ -79,7 +79,7 @@ void	Server::readValidClients()
 						}
 						else
 						{
-							std::cerr << "client disconnected" << std::endl;
+							std::cerr << "[NOTICE] client disconnected" << std::endl;
 							this->_sessions.erase(it);
 							return;
 						}
@@ -91,7 +91,7 @@ void	Server::readValidClients()
 			}
 			else
 			{
-				std::cerr << "client disconnected" << std::endl;
+				std::cerr << "[NOTICE] client disconnected" << std::endl;
 				this->_sessions.erase(it);
 				return;
 			}
