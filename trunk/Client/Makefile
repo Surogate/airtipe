@@ -76,15 +76,13 @@ LFLAGS				= \
 					$(LFLAGS_$(TAG))	\
 					-L$(DIR_LIB)		\
 					-lsfml-graphics		\
-					-lGLU				\
-					-lGL				\
 					-lsfml-window		\
 					-lsfml-network		\
 					-lsfml-system
 
 #########  COMPILE FLAGS
 
-CFLAGS			+= -O3 -W -Wall -ansi -pedantic $(DEFINE) $(IFLAGS)
+CFLAGS			+= -O3 -W -Wall $(DEFINE) $(IFLAGS)
 
 ############### BINARIES ###############
 
