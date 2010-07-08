@@ -63,13 +63,13 @@ IFLAGS				= \
 
 #########  LIBRARIES
 
-LFLAGS_i386-Darwin	= \
+LFLAGS_i386-Darwin	= -lpthread		\
 			
 
-LFLAGS_i386-FreeBSD	= \
+LFLAGS_i386-FreeBSD	= -lpthread		\
 			
 
-LFLAGS_i686-Linux	= \
+LFLAGS_i686-Linux	= -lpthread		\
 			
 
 LFLAGS				= \
