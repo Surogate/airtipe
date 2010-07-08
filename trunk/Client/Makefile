@@ -12,10 +12,12 @@ NAME		= R-type
 
 ############### DIRECTORIES
 
-DIR_SRC		= ./src/
-DIR_INC		= ./include/
-DIR_LIB		= ./lib/
-DIR_BIN		= ./bin/
+DIR_SRC			= ./src/
+DIR_SRC_COMMON	= ../src/
+DIR_INC			= ./include/
+DIR_INC_COMMON	= ../include/
+DIR_LIB			= ./lib/
+DIR_BIN			= ./bin/
 
 ############### FILES
 
@@ -23,8 +25,11 @@ SRC		= \
 		$(DIR_SRC)main.cpp			\
 		$(DIR_SRC)Client.cpp			\
 		$(DIR_SRC)Graphics.cpp			\
-		$(DIR_SRC)NetWork.cpp
-
+		$(DIR_SRC)TCPClient.cpp			\
+		$(DIR_SRC)NetWork.cpp			\
+		$(DIR_SRC_COMMON)packets/PacketManager.cpp	\
+		$(DIR_SRC_COMMON)packets/Packet.cpp			\
+		$(DIR_SRC_COMMON)packets/PacketHeader.cpp	
 INC		= \
 
 SRC_LIB		= \
@@ -34,11 +39,11 @@ OBJ			= $(SRC:.cpp=.o)
 ############### FLAGS ###############
 #########  DEFINES
 
-DEFINE_i386-Darwin	=
+DEFINE_i386-Darwin	= -D UNIX
 
-DEFINE_i386-FreeBSD	=
+DEFINE_i386-FreeBSD	= -D UNIX
 
-DEFINE_i686-Linux	=
+DEFINE_i686-Linux	= -D UNIX
 
 DEFINE			= $(DEFINE_$(TAG))
 
@@ -53,6 +58,7 @@ IFLAGS_i686-Linux	= \
 
 IFLAGS				= \
 			$(IFLAGS_$(TAG)) 	\
+			-I$(DIR_INC_COMMON)	\
 			-I$(DIR_INC)
 
 #########  LIBRARIES
@@ -73,6 +79,7 @@ LFLAGS				= \
 					-lGLU				\
 					-lGL				\
 					-lsfml-window		\
+					-lsfml-network		\
 					-lsfml-system
 
 #########  COMPILE FLAGS
