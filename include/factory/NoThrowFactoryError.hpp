@@ -15,7 +15,7 @@ template <class IdentifierType, class ProductType>
 class NoThrowFactoryError
 {
 	protected:
-		static ProductType* OnUnknownType(const IdentifierType& id)
+		static ProductType* OnUnknownType(const IdentifierType&)
 		{
 			return (new ProductType);
 		}

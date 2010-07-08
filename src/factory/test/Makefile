@@ -1,13 +1,16 @@
 NAME		=	Factory
-SRCS		=	main.cpp
+SRCS		=	main.cpp		\
+				hexdump.cpp
 OBJS		=	$(SRCS:.cpp=.o)
-
-CXX			=	g++
 
 RM			=	rm -f
 
-$(.cpp=.o)	:
-				$(CXX) -c $(SRCS) -o $(OBJS)
+INCDIR		=	-I ../../../include/
+
+CXX			=	g++ 
+
+$(OBJS)		:
+				$(CXX) -c $(SRCS) $(INCDIR) -std=c++0x
 
 all			:	$(OBJS)
 				$(CXX) $(OBJS) -o $(NAME)

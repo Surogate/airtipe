@@ -1,54 +1,52 @@
 ########## CLIENT TO SERVER ##########
 
-
 ### GENERAL COMMUNICATION TCP
 
 
-login		DataLogin
-			- id
-			- login
-			(login on server)
+login				DataLogin
+					- id
+					- login
+					(login on server)
 
-create		DataEmpty
-			(create new Game)
+CreateGame			DataEmpty
+					(create new Game)
 
-addMap		DataMap
-			- mapName
-			(adding a map to a party)
+AddMap				DataMap
+					- mapName
+					(adding a map to a party)
 
-validParty	DataEmpty
-			(valid the party)
+ValidGame			DataEmpty
+					(valid the party)
 
-join		DataLogin
-			- id
-			- partyOwnerLogin
-			(join a party)
+JoinGame			DataLogin
+					- id
+					- partyOwnerLogin
+					(join a party)
 
 chooseSpaceCraft	DataSpaceCraft
 					- id
 					- SkinType
 					(choose a spacecraft)
 
-ready		DataEmpty
-			(set ready flag of the player to true - the party can begin when minimum player have join and are ready)
+Ready				DataLogin
+					- id
+					- login
 
-notReady	DataEmpty
-			(set ready flag of the player to false)
+NotReady			DataLogin
+					- id
+					- login
 
-start		DataEmpty
-			(start the party - only the owner)
+StartGame			DataEmpty
 
-stop		DataEmpty
-			(stop the party - only the owner)
+StopGame			DataEmpty
 
-quit		DataEmpty
-			(qui the party, and stop it if you are the owner)
+QuitGame			DataEmpty
 
 
 ### GAME COMMUNIACATION UDP
 
 
-move		DataSynchro
+Move		DataSynchro
 			- id of player
 			- x
 			- y
@@ -59,7 +57,7 @@ move		DataSynchro
 			- startTime
 			(Move action)
 
-shoot		DataShoot
+Shoot		DataId
 			- id
 			(Shoot action)
 
@@ -69,155 +67,151 @@ shoot		DataShoot
 ### GENERAL COMMUNICATION TCP
 
 
-loginOK		DataLogin
+LoginOK		DataLogin
 			- id
 			- login
 			(login ok)
 
-createOK	DataEmpty
+CreateOK	DataEmpty
 
-sendMaps	DataMap
+SendMaps	DataMap
 			- mapName
 			(sending all map name of the server)
 
-sendMapsEnd	DataMap
+SendMapsEnd	DataMap
 			- mapName
 			(sending last map name of the server)
 
-addMapOK	DataEmpty
+AddMapOK	DataEmpty
 			(Adding map successfull)
 
-validPartyOK DataEmpty
+ValidGameOK	DataEmpty
 			(validing party successfull)
 
-joinOK		DataEmpty
+JoinGameOK	DataEmpty
 			(joining party successfull, sending party map list)
 
 
 ### BROADCAST GENERAL COMMUNICATION TCP
 
 
-joinGame	DataLogin
-			- id
-			- login
-			(login has join the party - sended only to concerned party members)
+JoinGame			DataLogin
+					- id
+					- login
+					(login has join the party - sended only to concerned party members)
 
-leftParty	DataLogin
-			- id
-			- login
-			(login has left the party - sended only to concerned party members)
+LeftGame			DataLogin
+					- id
+					- login
+					(login has left the party - sended only to concerned party members)
 
-playerChooseSpaceCraft	DataSpaceCraft
-						- id
-						- skinType
-						(login has choosed a new spaceCraft - sended only to concerned party members)
+ChooseSpaceCraft	DataSpaceCraft
+					- id
+					- skinType
+					(login has choosed a new spaceCraft - sended only to concerned party members)
 
-playerReady		DataLogin
-				- id
-				- login
-				(login is ready - sended only to concerned party members)
+PlayerReady			DataLogin
+					- id
+					- login
+					(login is ready - sended only to concerned party members)
 
-playerNotReady		DataLogin
+PlayerNotReady		DataLogin
 					- id
 					- login
 					(login is not ready - sended only to concerned party members)
 
-partyStarting	DataEmpty
-				(party is starting)
+StartGame			DataEmpty
+					(party is starting)
 
-sendMapDesc		DataEntity
-				- id
-				- pv
-				- x
-				- y
-				- type
-				- skin
-				- bulletSkin
-				- movementType
-				- spawnFrameNum
-				- startTime
-				(Sending Environment)
+SendGrounds			DataEntity
+					- id
+					- pv
+					- x
+					- y
+					- type
+					- skin
+					- bulletSkin
+					- movementType
+					- spawnFrameNum
+					- startTime
+					(Sending Environment)
 
-sendMapDescEnd	DataEntity
-				- id
-				- pv
-				- x
-				- y
-				- type
-				- skin
-				- bulletSkin
-				- movementType
-				- spawnFrameNum
-				- startTime
-				(End of sending environment)
+SendGroundsEnd		DataEntity
+					- id
+					- pv
+					- x
+					- y
+					- type
+					- skin
+					- bulletSkin
+					- movementType
+					- spawnFrameNum
+					- startTime
+					(End of sending environment)
 
-stop		DataEmpty
-			(the party is done - when owner stop the party or when the server decide to stop it (Win - Loose))
-
+StopGame			DataEmpty
+					(the party is done - when owner stop the party or when the server decide to stop it (Win - Loose))
 
 ### ERROR CODES TCP
 
 
-loginAlreadyExists	DataEmpty
+LoginAlreadyExists	DataEmpty
 					(login already choosed by another player)
 
-badLoginFormat		DataEmpty
+BadLoginFormat		DataEmpty
 					(bad login format)
 
-loginKO		DataEmpty
-			(wrong login or password - login failure)
+LoginKO				DataEmpty
+					(wrong login or password - login failure)
 
-createKO	DataEmpty
-			(Creation of party unsuccessfull)
+CreateGameKO		DataEmpty
+					(Creation of party unsuccessfull)
 
-maxPlayerTooHigh	DataEmpty
-					(maximum player set is too high)
+UnknownMap			DataMap
+					- mapName
+					(map unknown)
 
-unknownMap	DataMap
-			- mapName
-			(map unknown)
-
-validPartyKO	DataEmpty
-				(validing the party unsuccessfull)
+ValidGameKO			DataEmpty
+					(validing the party unsuccessfull)
 
 
 ### GAME COMMUNICATION UDP (sended only to concerned party members)
 
-spawn		DataEntity
-			- id
-			- pv
-			- x
-			- y
-			- type
-			- skin
-			- bulletSkin
-			- movementType
-			- spawnFrameNum
-			- startTime
+EntitySpawn		DataEntity
+				- id
+				- pv
+				- x
+				- y
+				- type
+				- skin
+				- bulletSkin
+				- movementType
+				- spawnFrameNum
+				- startTime
 
-move		DataSynchro
-			- id of
-			- x
-			- y
-			- pv
-			- time
-			- bulletSkin
-			- MovementType
-			- startTime
-			(move entity with id [id] at position x y)
+EntityMove		DataSynchro
+				- id of
+				- x
+				- y
+				- pv
+				- time
+				- bulletSkin
+				- MovementType
+				- startTime
+				(move entity with id [id] at position x y)
 
-synchro		DataSynchro
-			- id of
-			- x
-			- y
-			- pv
-			- time
-			- bulletSkin
-			- MovementType
-			- startTime
+EntitySynchro	DataSynchro
+				- id of
+				- x
+				- y
+				- pv
+				- time
+				- bulletSkin
+				- MovementType
+				- startTime
 
-shoot		DataShoot
-			- id
+EntityShoot		DataId
+				- id
 
-die			DataId
-			- id
+EntityDie		DataId
+				- id
