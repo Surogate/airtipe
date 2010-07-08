@@ -45,6 +45,7 @@ class		Server : public TCPServer
 		 * \brief	redefinition of virtual method from TCPServer to mange Client instead of TCPSession
 		 */
 		bool	accept();
+		void	readValidClients();
 
 	private:
 		typedef Packet * (Server::*Action)(Packet * pak);
@@ -52,6 +53,7 @@ class		Server : public TCPServer
 		PacketManager	_pm;
 
 	private:
+		void		Exec(Packet * pak);
 		Packet *	ActionLogin(Packet * pak);
 		Packet *	ActionCreateGame(Packet * pak);
 		Packet *	ActionAddMap(Packet * pak);

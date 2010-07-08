@@ -22,6 +22,12 @@ Packet::Packet(PacketCode code, AData* datas)
 	this->datas = datas;
 }
 
+Packet::Packet(PacketHeader* header, AData* data)
+{
+	this->header = header;
+	this->datas = data;
+}
+
 Packet::~Packet()
 {
 
