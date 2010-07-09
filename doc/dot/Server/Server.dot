@@ -185,18 +185,6 @@ TCPServer|\
 
 } // END : TCPSERVER SUBGRAPH
 
-ThreadPool [
-label = "{\
-ThreadPool|\
-- _maxThreads : unsigned int\l\
-- _maxRoutine : unsigned int\l\
-- _threads : vector\<AbsThread\>[_maxThreads]\l\
-- _in : map\<RoutineID, startRoutine\>\l\
-- _mutexIn : AbsMutex\l|\
-+ run() : void\l\
-}"
-]
-
 //
 // THREAD SUBGRAPH
 //
@@ -211,6 +199,18 @@ AbsThread|\
 + launch(startRoutine, void* args) : bool\l\
 + join() : bool\l\
 + exit() : void\l\
+}"
+]
+
+ThreadPool [
+label = "{\
+ThreadPool|\
+- _maxThreads : unsigned int\l\
+- _maxRoutine : unsigned int\l\
+- _threads : vector\<AbsThread\>[_maxThreads]\l\
+- _in : map\<RoutineID, startRoutine\>\l\
+- _mutexIn : AbsMutex\l|\
++ run() : void\l\
 }"
 ]
 
@@ -318,7 +318,6 @@ PhysicEngine -> Game [arrowhead = "diamond" style = "solid"]
 Ressource -> PhysicEngine [arrowhead = "diamond" style = "solid"]
 ThreadPool -> Server [arrowhead = "diamond" style = "solid"]
 AbsThread -> ThreadPool [arrowhead = "diamond" style = "solid"]
-AbsMutex -> ThreadPool [arrowhead = "diamond" style = "solid"]
 
 // Aggregation
 TCPSession -> TCPServer [arrowhead = "odiamond" style = "solid"]
