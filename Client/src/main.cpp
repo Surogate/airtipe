@@ -28,6 +28,7 @@ int		main()
 		client.Net.c.send(packet->header, sizeof(*packet->header));
 		client.Net.c.send(data, sizeof(*data));
 	}
+	while (42);
 //	client.run();
 }
 
