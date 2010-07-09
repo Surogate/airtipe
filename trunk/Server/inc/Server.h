@@ -29,23 +29,28 @@ class		Server : public TCPServer
 		void	readValidClients();
 
 	private:
-		typedef Packet * (Server::*Action)(Packet * pak);
+		typedef Packet * (Server::*Action)(Client * client, Packet * pak);
 		std::map<PacketCode, Action>	_actions;
 		PacketManager	_pm;
 
 	private:
 		void		process();
-		Packet *	ActionLogin(Packet * pak);
-		Packet *	ActionCreateGame(Packet * pak);
-		Packet *	ActionAddMap(Packet * pak);
-		Packet *	ActionValidGame(Packet * pak);
-		Packet *	ActionJoinGame(Packet * pak);
-		Packet *	ActionChooseSpacecraft(Packet * pak);
-		Packet *	ActionReady(Packet * pak);
-		Packet *	ActionNotReady(Packet * pak);
-		Packet *	ActionStartGame(Packet * pak);
-		Packet *	ActionStopGame(Packet * pak);
-		Packet *	ActionQuitGame(Packet * pak);
+		void		DisplayHeader(PacketHeader * header);
+		bool		loginExists(std::string const & login);
+
+	private:
+		Packet *	ActionLogin(Client * client, Packet * pak);
+		Packet *	ActionCreateGame(Client * client, Packet * pak);
+		Packet *	ActionAddMap(Client * client, Packet * pak);
+		Packet *	ActionValidGame(Client * client, Packet * pak);
+		Packet *	ActionJoinGame(Client * client, Packet * pak);
+		Packet *	ActionChooseSpacecraft(Client * client, Packet * pak);
+		Packet *	ActionReady(Client * client, Packet * pak);
+		Packet *	ActionNotReady(Client * client, Packet * pak);
+		Packet *	ActionStartGame(Client * client, Packet * pak);
+		Packet *	ActionStopGame(Client * client, Packet * pak);
+		Packet *	ActionQuitGame(Client * client, Packet * pak);
+
 };
 
 #endif		// SERVER_H__

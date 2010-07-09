@@ -6,8 +6,11 @@
  * \date	07/07/2010 20:00:43
  */
 
-#include <sys/socket.h>
-#include "Server.h"
+#include	<sys/socket.h>
+#include	<iomanip>
+#include	<cstring>
+#include	<fcntl.h>
+#include	"Server.h"
 
 Server::Server(short port, unsigned int bufferSize) :
 	TCPServer(port, bufferSize)
@@ -37,6 +40,7 @@ bool	Server::accept()
 	int newSock = ::accept(this->_socket, &saddr, &saddrSize);
 	if (newSock >= 0)
 	{
+		fcntl(newSock, F_SETFL, O_NONBLOCK);
 		this->_sessions.push_back(new Client(newSock));
 		return (true);
 	}
@@ -59,10 +63,7 @@ void	Server::readValidClients()
 				if (res == sizeof(PacketHeader))
 				{
 					PacketHeader *	header = new (headerData->data) PacketHeader;
-					std::cerr << "[RECV] code:" << header->code
-						<< " timestamp:" << header->timestamp
-						<< " datasize:" << header->dataSize
-						<< std::endl;
+					this->DisplayHeader(header);
 					if (header->dataSize > 0 && header->dataSize < 1000)
 					{
 						Data *		packetData = new Data(header->dataSize);
@@ -75,11 +76,11 @@ void	Server::readValidClients()
 								this->_in.push_back(std::pair<TCPSession*, void*>(*it, new Packet(header, data)));
 							}
 							else
-								std::cerr << "[ERROR] Packet broken" << std::endl;
+								this->DisplayError("Packet broken");
 						}
 						else
 						{
-							std::cerr << "[NOTICE] client disconnected" << std::endl;
+							this->DisplayNotice("Client disconnected");
 							this->_sessions.erase(it);
 							return;
 						}
@@ -87,11 +88,11 @@ void	Server::readValidClients()
 					}
 				}
 				else
-					std::cerr << "[ERROR] Packet broken" << std::endl;
+					this->DisplayError("Packet broken");
 			}
 			else
 			{
-				std::cerr << "[NOTICE] client disconnected" << std::endl;
+				this->DisplayNotice("Client disconnected");
 				this->_sessions.erase(it);
 				return;
 			}
@@ -117,7 +118,7 @@ void		Server::process()
 		{
 			if (it->first == pak->header->code)
 			{
-				(this->*(it->second))(pak);
+				(this->*(it->second))(new (this->_in.front().first) Client(this->_in.front().first->getSocket()), pak);
 				found = true;
 				delete [] pak->header;
 				delete pak;
@@ -126,97 +127,141 @@ void		Server::process()
 			++it;
 		}
 		if (!found)
-			std::cerr << "[RECV] Unknown Packet" << std::endl;
+			this->DisplayWarning("Unknown Packet");
 		this->_in.pop_front();
 	}
 }
 
-Packet *	Server::ActionLogin(Packet * pak)
+bool		Server::loginExists(std::string const & login)
+{
+	std::list<TCPSession*>::const_iterator	it = this->_sessions.begin();
+	std::list<TCPSession*>::const_iterator	ite = this->_sessions.end();
+	Client *	client;
+
+	while (it != ite)
+	{
+		client = dynamic_cast<Client *>(*it);
+		if (client->isLogged() == true && client->getLogin() == login)
+			return true;
+		++it;
+	}
+	return false;
+}
+
+Packet *	Server::ActionLogin(Client * client, Packet * pak)
 {
 	DataLogin* data = new (pak->datas) DataLogin;
-	std::cerr << "[RECV] ActionLogin" << std::endl;
-	std::cerr << "\tid: " << data->id << std::endl;
-	std::cerr << "\tlogin: " << data->login << std::endl;
+	std:: cerr << std::setw(10) << std::left << "[ACTION]" << "ActionLogin" << std::endl;
+	std::cerr << "\t\tid: " << data->id << std::endl;
+	std::cerr << "\t\tlogin: " << data->login << std::endl;
+	Packet *		response = NULL;
+
+	if (!this->loginExists(data->login))
+	{
+		client->setLogin(data->login);
+		client->setLogged(true);
+		this->DisplayNotice(client->getLogin() + std::string(" now logged"));
+
+		DataLogin * newdata = new (this->_pm.CreateData(LoginOK)) DataLogin;
+		memcpy(&newdata->login, &data->login, 15);
+		newdata->id = 0;
+		response = this->_pm.CreatePacket(LoginOK, newdata);
+		response->header->dataSize = sizeof(DataLogin);
+	}
+	else
+	{
+		response = this->_pm.CreatePacket(LoginKO);
+		response->header->dataSize = sizeof(DataEmpty);
+		this->DisplayWarning("Login already exists");
+	}
 	delete [] data;
-	return NULL;
+	return response;
 }
 
-Packet *	Server::ActionCreateGame(Packet *)
+Packet *	Server::ActionCreateGame(Client * client, Packet *)
 {
-	std:: cerr << "[RECV] ActionCreateGame" << std::endl;
+	std:: cerr << std::setw(10) << std::left << "[ACTION]" << "ActionCreateGame" << std::endl;
 	return NULL;
 }
 
-Packet *	Server::ActionAddMap(Packet * pak)
+Packet *	Server::ActionAddMap(Client * client, Packet * pak)
 {
 	DataMap* data = new (pak->datas) DataMap;
-	std::cerr << "[RECV] ActionAddMap" << std::endl;
-	std::cerr << "\tmap: " << data->mapName << std::endl;
+	std:: cerr << std::setw(10) << std::left << "[ACTION]" << "ActionAddMap" << std::endl;
+	std::cerr << "\t\tmap: " << data->mapName << std::endl;
 	delete [] data;
 	return NULL;
 }
 
-Packet *	Server::ActionValidGame(Packet *)
+Packet *	Server::ActionValidGame(Client * client, Packet *)
 {
-	std:: cerr << "[RECV] ActionValidGame" << std::endl;
+	std:: cerr << std::setw(10) << std::left << "[ACTION]" << "ActionValidGame" << std::endl;
 	return NULL;
 }
 
-Packet *	Server::ActionJoinGame(Packet * pak)
+Packet *	Server::ActionJoinGame(Client * client, Packet * pak)
 {
 	DataLogin* data = new (pak->datas) DataLogin;
-	std::cerr << "[RECV] ActionJoinGame" << std::endl;
-	std::cerr << "\tid: " << data->id << std::endl;
-	std::cerr << "\tlogin: " << data->login << std::endl;
+	std:: cerr << std::setw(10) << std::left << "[ACTION]" << "ActionJoinGame" << std::endl;
+	std::cerr << "\t\tid: " << data->id << std::endl;
+	std::cerr << "\t\tlogin: " << data->login << std::endl;
 	delete [] data;
 	return NULL;
 }
 
-Packet *	Server::ActionChooseSpacecraft(Packet * pak)
+Packet *	Server::ActionChooseSpacecraft(Client * client, Packet * pak)
 {
 	DataSpacecraft* data = new (pak->datas) DataSpacecraft;
-	std::cerr << "[RECV] ActionChooseSpacecraft" << std::endl;
-	std::cerr << "\tid: " << data->id << std::endl;
-	std::cerr << "\tskin: " << data->skin << std::endl;
+	std:: cerr << std::setw(10) << std::left << "[ACTION]" << "ActionChooseSpacecraft" << std::endl;
+	std::cerr << "\t\tid: " << data->id << std::endl;
+	std::cerr << "\t\tskin: " << data->skin << std::endl;
 	delete [] data;
 	return NULL;
 }
 
-Packet *	Server::ActionReady(Packet * pak)
+Packet *	Server::ActionReady(Client * client, Packet * pak)
 {
 	DataLogin* data = new (pak->datas) DataLogin;
-	std:: cerr << "[RECV] ActionReady" << std::endl;
-	std::cerr << "\tid: " << data->id << std::endl;
-	std::cerr << "\tlogin: " << data->login << std::endl;
+	std:: cerr << std::setw(10) << std::left << "[ACTION]" << "ActionReady" << std::endl;
+	std::cerr << "\t\tid: " << data->id << std::endl;
+	std::cerr << "\t\tlogin: " << data->login << std::endl;
 	delete [] data;
 	return NULL;
 }
 
-Packet *	Server::ActionNotReady(Packet * pak)
+Packet *	Server::ActionNotReady(Client * client, Packet * pak)
 {
 	DataLogin* data = new (pak->datas) DataLogin;
-	std:: cerr << "[RECV] ActionNotReady" << std::endl;
-	std::cerr << "\tid: " << data->id << std::endl;
-	std::cerr << "\tlogin: " << data->login << std::endl;
+	std:: cerr << std::setw(10) << std::left << "[ACTION]" << "ActionNotReady" << std::endl;
+	std::cerr << "\t\tid: " << data->id << std::endl;
+	std::cerr << "\t\tlogin: " << data->login << std::endl;
 	delete [] data;
 	return NULL;
 }
 
-Packet *	Server::ActionStartGame(Packet *)
+Packet *	Server::ActionStartGame(Client * client, Packet *)
 {
-	std:: cerr << "[RECV] ActionStartGame" << std::endl;
+	std:: cerr << std::setw(10) << std::left << "[ACTION]" << "ActionStartGame" << std::endl;
 	return NULL;
 }
 
-Packet *	Server::ActionStopGame(Packet *)
+Packet *	Server::ActionStopGame(Client * client, Packet *)
 {
-	std:: cerr << "[RECV] ActionStopGame" << std::endl;
+	std:: cerr << std::setw(10) << std::left << "[ACTION]" << "ActionStopGame" << std::endl;
 	return NULL;
 }
 
-Packet *	Server::ActionQuitGame(Packet *)
+Packet *	Server::ActionQuitGame(Client * client, Packet *)
 {
-	std:: cerr << "[RECV] ActionQuitGame" << std::endl;
+	std:: cerr << std::setw(10) << std::left << "[ACTION]" << "ActionQuitGame" << std::endl;
 	return NULL;
+}
+
+void		Server::DisplayHeader(PacketHeader * header)
+{
+	std::cerr << std::setw(10) << std::left << "[RECV]" << "code:" << header->code
+		<< " timestamp:" << header->timestamp
+		<< " datasize:" << header->dataSize
+		<< std::endl;
 }
 
