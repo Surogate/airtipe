@@ -63,7 +63,7 @@ void	Server::readValidClients()
 				if (res == sizeof(PacketHeader))
 				{
 					PacketHeader *	header = new (headerData->data) PacketHeader;
-					this->DisplayHeader(header);
+					this->DisplayInHeader(header);
 					if (header->dataSize > 0 && header->dataSize < 1000)
 					{
 						Data *		packetData = new Data(header->dataSize);
@@ -116,7 +116,6 @@ void		Server::respondToValidClients()
 			unsigned int res = it->first->write(toWrite);
 			if (res == toWrite.size)
 			{
-				std::cout << "----- header sent" << std::endl;
 				if (packet->header->dataSize != 0)
 				{
 					toWrite.size = packet->header->dataSize;
@@ -124,8 +123,10 @@ void		Server::respondToValidClients()
 					res = it->first->write(toWrite);
 					if (res == toWrite.size)
 					{
-						std::cout << "----- data sent" << std::endl;
-						//delete packet; // LEAK HERE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+						this->DisplayOutHeader(packet->header);
+						delete packet->header;
+						delete packet->datas;
+						delete packet;
 						it = this->_out.erase(it);
 						return;
 					}
@@ -200,7 +201,7 @@ Packet *	Server::ActionLogin(Client * client, Packet * pak)
 		client->setLogin(data->login);
 		client->setLogged(true);
 		this->DisplayNotice(client->getLogin() + std::string(" now logged"));
-
+		
 		DataLogin * newdata = new (this->_pm.CreateData(LoginOK)) DataLogin;
 		memcpy(&newdata->login, &data->login, 15);
 		newdata->id = 0;
@@ -213,7 +214,7 @@ Packet *	Server::ActionLogin(Client * client, Packet * pak)
 		response->header->dataSize = sizeof(DataEmpty);
 		this->DisplayWarning("Login already exists");
 	}
-	delete [] data;
+	delete pak->datas;
 	return response;
 }
 
@@ -296,9 +297,17 @@ Packet *	Server::ActionQuitGame(Client *, Packet *)
 	return NULL;
 }
 
-void		Server::DisplayHeader(PacketHeader * header)
+void		Server::DisplayInHeader(PacketHeader * header)
 {
 	std::cerr << std::setw(10) << std::left << "[RECV]" << "code:" << header->code
+		<< " timestamp:" << header->timestamp
+		<< " datasize:" << header->dataSize
+		<< std::endl;
+}
+
+void		Server::DisplayOutHeader(PacketHeader * header)
+{
+	std::cerr << std::setw(10) << std::left << "[SEND]" << "code:" << header->code
 		<< " timestamp:" << header->timestamp
 		<< " datasize:" << header->dataSize
 		<< std::endl;

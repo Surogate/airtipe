@@ -11,7 +11,7 @@
 #include <iostream>
 struct		AData
 {
-	virtual ~AData() { std::cout << "destroy AData " << std::endl; }
+	virtual ~AData() {}
 	virtual AData * Clone() { return new AData; }
 };
 
