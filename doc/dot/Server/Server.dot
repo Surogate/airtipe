@@ -89,12 +89,15 @@ PhysicEngine|\
 Server [
 label = "{\
 Server|\
+typedef Packet * (Server::*Action)(Packet * pak)\l\
 - _pf : DataFactory &\l\
 - _parties : list\<Game\>\l\
 - _actions : map\<PacketCode, ServerActionFunc\>\l|\
 - createGame(pak : Packet const &) : Packet *\l\
 + run() : void\l\
-+ accept() : bool\l\
+- accept() : bool\l\
+- process() : void\l\
+- readValidClients() : void\l\
 - login(pak : Packet const &) : Packet *\l\
 - create(pak : Packet const &) : Packet *\l\
 - addMap(pak : Packet const &) : Packet *\l\
@@ -262,6 +265,21 @@ Packet||\
 }"
 ]
 
+// Class PacketManager
+PacketManager [
+label = "{\
+PacketManager|\
+typedef	AData*	(AData::*Creator)()\l\
+typedef	Factory\<AData, PacketCode, Creator, NoThrowFactoryError\> DataFactory\l\
+typedef	SingletonHolder\<DataFactory \> SingletonFactory\l\
++ CreatePacket(PacketCode) : Packet *\l\
++ CreatePacket(PacketCode, AData *) : Packet *\l\
++ CreateData(PacketCode) : AData *\l\
++ interpretData(PacketCode, void * buff) : ADta *\l\
+- _dataFactory : DataFactory *\l\
+}"
+]
+
 }
 
 subgraph clusterGenericFactory {
@@ -294,8 +312,8 @@ fontsize = 8
 AbsMutex -> PhysicEngine [arrowhead = "diamond" style = "solid"]
 AbsMutex -> Ressource [arrowhead = "diamond" style = "solid"]
 Ressource -> Game [arrowhead = "diamond" style = "solid"]
-Factory -> Server [arrowhead = "diamond" style = "solid"]
-Factory -> Game [arrowhead = "diamond" style = "solid"]
+PacketManager -> Server [arrowhead = "diamond" style = "solid"]
+PacketManager -> Game [arrowhead = "diamond" style = "solid"]
 PhysicEngine -> Game [arrowhead = "diamond" style = "solid"]
 Ressource -> PhysicEngine [arrowhead = "diamond" style = "solid"]
 ThreadPool -> Server [arrowhead = "diamond" style = "solid"]
@@ -309,8 +327,10 @@ Game -> Server [arrowhead = "odiamond" style = "solid"]
 Data -> Factory [arrowhead = "odiamond" style = "solid"]
 
 // Uses
+PacketManager -> Factory [arrowhead = "vee" style = "solid"]
 Packet -> Game [arrowhead = "vee" style = "solid"]
 Packet -> Server [arrowhead = "vee" style = "solid"]
+PacketManager -> Packet [arrowhead = "vee" style = "solid"]
 
 // Heritage
 Server -> TCPServer [arrowhead = "onormal" style = "solid"]

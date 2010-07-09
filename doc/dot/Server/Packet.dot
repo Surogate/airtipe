@@ -12,14 +12,17 @@ Packet [
 label = "{\
 Packet|\
 + header : PacketHeader\l\
-+ data : Data\l\
++ data : Data\l|\
++ Packet(PacketCode, AData* datas)\l\
++ Packet(PacketHeader*, AData*)\l\
++ Packet(PacketHeader*)\l\
 }"
 ]
 
 AData [
 label = "{\
 AData||\
-Create() : AData *\l\
+virtual AData * Clone()\l\
 }"
 ]
 
@@ -29,10 +32,44 @@ PacketHeader|\
 + code : PacketCode\l\
 + time : Timestamp\l\
 + dataSize : unsigned int\l|\
-Create() : AData *\l\
-Create(buf : void *) : AData *\l\
++ PacketHeader(PacketCode code)\l\
 }"
 ]
+
+// Class PacketManager
+PacketManager [
+label = "{\
+PacketManager|\
+typedef	AData*	(AData::*Creator)()\l\
+typedef	Factory\<AData, PacketCode, Creator, NoThrowFactoryError\> DataFactory\l\
+typedef	SingletonHolder\<DataFactory \> SingletonFactory\l\
++ CreatePacket(PacketCode) : Packet *\l\
++ CreatePacket(PacketCode, AData *) : Packet *\l\
++ CreateData(PacketCode) : AData *\l\
+- _dataFactory : DataFactory *\l\
+}"
+]
+
+subgraph clusterGenericFactory {
+label = "Diagram Factory.dot.png"
+
+// Template class Factory
+Factory [
+label = "{\
+template \<class AbstractType,\l\
+		  typename IdentifierName\l\
+		  typename Creator\l\
+		  template\<typename, class\> class FactoryErrorPolicy\>\l\l\
+Factory|\
++ Register(id : const IdentifierType&, newProduct : AbstractProduct *, creator : Creator) : bool\l\
++ Unregister(id : const IdentifierType&) : bool\l\
++ CreateObject(id : const IdentifierType&) : AbstractProduct *\l|\
+typedef map\<IdentifierType, pair\<AbstractProduct *, Creator\> *\> AssocMap\l\
+AssocMap _associations\l\
+}"
+]
+
+}
 
 DataEntity [
 label = "{\
@@ -168,5 +205,11 @@ DataEmpty -> AData [arrowhead = "onormal" style = "solid"]
 DataId -> AData [arrowhead = "onormal" style = "solid"]
 DataSpaceCraft -> AData [arrowhead = "onormal" style = "solid"]
 DataSynchro -> AData [arrowhead = "onormal" style = "solid"]
+
+// Uses
+PacketManager -> PacketHeader [arrowhead = "vee" style = "solid"]
+PacketManager -> Packet [arrowhead = "vee" style = "solid"]
+AData -> PacketManager [arrowhead = "odiamond" style = "solid"]
+PacketManager -> Factory [arrowhead = "diamond" style = "solid"]
 
 }
