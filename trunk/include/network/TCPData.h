@@ -14,14 +14,15 @@
 class		TCPData
 {
 	public:
+		TCPData() : size(0), data(NULL) {}
 		TCPData(unsigned int const & psize) : size(psize)
 		{
 			this->data = new char[size];
 			memset(this->data, 0, size);
 		}
 
-		void*			data;
 		unsigned int	size;
+		void*			data;
 };
 
 #endif		// TCPDATA_H__

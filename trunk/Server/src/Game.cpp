@@ -23,12 +23,12 @@ void	Game::poll()
 
 }
 
-void	Game::PlayerMove(Packet const & pak)
+void	Game::PlayerMove(Packet const &)
 {
 
 }
 
-void	Game::PlayerFight(Packet const & pak)
+void	Game::PlayerFight(Packet const &)
 {
 
 }
@@ -50,12 +50,12 @@ void	Game::CheckCollisions()
 
 bool	Game::Start()
 {
-
+	return (false);
 }
 
 bool	Game::Stop()
 {
-
+	return (false);
 }
 
 void	Game::MoveEntities()
@@ -68,42 +68,42 @@ void	Game::BroadcastMapState()
 
 }
 
-void	Game::AddAPlayer(TCPSession * sess)
+void	Game::AddAPlayer(TCPSession *)
 {
 
 }
 
-void	Game::DelAPlayer(TCPSession * sess)
+void	Game::DelAPlayer(TCPSession *)
 {
 
 }
 
-void	Game::SetAPlayerReady(TCPSession * sess, bool ready)
+void	Game::SetAPlayerReady(TCPSession *, bool)
 {
 
 }
 
 bool	Game::IsValid()
 {
-
+	return (false);
 }
 
 bool	Game::IsStarted()
 {
-
+	return (false);
 }
 
-void	Game::SetValid(bool valid)
+void	Game::SetValid(bool)
 {
 
 }
 
-bool	Game::PlayerChooseSpacecraft(TCPSession * sess, SkinType skin)
+bool	Game::PlayerChooseSpacecraft(TCPSession *, SkinType)
 {
-
+	return (false);
 }
 
-void	Game::BroadcastPacket(Packet * pak)
+void	Game::BroadcastPacket(Packet *)
 {
 
 }

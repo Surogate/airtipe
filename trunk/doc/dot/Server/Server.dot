@@ -34,7 +34,6 @@ Ressource|\
 Game [
 label = "{\
 Game|\
-friend class Server\l\l\
 - _UDPServer : UDP\l\
 - _ressources : Ressource\l\
 - _pf : DataFactory &\l\
@@ -44,6 +43,7 @@ friend class Server\l\l\
 - _started : bool\l\
 - _actions : map\<PacketCode, GameActionFunc\>\l\
 - _players : map\<TCPSession*, pair\<id : unsigned int, player : APlayer &\>\>\l|\
++ poll() : void\l\
 - PlayerMove(pak : Packet const &) : Packet *\l\
 - PlayerFight(pak : Packet const &) : Packet *\l\
 - ReadClients() : void\l\
@@ -192,25 +192,20 @@ subgraph clusterThread {
 label = "Diagram ThreadMutex.dot.png"
 
 // Concrete thread class for unix
-AbsThread [
-label = "{\
-AbsThread|\
-- _tid : pthread_t*\l|\
-+ launch(startRoutine, void* args) : bool\l\
-+ join() : bool\l\
-+ exit() : void\l\
-}"
-]
 
 ThreadPool [
 label = "{\
 ThreadPool|\
-- _maxThreads : unsigned int\l\
-- _maxRoutine : unsigned int\l\
-- _threads : vector\<AbsThread\>[_maxThreads]\l\
-- _in : map\<RoutineID, startRoutine\>\l\
-- _mutexIn : AbsMutex\l|\
-+ run() : void\l\
+- _maxThread : unsigned int\l\
+- _threads : vector\<TPThread*\>\l\
+- _idleThreads : list\<TPThread*\>\l\
+- _idleMutex : Mutex\l\
+- _idleListMutex : Mutex\l|\
++ run (ATPTask*, void*, bool) : void\l\
++ sync(ATPTask*) : void\l\
++ syncAll() : void\l\
++ getIdle() : TPThread*\l\
++ addIdle(TPThread*) : void\l\
 }"
 ]
 
@@ -225,10 +220,8 @@ label = "Diagram ThreadMutex.dot.png"
 // Class AbsMutex
 AbsMutex [
 label = "{\
-AbsMutex|\
+Mutex|\
 - _mid : pthread_mutex_t*\l|\
-+ init() : bool\l\
-+ destroy() : void\l\
 + lock() : bool\l\
 + tryLock() : bool\l\
 + unlock() : bool\l\
@@ -317,7 +310,6 @@ PacketManager -> Game [arrowhead = "diamond" style = "solid"]
 PhysicEngine -> Game [arrowhead = "diamond" style = "solid"]
 Ressource -> PhysicEngine [arrowhead = "diamond" style = "solid"]
 ThreadPool -> Server [arrowhead = "diamond" style = "solid"]
-AbsThread -> ThreadPool [arrowhead = "diamond" style = "solid"]
 
 // Aggregation
 TCPSession -> TCPServer [arrowhead = "odiamond" style = "solid"]

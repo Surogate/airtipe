@@ -38,7 +38,6 @@ class		CTCPSession_Unix : public ITCPSession
 		/*!
 		 * \brief	Write some data to the client owning the session
 		 * \param	in: the data to write
-		 * \param	size to write (in bytes)
 		 * \return	the size wrote (in bytes). -1 if an error occured
 		 */
 		int		write(Data& data);

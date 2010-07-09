@@ -118,13 +118,13 @@ void	CTCPServer_Unix::readValidClients()
 
 void	CTCPServer_Unix::respondToValidClients()
 {
-	std::list<std::pair<TCPSession*, Data*> >::iterator	it = this->_out.begin();
+	std::list<std::pair<TCPSession*, void*> >::iterator	it = this->_out.begin();
 	while (it != this->_out.end())
 	{
 		if (FD_ISSET(it->first->getSocket(), &this->_fdw))
 		{
-			int res = it->first->write(*(it->second));
-			if (res == static_cast<int>(it->second->size))
+			int res = it->first->write(*static_cast<Data*>(it->second));
+			if (res == static_cast<int>(static_cast<Data*>(it->second)->size))
 			{
 				it = this->_out.erase(it);
 				return;

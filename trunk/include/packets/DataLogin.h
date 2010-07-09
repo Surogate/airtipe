@@ -13,6 +13,7 @@
 
 struct		DataLogin : public AData
 {
+	virtual ~DataLogin() { std::cout << "destroy datalogin" << std::endl; }
 	unsigned int	id;
 	char			login[15];
 	AData *			Clone() { return new DataLogin; }

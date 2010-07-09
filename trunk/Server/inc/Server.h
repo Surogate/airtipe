@@ -27,6 +27,7 @@ class		Server : public TCPServer
 	public:
 		bool	accept();
 		void	readValidClients();
+		void	respondToValidClients();
 
 	private:
 		typedef Packet * (Server::*Action)(Client * client, Packet * pak);

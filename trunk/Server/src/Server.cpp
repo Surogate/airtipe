@@ -102,6 +102,44 @@ void	Server::readValidClients()
 	}
 }
 
+void		Server::respondToValidClients()
+{
+	Data	toWrite;
+	std::list<std::pair<TCPSession*, void*> >::iterator	it = this->_out.begin();
+	while (it != this->_out.end())
+	{
+		if (FD_ISSET(it->first->getSocket(), &this->_fdw))
+		{
+			Packet *	packet = new (it->second) Packet;
+			toWrite.size = sizeof(PacketHeader);
+			toWrite.data = packet->header;
+			unsigned int res = it->first->write(toWrite);
+			if (res == toWrite.size)
+			{
+				std::cout << "----- header sent" << std::endl;
+				if (packet->header->dataSize != 0)
+				{
+					toWrite.size = packet->header->dataSize;
+					toWrite.data = packet->datas;
+					res = it->first->write(toWrite);
+					if (res == toWrite.size)
+					{
+						std::cout << "----- data sent" << std::endl;
+						//delete packet; // LEAK HERE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+						it = this->_out.erase(it);
+						return;
+					}
+					else
+						this->DisplayError("Write failed (or partially failed) ... retrying later");
+				}
+			}
+			else
+				this->DisplayError("Write failed (or partially failed) ... retrying later");
+		}
+		++it;
+	}
+}
+
 void		Server::process()
 {
 	std::map<PacketCode, Action>::const_iterator	it;
@@ -118,7 +156,8 @@ void		Server::process()
 		{
 			if (it->first == pak->header->code)
 			{
-				(this->*(it->second))(new (this->_in.front().first) Client(this->_in.front().first->getSocket()), pak);
+				Packet* response = (this->*(it->second))(new (this->_in.front().first) Client(this->_in.front().first->getSocket()), pak);
+				this->_out.push_back(std::pair<TCPSession*, void*>(this->_in.front().first, response));
 				found = true;
 				delete [] pak->header;
 				delete pak;
@@ -178,13 +217,13 @@ Packet *	Server::ActionLogin(Client * client, Packet * pak)
 	return response;
 }
 
-Packet *	Server::ActionCreateGame(Client * client, Packet *)
+Packet *	Server::ActionCreateGame(Client *, Packet *)
 {
 	std:: cerr << std::setw(10) << std::left << "[ACTION]" << "ActionCreateGame" << std::endl;
 	return NULL;
 }
 
-Packet *	Server::ActionAddMap(Client * client, Packet * pak)
+Packet *	Server::ActionAddMap(Client *, Packet * pak)
 {
 	DataMap* data = new (pak->datas) DataMap;
 	std:: cerr << std::setw(10) << std::left << "[ACTION]" << "ActionAddMap" << std::endl;
@@ -193,13 +232,13 @@ Packet *	Server::ActionAddMap(Client * client, Packet * pak)
 	return NULL;
 }
 
-Packet *	Server::ActionValidGame(Client * client, Packet *)
+Packet *	Server::ActionValidGame(Client *, Packet *)
 {
 	std:: cerr << std::setw(10) << std::left << "[ACTION]" << "ActionValidGame" << std::endl;
 	return NULL;
 }
 
-Packet *	Server::ActionJoinGame(Client * client, Packet * pak)
+Packet *	Server::ActionJoinGame(Client *, Packet * pak)
 {
 	DataLogin* data = new (pak->datas) DataLogin;
 	std:: cerr << std::setw(10) << std::left << "[ACTION]" << "ActionJoinGame" << std::endl;
@@ -209,7 +248,7 @@ Packet *	Server::ActionJoinGame(Client * client, Packet * pak)
 	return NULL;
 }
 
-Packet *	Server::ActionChooseSpacecraft(Client * client, Packet * pak)
+Packet *	Server::ActionChooseSpacecraft(Client *, Packet * pak)
 {
 	DataSpacecraft* data = new (pak->datas) DataSpacecraft;
 	std:: cerr << std::setw(10) << std::left << "[ACTION]" << "ActionChooseSpacecraft" << std::endl;
@@ -219,7 +258,7 @@ Packet *	Server::ActionChooseSpacecraft(Client * client, Packet * pak)
 	return NULL;
 }
 
-Packet *	Server::ActionReady(Client * client, Packet * pak)
+Packet *	Server::ActionReady(Client *, Packet * pak)
 {
 	DataLogin* data = new (pak->datas) DataLogin;
 	std:: cerr << std::setw(10) << std::left << "[ACTION]" << "ActionReady" << std::endl;
@@ -229,7 +268,7 @@ Packet *	Server::ActionReady(Client * client, Packet * pak)
 	return NULL;
 }
 
-Packet *	Server::ActionNotReady(Client * client, Packet * pak)
+Packet *	Server::ActionNotReady(Client *, Packet * pak)
 {
 	DataLogin* data = new (pak->datas) DataLogin;
 	std:: cerr << std::setw(10) << std::left << "[ACTION]" << "ActionNotReady" << std::endl;
@@ -239,19 +278,19 @@ Packet *	Server::ActionNotReady(Client * client, Packet * pak)
 	return NULL;
 }
 
-Packet *	Server::ActionStartGame(Client * client, Packet *)
+Packet *	Server::ActionStartGame(Client *, Packet *)
 {
 	std:: cerr << std::setw(10) << std::left << "[ACTION]" << "ActionStartGame" << std::endl;
 	return NULL;
 }
 
-Packet *	Server::ActionStopGame(Client * client, Packet *)
+Packet *	Server::ActionStopGame(Client *, Packet *)
 {
 	std:: cerr << std::setw(10) << std::left << "[ACTION]" << "ActionStopGame" << std::endl;
 	return NULL;
 }
 
-Packet *	Server::ActionQuitGame(Client * client, Packet *)
+Packet *	Server::ActionQuitGame(Client *, Packet *)
 {
 	std:: cerr << std::setw(10) << std::left << "[ACTION]" << "ActionQuitGame" << std::endl;
 	return NULL;
