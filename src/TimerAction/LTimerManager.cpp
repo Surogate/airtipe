@@ -125,6 +125,10 @@ mtime LTimerManager::GetTimeFromLast() const {
     return GetTimeFrom(listTime_.size() - 1);
 }
 
+const bool LTimerManager::good() const {
+    return !error;
+}
+
 void LTimerManager::setTime(mtime& ret, const timeval& val) {
     ret.sec = val.tv_sec;
     ret.msec = val.tv_usec / 1000;
