@@ -1,0 +1,223 @@
+digraph G {
+fontname = "Bitstream Vera Sans"
+fontsize = 8
+
+node [
+fontname = "Bitstream Vera Sans"
+fontsize = 8
+shape = "record"
+]
+
+//
+// THREAD SUBGRAPH
+//
+subgraph clusterThread {
+label = "Thread Abstraction (Unix/Win32)"
+
+// Interface thread
+IThread [
+label = "{\
+\<interface\> - IThread|\
++ run() : void\l\
++ start(bool detached) : bool\l\
++ stop() : void\l\
++ create(bool detached) : bool\l\
++ join() : void\l\
++ cancel() : void\l\
+}"
+]
+
+// Concrete thread class for unix
+AThread_Unix [
+label = "{\
+\<abstract\> - AThread_Unix|\
+- _tid : pthread_t\l\
+- _tattr : pthread_attr_t\l\
+- _running : bool\l|\
++ (pure) virtual run() : void\l\
++ virtual start(bool detached) : bool\l\
++ virtual stop() : void\l\
++ create(bool detached) : bool\l\
++ join() : void\l\
++ cancel() : void\l\
+}"
+]
+
+// Concrete thread class for win32
+AThread_Win32 [
+label = "{\
+\<abstract\> - AThread_Win32|\
+- _tid : HANDLE\l\
+- _tattr : HANDLE\l\
+- _running : bool\l|\
++ (pure) virtual run() : void\l\
++ virtual start(bool detached) : bool\l\
++ virtual stop() : void\l\
++ create(bool detached) : bool\l\
++ join() : void\l\
++ cancel() : void\l\
+}"
+]
+
+} // END : THREAD SUBGRAPH
+
+//
+// MUTEX SUBGRAPH
+//
+subgraph clusterMutex {
+label = "Mutex Abstraction (Unix/Win32)"
+
+// Interface IMutex
+IMutex [
+label = "{\
+\<interface\> - IMutex|\
++ lock() : bool\l\
++ tryLock() : bool\l\
++ unlock() : bool\l\
+}"
+]
+
+// Class Mutex
+CMutex_Unix [
+label = "{\
+CMutex_Unix|\
+- _mid : pthread_mutex_t*\l|\
++ lock() : bool\l\
++ tryLock() : bool\l\
++ unlock() : bool\l\
+}"
+]
+
+// Class Mutex
+CMutex_Win32 [
+label = "{\
+CMutex_Win32|\
+- _mid : HANDLE\l|\
++ lock() : bool\l\
++ tryLock() : bool\l\
++ unlock() : bool\l\
+}"
+]
+
+} // END : MUTEX SUBGRAPH
+
+//
+// THREAD CONDITION SUBGRAPH
+//
+subgraph clusterTCondition {
+label = "Thread Conditions (Unix/Win32)"
+
+// Class IThreadCondition
+IThreadCondition [
+label = "{\
+IThreadCondition|\
++ wait(Mutex& mutex) : void\l\
++ signal() : void\l\
++ broadcast() : void\l\
+}"
+]
+
+// Class CThreadCondition_Unix
+CThreadCondition_Unix [
+label = "{\
+CThreadCondition_Unix|\
+- _cond : pthread_cond_t\l|\
++ wait(Mutex& mutex) : void\l\
++ signal() : void\l\
++ broadcast() : void\l\
+}"
+]
+
+// Class CThreadCondition_Win32
+CThreadCondition_Win32 [
+label = "{\
+CThreadCondition_Win32|\
+- _cond : HANDLE\l\
++ wait(Mutex& mutex) : void\l\
++ signal() : void\l\
++ broadcast() : void\l\
+}"
+]
+
+} // END : THREAD CONDITION SUBGRAPH
+
+//
+// THREADPOOL SUBGRAPH
+//
+subgraph clusterTPool {
+label = "ThreadPool"
+
+ATPTask [
+label = "{\
+\<abstract\> - ATPTask|\
+- _thread : TPThread*\l\
++ (pure) virtual run() : void\l\
+}"
+]
+
+TPThread [
+label = "{\
+TPThread|\
+# _threadPool : ThreadPool*\l\
+# _task : ATPTask*\l\
+# _data : void*\l\
+# _working : bool\l\
+# _end : bool\l\
+# _destroy : bool\l\
+# _workCondition : ThreadCondition\l\
+# _syncCondition : ThreadCondition\l\
+# _workMutex : Mutex\l\
+# _syncMutex : Mutex\l\
+# _taskMutex : Mutex\l\
+# _deleteMutex : Mutex\l|\
++ run() : void\l\
++ setTask(ATPTask*, void*, bool) : void\l\
+}"
+]
+
+ThreadPool [
+label = "{\
+ThreadPool|\
+- _maxThread : unsigned int\l\
+- _threads : vector\<TPThread*\>\l\
+- _idleThreads : list\<TPThread*\>\l\
+- _idleMutex : Mutex\l\
+- _idleListMutex : Mutex\l|\
++ run (ATPTask*, void*, bool) : void\l\
++ sync(ATPTask*) : void\l\
++ syncAll() : void\l\
++ getIdle() : TPThread*\l\
++ addIdle(TPThread*) : void\l\
+}"
+]
+
+} // END : THREADPOOL SUBGRAPH
+
+
+edge [
+fontname = "Bitstream Vera Sans"
+fontsize = 8
+]
+
+// Implement interface
+AThread_Unix -> IThread [arrowhead = "onormal" style = "dashed"]
+AThread_Win32 -> IThread [arrowhead = "onormal" style = "dashed"]
+CMutex_Unix -> IMutex [arrowhead = "onormal" style = "dashed"]
+CMutex_Win32 -> IMutex [arrowhead = "onormal" style = "dashed"]
+CThreadCondition_Unix -> IThreadCondition [arrowhead = "onormal" style = "dashed"]
+CThreadCondition_Win32 -> IThreadCondition [arrowhead = "onormal" style = "dashed"]
+
+// Composition
+CMutex_Unix -> CThreadCondition_Unix [arrowhead = "diamond" style = "solid"]
+CMutex_Win32 -> CThreadCondition_Win32 [arrowhead = "diamond" style = "solid"]
+IMutex -> TPThread [arrowhead = "diamond" style = "solid"]
+IThreadCondition -> TPThread [arrowhead = "diamond" style = "solid"]
+TPThread -> ThreadPool [arrowhead = "diamond" style = "solid"]
+
+// Aggregation
+TPThread -> ATPTask [arrowhead = "odiamond" style = "solid"]
+
+// inherits
+TPThread -> IThread [arrowhead = "onormal" style = "solid"]
+
+}

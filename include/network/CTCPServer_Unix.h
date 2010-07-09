@@ -98,7 +98,7 @@ class		CTCPServer_Unix : public ITCPServer
 		std::list<TCPSession*>		_sessions;
 
 		std::list<std::pair<TCPSession*, void*> >		_in;
-		std::list<std::pair<TCPSession*, Data*> >		_out;
+		std::list<std::pair<TCPSession*, void*> >		_out;
 
 		fd_set		_fdr;
 		fd_set		_fdw;
