@@ -9,6 +9,8 @@
 #ifndef		CLIENT_H__
 # define	CLIENT_H__
 
+# include	<string>
+
 # ifdef		UNIX
 #  include	"network/CTCPSession_Unix.h"
 # endif
@@ -32,6 +34,16 @@ class		Client : public TCPSession
 		 * \brief	Destructor
 		 */
 		virtual ~Client();
+
+	public:
+		void					setLogin(std::string const & login);
+		void					setLogged(bool logged);
+		std::string const &		getLogin() const;
+		bool					isLogged() const;
+
+	private:
+		std::string		_login;
+		bool			_logged;
 };
 
 #endif		// CLIENT_H__
