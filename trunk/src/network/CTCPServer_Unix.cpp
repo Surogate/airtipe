@@ -7,6 +7,7 @@
  */
 
 #include	<iostream>
+#include	<iomanip>
 #include	<cstdlib>
 #include	<cstring>
 #include	<fcntl.h>
@@ -42,7 +43,7 @@ bool	CTCPServer_Unix::init()
 	this->_socket = socket(saddr.sin_family, SOCK_STREAM, 0);
 	if (this->_socket < 0)
 	{
-		std::cerr << "[ERROR] socket failed" << std::endl;
+		this->DisplayError("Socket failed");
 		return (false);
 	}
 	// non blocking
@@ -51,7 +52,7 @@ bool	CTCPServer_Unix::init()
 	res = bind(this->_socket, (sockaddr*)&saddr, sizeof(saddr));
 	if (res == -1)
 	{
-		std::cerr << "[ERROR] bind failed" << std::endl;
+		this->DisplayError("Bind failed");
 		::close(this->_socket);
 		this->_socket = -1;
 		return (false);
@@ -60,7 +61,7 @@ bool	CTCPServer_Unix::init()
 	res = listen(this->_socket, 10);
 	if (res != 0)
 	{
-		std::cerr << "[ERROR] listen failed" << std::endl;
+		this->DisplayError("Listen failed");
 		::close(this->_socket);
 		this->_socket = -1;
 		return (false);
@@ -74,7 +75,7 @@ void	CTCPServer_Unix::run()
 	while (this->_running)
 	{
 		if (this->accept())
-			std::cout << "[NOTICE] new client" << std::endl;
+			this->DisplayNotice("New client");
 		if (this->poll())
 		{
 			this->readValidClients();
@@ -103,13 +104,10 @@ void	CTCPServer_Unix::readValidClients()
 			Data*	data = new Data(this->_bufferSize);
 			int res = (*it)->read(*data);
 			if (res != -1)
-			{
-				std::cout << "[RECV] message: " << static_cast<char*>(data->data) << std::endl;
 				this->_in.push_back(std::pair<TCPSession*, void*>(*it, data));
-			}
 			else
 			{
-				std::cout << "[NOTICE] client disconnected" << std::endl;
+				this->DisplayNotice("Client disconnected");
 				it = this->_sessions.erase(it);
 				return;
 			}
@@ -128,14 +126,11 @@ void	CTCPServer_Unix::respondToValidClients()
 			int res = it->first->write(*(it->second));
 			if (res == static_cast<int>(it->second->size))
 			{
-				std::cout << "[SENT] message: " << static_cast<char*>(it->second->data) << std::endl;
 				it = this->_out.erase(it);
 				return;
 			}
 			else
-			{
-				std::cout << "[ERROR] write failed (or partially failed) ... retrying later" << std::endl;
-			}
+				this->DisplayError("Write failed (or partially failed) ... retrying later");
 		}
 		++it;
 	}
@@ -168,7 +163,7 @@ bool	CTCPServer_Unix::poll()
 		if (ret)
 			return (true);
 		else if (ret == -1)
-			std::cerr << "[ERROR] select failed" << std::endl;
+			this->DisplayError("Select failed");
 	}
 	return (false);
 }
@@ -180,6 +175,8 @@ bool	CTCPServer_Unix::accept()
 	int newSock = ::accept(this->_socket, &saddr, &saddrSize);
 	if (newSock >= 0)
 	{
+
+		fcntl(newSock, F_SETFL, O_NONBLOCK);
 		this->_sessions.push_back(new TCPSession(newSock));
 		return (true);
 	}
@@ -190,5 +187,20 @@ void	CTCPServer_Unix::close()
 {
 	if (this->_socket >= 0)
 		::close(this->_socket);
+}
+
+void	CTCPServer_Unix::DisplayError(std::string const & msg)
+{
+	std::cerr << std::setw(10) << std::left << "[ERROR]" << msg << std::endl;
+}
+
+void	CTCPServer_Unix::DisplayNotice(std::string const & msg)
+{
+	std::cout << std::setw(10) << std::left << "[NOTICE]" << msg << std::endl;
+}
+
+void	CTCPServer_Unix::DisplayWarning(std::string const & msg)
+{
+	std::cerr << std::setw(10) << std::left << "[WARNING]" << msg << std::endl;
 }
 

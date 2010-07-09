@@ -63,6 +63,11 @@ class		CTCPServer_Unix : public ITCPServer
 		 */
 		void		close();
 
+	public:
+		void		DisplayError(std::string const & msg);
+		void		DisplayNotice(std::string const & msg);
+		void		DisplayWarning(std::string const & msg);
+
 	protected:
 		int		resetFdSets();
 
