@@ -36,7 +36,8 @@ class		Server : public TCPServer
 
 	private:
 		void		process();
-		void		DisplayHeader(PacketHeader * header);
+		void		DisplayInHeader(PacketHeader * header);
+		void		DisplayOutHeader(PacketHeader * header);
 		bool		loginExists(std::string const & login);
 
 	private:
