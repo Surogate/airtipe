@@ -21,6 +21,7 @@ struct mtime {
     bool operator!=(mtime& comp);
     mtime& operator+(mtime& comp);
     mtime& operator-(mtime& comp);
+    mtime(long int sec = 0, long int msec = 0);
 };
 
 class ITimerManager {
@@ -37,6 +38,7 @@ public:
     virtual mtime GetUnTimeBetween(const timeHdl& hdl1, const timeHdl& hdl2) const = 0;
     virtual mtime GetTimeFromLast() const = 0;
     virtual const bool good() const = 0;
+    virtual void wait(const mtime& time) const = 0;
 };
 
 #endif	/* _TIMERMANAGER_HPP */

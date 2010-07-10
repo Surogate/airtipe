@@ -10,6 +10,7 @@
 #define	_LTIMERMANAGER_HPP
 
 # ifndef WIN32
+
 # include "ITimerManager.hpp"
 # include <sys/time.h>
 
@@ -29,6 +30,7 @@ public:
     mtime GetUnTimeBetween(const timeHdl& hdl1, const timeHdl& hdl2) const;
     mtime GetTimeFromLast() const;
     const bool good() const;
+    void wait(const mtime& time) const
 
 private:
     bool error;

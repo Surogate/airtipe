@@ -7,23 +7,22 @@
 
 #include <iostream>
 
-#include "LTimerManager.hpp"
+#include "WTimerManager.hpp"
 //#include <windows.h>
 /*
  * 
  */
 int main(void) {
-    int t = 0;
-    LTimerManager time;
+    WTimerManager time;
     ITimerManager::timeHdl titi = time.setTimer();
     mtime toto = time.GetActualTime();
     if (!toto.valid)
         std::cout << "error" << std::endl;
     std::cout << "second " << toto.sec << std::endl;
     std::cout << "usecond " << toto.msec << std::endl;
-    sleep(2);
+    time.wait(2);
     ITimerManager::timeHdl tata = time.setTimer();
-    toto = time.GetUnTimeBetween(tata, titi);
+    toto = time.GetTimeFromLast();
     if (!toto.valid)
         std::cout << "error" << std::endl;
     std::cout << "second " << toto.sec << std::endl;

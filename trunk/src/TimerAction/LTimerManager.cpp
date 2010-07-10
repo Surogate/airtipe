@@ -129,6 +129,11 @@ const bool LTimerManager::good() const {
     return !error;
 }
 
+void LTimerManager::wait(const mtime& time) const {
+    clock_t goal = (time.sec * CLOCKS_PER_SEC) + (time.msec * CLOCKS_PER_SEC / 1000) + clock();
+    while(goal > clock());
+}
+
 void LTimerManager::setTime(mtime& ret, const timeval& val) {
     ret.sec = val.tv_sec;
     ret.msec = val.tv_usec / 1000;

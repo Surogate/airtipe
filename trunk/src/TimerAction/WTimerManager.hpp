@@ -30,18 +30,18 @@ public:
     mtime GetUnTimeBetween(const timeHdl& hdl1, const timeHdl& hdl2) const;
     mtime GetTimeFromLast() const;
     const bool good() const;
+    void wait(const mtime&) const;
 
 private:
     bool error;
-    LARGE_INTEGER freq;
     mtime actionTime_;
-    LARGE_INTEGER actionval_;
-    std::vector<LARGE_INTEGER> listTime_;
+    mtime actionval_;
+    std::vector<mtime> listTime_;
 
-    void setTime(mtime& ret, const double msec) const;
-    void setTime(mtime& ret, const LARGE_INTEGER& val);
-    void addTime(mtime& ret, const double msec);
-
+    void getTime(mtime& ret);
+    void getTime(mtime& ret) const;
+    void setTime(mtime& ret, const _SYSTEMTIME& val);
+    void setTime(mtime& ret, const _SYSTEMTIME& val) const;
 };
 
 #endif // WIN32

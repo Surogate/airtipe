@@ -6,9 +6,15 @@
  * \date    July 7, 2010 7:06 PM
  */
 
+#include <iostream>
 #include "ITimerManager.hpp"
 
 ITimerManager::~ITimerManager() {
+}
+
+mtime::mtime(long int sec_, long int msec_) {
+    sec = sec_;
+    msec = msec_;
 }
 
 bool mtime::operator==(mtime& comp) {
@@ -27,12 +33,17 @@ mtime& mtime::operator+(mtime& comp) {
 }
 
 mtime& mtime::operator-(mtime& comp) {
-    msec -= comp.msec;
-    sec -= comp.sec;
-    if (msec < 0)
+    long int _msec;
+    long int _sec;
+
+    _msec = msec - comp.msec;
+    _sec = sec - comp.sec;
+    if (_msec < 0)
     {
-        sec -= 1;
-        msec = 1000 + msec;
+        _sec -= 1;
+        _msec = 1000 + _msec;
     }
+    sec = _sec;
+    msec = _msec;
     return *this;
 }
