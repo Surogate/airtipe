@@ -8,7 +8,8 @@
 
 #ifdef WIN32
 
-#include <iostream>
+# include <time.h>
+# include <iostream>
 # include <cmath>
 # include <winsock2.h>
 # include "WTimerManager.hpp"
@@ -82,19 +83,10 @@ mtime WTimerManager::GetTimeBetween(const timeHdl& hdl1, const timeHdl& hdl2) co
 mtime WTimerManager::GetUnTimeBetween(const ITimerManager::timeHdl& hdl1, const ITimerManager::timeHdl& hdl2) const {
     mtime ret;
 
-    if (isValid(hdl1) && isValid(hdl2))
-    {
-        mtime one = listTime_[hdl1];
-        mtime two = listTime_[hdl2];
-        ret = one - two;
-        ret.valid = true;
-        if (hdl1 < hdl2)
-            ret = one - two;
-        else
-            ret = two - one;
-        return ret;
-    }
-    ret.valid = false;
+    if (hdl1 < hdl2)
+        ret = GetTimeBetween(hdl2, hdl1);
+    else
+        ret = GetTimeBetween(hdl1, hdl2);
     return ret;
 }
 
@@ -114,7 +106,9 @@ const bool WTimerManager::good() const {
 
 void WTimerManager::wait(const mtime& time) const {
     clock_t goal = (time.sec * CLOCKS_PER_SEC) + (time.msec * CLOCKS_PER_SEC / 1000) + clock();
-    while(goal > clock());
+    while(goal > clock()){
+        Sleep(0);
+    }
 }
 
 void WTimerManager::getTime(mtime& ret) {
@@ -132,11 +126,13 @@ void WTimerManager::getTime(mtime& ret) const {
 void WTimerManager::setTime(mtime& ret, const _SYSTEMTIME& val) {
     ret.sec = time(NULL);
     ret.msec = val.wMilliseconds;
+    ret.valid = true;
 }
 
 void WTimerManager::setTime(mtime& ret, const _SYSTEMTIME& val) const {
     ret.sec = time(NULL);
     ret.msec = val.wMilliseconds;
+    ret.valid = true;
 }
 
 #endif // WIN32

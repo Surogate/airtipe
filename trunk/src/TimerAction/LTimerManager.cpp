@@ -10,6 +10,8 @@
 
 #ifndef WIN32
 
+#include <unistd.h>
+
 LTimerManager::LTimerManager()
 : error(false) {
     listTime_.clear();
@@ -130,8 +132,7 @@ const bool LTimerManager::good() const {
 }
 
 void LTimerManager::wait(const mtime& time) const {
-    clock_t goal = (time.sec * CLOCKS_PER_SEC) + (time.msec * CLOCKS_PER_SEC / 1000) + clock();
-    while(goal > clock());
+    usleep((time.sec * 1000000) + (time.msec * 1000));
 }
 
 void LTimerManager::setTime(mtime& ret, const timeval& val) {

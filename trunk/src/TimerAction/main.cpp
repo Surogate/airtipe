@@ -20,8 +20,11 @@ int main(void) {
         std::cout << "error" << std::endl;
     std::cout << "second " << toto.sec << std::endl;
     std::cout << "usecond " << toto.msec << std::endl;
-    time.wait(2);
-    ITimerManager::timeHdl tata = time.setTimer();
+    mtime waittime(10, 500);
+    time.wait(waittime);
+//    ITimerManager::timeHdl tata = time.setTimer();
+    //toto = time.GetTimeFromLast();
+    //toto = time.GetActualTime();
     toto = time.GetTimeFromLast();
     if (!toto.valid)
         std::cout << "error" << std::endl;
