@@ -22,9 +22,12 @@ DIR_BIN			= ./bin/
 ############### FILES
 
 SRC		= \
-		$(DIR_SRC)main.cpp			\
+		$(DIR_SRC)main.cpp				\
 		$(DIR_SRC)Client.cpp			\
 		$(DIR_SRC)Graphics.cpp			\
+		$(DIR_SRC)EventManager.cpp		\
+		$(DIR_SRC)Network.cpp			\
+		$(DIR_SRC)Ressources.cpp		\\
 		$(DIR_SRC)TCPClient.cpp			\
 		$(DIR_SRC)NetWork.cpp			\
 		$(DIR_SRC_COMMON)packets/PacketManager.cpp	\
@@ -76,6 +79,8 @@ LFLAGS				= \
 					$(LFLAGS_$(TAG))	\
 					-L$(DIR_LIB)		\
 					-lsfml-graphics		\
+					-lGLU				\
+					-lGL				\
 					-lsfml-window		\
 					-lsfml-network		\
 					-lsfml-system
@@ -162,6 +167,6 @@ cleanall	: fclean
 
 re		: fclean all
 
-.PHONY		: $(NAME) all .c.o library clean fclean re cleanall
+.PHONY	: $(NAME) all .c.o library clean fclean re cleanall
 
 #EOF

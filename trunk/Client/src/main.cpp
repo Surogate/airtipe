@@ -1,9 +1,61 @@
+#include "SFML/System.hpp"
+#include "SFML/Window.hpp"
+#include <SFML/Graphics.hpp>
 
+
+const int	width = 800;
+const int	height = 600;
+
+#include <iostream>
+#include "SpriteManager.h"
+
+int main()
+{
+  std::cout << "Allo le monde" << std::endl;
+  sf::RenderWindow	Game;
+  Game.Create(sf::VideoMode(width, height, 32), "R-TYPE");
+
+  SpriteManager a;
+  a.loadObjects("./../ressources/sprites/spritepng");
+
+
+  sf::Image im;
+  im.LoadFromFile("./../ressources/sprites/spritepng/r-typesheet5.png");
+  sf::Sprite test(im);
+  test.SetPosition(0, 0);
+
+  //AGameObject *go = a.getClone(0, 0);
+  //sf::Sprite my = go->getSprite(0);
+  //my.SetPosition(50,50);
+  while (Game.IsOpened())
+  {
+    sf::Event Event;
+    while (Game.GetEvent(Event))
+    {
+      if ((Event.Type == sf::Event::KeyPressed))
+      {
+	//tape = Event.Text.Unicode;
+	//std::cout << tape << std::endl;
+      }
+      if ((Event.Type == sf::Event::Closed) || ((Event.Type == sf::Event::KeyPressed) && (Event.Key.Code == sf::Key::Escape)))
+      {
+	Game.Close();
+	return EXIT_SUCCESS;
+      }
+    }
+    Game.Clear();
+    Game.Draw(a.getClone(0, 0)->getSprite(0));
+    Game.Draw(test);
+    Game.Display();
+  }
+}
+
+/*
 #include <iostream>
 #include  <cstring>
 
 #include "Client.hpp"
-#include "packets/PacketManager.h"
+//#include "packets/PacketManager.h"
 
 const int	width = 384;
 const int	height = 256;
@@ -13,7 +65,8 @@ const int	bpp = 32;
 int		main()
 {
 	Client client;
-	PacketManager	pm;
+
+	 * PacketManager	pm;
 	
 
 	client.Net.c.connect(std::string("localhost"), 22255);
@@ -35,67 +88,6 @@ int		main()
 		client.Net.c.send(data, sizeof(*data));
 	}
 	while (42);
-//	client.run();
+	client.run();
 }
-
-
-
-/*
-   int		main()
-   {
-   sf::RenderWindow	App;
-   sf::Image		Image;
-
-
-   App.Create(sf::VideoMode(width, height, bpp),
-   "R-TYPE");
-
-   if (!Image.LoadFromFile("../ressources/sprites/r-typesheet42.png"))
-   return EXIT_FAILURE;
-   sf::Sprite		Sprite(Image);
-
-   Sprite.SetPosition(0, height / 2);
-
-// Start game loop
-
-while (App.IsOpened())
-{
-sf::Event Event;
-std::string tape;
-
-
-while (App.GetEvent(Event))
-{
-if ((Event.Type == sf::Event::Closed) || ((Event.Type == sf::Event::KeyPressed) && (Event.Key.Code == sf::Key::Escape)))
-{
-App.Close();
-return EXIT_SUCCESS;
-}
-}
-
-float ElapsedTime = App.GetFrameTime();
-
-
-if (App.GetInput().IsKeyDown(sf::Key:: Left))
-Sprite.Move( -100 * ElapsedTime, 0);
-if (App.GetInput().IsKeyDown(sf::Key::Right))
-Sprite.Move( 100 * ElapsedTime, 0);
-if (App.GetInput().IsKeyDown(sf::Key::Up))
-Sprite.Move(0, -100 * ElapsedTime);
-if (App.GetInput().IsKeyDown(sf::Key::Down))
-Sprite.Move(0,  100 * ElapsedTime);
-
-App.Clear();
-
-
-
-App.Display();
-
-}
-
-return EXIT_SUCCESS;
-
-}
-
-
 */

@@ -5,20 +5,20 @@
  *      Author: Ayden
  */
 
-#include <NetWork.hpp>
+#include <Network.hpp>
 #include <iostream>
 
-NetWork::NetWork()
+Network::Network()
 {
   std::cout << "Creation NetWork" << std::endl;
 }
 
-NetWork::~NetWork()
+Network::~Network()
 {
   std::cout << "Destroy NetWork" << std::endl;
 }
 
-void	NetWork::getEvent()
+void	Network::getEvent()
 {
-  std::cout << "network" << std::endl;
+  //std::cout << "network" << std::endl;
 }

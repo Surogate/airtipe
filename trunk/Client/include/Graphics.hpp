@@ -8,36 +8,32 @@
 #ifndef			__GRAPHICS_HPP__
 #define			__GRAPHICS_HPP__
 
-#include <SFML/Graphics.hpp>
 #include <iostream>
 
-#include "NetWork.hpp"
+class Client;
+class Network;
+class EventManager;
 
 class				Graphics
 {
-  sf::RenderWindow		_App;
-  std::map<int, sf::Image>	_m_sprite;
+  Client			*_client;
   int				_height;
   int				_width;
   int				_bpp;
   std::string			_name;
 
-  sf::Image			_Image;
-  sf::Sprite			_Player;
-
 public:
-  Graphics();
+  Graphics(Client *);
   ~Graphics();
   void			create_windows();
   void			close_windows();
-  void			sprite_display(int, int);
+  void			sprite_display(int x, int y);
   void			sprite_destroy();
   void			load();
   void			sprite_move();
   void			sprite_anim();
+  void			loop();
   void			draw();
-  void			getEvent(float);
-  void			loop(NetWork&);
 };
 
 #endif			/* __GRAPHICS_HPP__ */
