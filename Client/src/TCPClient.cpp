@@ -6,7 +6,7 @@
  * \date	08/07/2010 22:27:15
  *
  */
-
+/*
 #include	<SFML/Network.hpp>
 #include	<iostream>
 
@@ -68,3 +68,4 @@ bool					TCPClient::failed()
 {
 	return (this->_fail); 
 }
+*/

@@ -1,0 +1,3 @@
+ennemi 1 : r-typesheet5.png > boule orange
+ennemi 2 : r-typesheet8.png > boule rouge ?
+ennemi 3 : r-typesheet7.png : frosties > boule orange

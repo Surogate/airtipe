@@ -6,21 +6,33 @@
  */
 
 #ifndef		__CLIENT_HPP__
-# define		__CLIENT_HPP__
+# define	__CLIENT_HPP__
 
-# include "Graphics.hpp"
-# include "NetWork.hpp"
-# include "TCPClient.hpp"
+#include <SFML/Graphics.hpp>
+
+#include "Graphics.hpp"
+#include "EventManager.hpp"
+#include "Network.hpp"
+#include "Ressources.hpp"
 
 class			Client
 {
+  sf::RenderWindow	_rwindow;
+
 public:
-  	Graphics	Wind;
-  	NetWork		Net;
+
+  Graphics		_Wind;
+  EventManager		_Event;
+  Network		_Net;
+  Ressources		_Ressources;
 
 public:
   Client();
   ~Client();
+  sf::RenderWindow&	getrwindows();
+  EventManager&		getEventM();
+  Network&		getNetwork();
+  Ressources&		getRessources();
   void run();
 };
 
