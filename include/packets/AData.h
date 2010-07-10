@@ -9,10 +9,11 @@
 #ifndef		ADATA_H__
 #define		ADATA_H__
 #include <iostream>
-struct		AData
+class		AData
 {
-	virtual ~AData() {}
-	virtual AData * Clone() { return new AData; }
+	public:
+		virtual AData * Clone() { return new AData; }
+		virtual ~AData() {}
 };
 
 #endif		// ADATA_H__

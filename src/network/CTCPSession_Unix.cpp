@@ -35,7 +35,7 @@ int		CTCPSession_Unix::read(Data& data)
 	int res = ::read(this->_socket, data.data, data.size);
 	if (res != 0)
 	{
-		data.size = res;
+ 		data.size = res;
 		return (res);
 	}
 	this->close();

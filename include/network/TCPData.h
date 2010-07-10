@@ -15,6 +15,7 @@ class		TCPData
 {
 	public:
 		TCPData() : size(0), data(NULL) {}
+		~TCPData() {}
 		TCPData(unsigned int const & psize) : size(psize)
 		{
 			this->data = new char[size];
