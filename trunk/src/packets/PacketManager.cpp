@@ -35,9 +35,8 @@ PacketManager::PacketManager()
 	this->_dataFactory->Register(ChooseSpacecraft, new DataSpacecraft, &AData::Clone);
 	this->_dataFactory->Register(PlayerReady, new DataLogin, &AData::Clone);
 	this->_dataFactory->Register(PlayerNotReady, new DataLogin, &AData::Clone);
-	this->_dataFactory->Register(StartGame, new DataEmpty, &AData::Clone);
 	this->_dataFactory->Register(SendGrounds, new DataEntity, &AData::Clone);
-	this->_dataFactory->Register(SendGroundsEnd, new DataEntity, &AData::Clone);
+ 	this->_dataFactory->Register(SendGroundsEnd, new DataEntity, &AData::Clone);
 	this->_dataFactory->Register(LoginAlreadyExists, new DataEmpty, &AData::Clone);
 	this->_dataFactory->Register(BadLoginFormat, new DataEmpty, &AData::Clone);
 	this->_dataFactory->Register(LoginKO, new DataEmpty, &AData::Clone);

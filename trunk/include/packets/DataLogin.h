@@ -11,13 +11,13 @@
 
 # include	"packets/AData.h"
 
-struct		DataLogin : public AData
+class		DataLogin : public AData
 {
-	virtual ~DataLogin() {}
-	unsigned int	id;
-	char			login[15];
-	AData *			Clone() { return new DataLogin; }
-
+	public:
+		unsigned int	id;
+		char			login[15];
+		virtual AData *	Clone() { return new DataLogin; }
+		virtual ~DataLogin() {}
 };
 
 #endif		// DATALOGIN_H__

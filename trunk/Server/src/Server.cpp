@@ -76,16 +76,25 @@ void	Server::readValidClients()
 								this->_in.push_back(std::pair<TCPSession*, void*>(*it, new Packet(header, data)));
 							}
 							else
+							{
+								delete header;
 								this->DisplayError("Packet broken");
+							}
 						}
 						else
 						{
 							this->DisplayNotice("Client disconnected");
+							delete header;
+							delete packetData;
+							delete headerData;
+							delete (*it);
 							this->_sessions.erase(it);
 							return;
 						}
 						delete packetData;
 					}
+					else
+						delete header;
 				}
 				else
 					this->DisplayError("Packet broken");
@@ -93,6 +102,8 @@ void	Server::readValidClients()
 			else
 			{
 				this->DisplayNotice("Client disconnected");
+				delete headerData;
+				delete (*it);
 				this->_sessions.erase(it);
 				return;
 			}
@@ -116,12 +127,12 @@ void		Server::respondToValidClients()
 			unsigned int res = it->first->write(toWrite);
 			if (res == toWrite.size)
 			{
-				if (packet->header->dataSize != 0)
+ 				if (packet->header->dataSize != 0)
 				{
 					toWrite.size = packet->header->dataSize;
 					toWrite.data = packet->datas;
 					res = it->first->write(toWrite);
-					if (res == toWrite.size)
+ 					if (res == toWrite.size)
 					{
 						this->DisplayOutHeader(packet->header);
 						delete packet->header;
@@ -157,7 +168,7 @@ void		Server::process()
 		{
 			if (it->first == pak->header->code)
 			{
-				Packet* response = (this->*(it->second))(new (this->_in.front().first) Client(this->_in.front().first->getSocket()), pak);
+				Packet* response = (this->*(it->second))(dynamic_cast<Client *>(this->_in.front().first), pak);
 				this->_out.push_back(std::pair<TCPSession*, void*>(this->_in.front().first, response));
 				found = true;
 				delete [] pak->header;
@@ -195,24 +206,37 @@ Packet *	Server::ActionLogin(Client * client, Packet * pak)
 	std::cerr << "\t\tid: " << data->id << std::endl;
 	std::cerr << "\t\tlogin: " << data->login << std::endl;
 	Packet *		response = NULL;
+	bool			error = false;
 
-	if (!this->loginExists(data->login))
+	if (!client->isLogged())
 	{
-		client->setLogin(data->login);
-		client->setLogged(true);
-		this->DisplayNotice(client->getLogin() + std::string(" now logged"));
-		
-		DataLogin * newdata = new (this->_pm.CreateData(LoginOK)) DataLogin;
-		memcpy(&newdata->login, &data->login, 15);
-		newdata->id = 0;
-		response = this->_pm.CreatePacket(LoginOK, newdata);
-		response->header->dataSize = sizeof(DataLogin);
+		if (!this->loginExists(data->login))
+		{
+			client->setLogin(data->login);
+			client->setLogged(true);
+			this->DisplayNotice(client->getLogin() + " now logged");
+    
+			DataLogin * newdata = new DataLogin;
+			memcpy(newdata->login, data->login, 16);
+			newdata->id = 0;
+			response = this->_pm.CreatePacket(LoginOK, newdata);
+			response->header->dataSize = sizeof(DataLogin);
+		}
+		else
+		{
+			error = true;
+			this->DisplayWarning("Login already exists");
+		}
 	}
 	else
 	{
+		error = true;
+		this->DisplayWarning("Player already logged");
+	}
+	if (error)
+	{
 		response = this->_pm.CreatePacket(LoginKO);
 		response->header->dataSize = sizeof(DataEmpty);
-		this->DisplayWarning("Login already exists");
 	}
 	delete pak->datas;
 	return response;
@@ -229,7 +253,6 @@ Packet *	Server::ActionAddMap(Client *, Packet * pak)
 	DataMap* data = new (pak->datas) DataMap;
 	std:: cerr << std::setw(10) << std::left << "[ACTION]" << "ActionAddMap" << std::endl;
 	std::cerr << "\t\tmap: " << data->mapName << std::endl;
-	delete [] data;
 	return NULL;
 }
 
@@ -245,7 +268,6 @@ Packet *	Server::ActionJoinGame(Client *, Packet * pak)
 	std:: cerr << std::setw(10) << std::left << "[ACTION]" << "ActionJoinGame" << std::endl;
 	std::cerr << "\t\tid: " << data->id << std::endl;
 	std::cerr << "\t\tlogin: " << data->login << std::endl;
-	delete [] data;
 	return NULL;
 }
 
@@ -255,7 +277,6 @@ Packet *	Server::ActionChooseSpacecraft(Client *, Packet * pak)
 	std:: cerr << std::setw(10) << std::left << "[ACTION]" << "ActionChooseSpacecraft" << std::endl;
 	std::cerr << "\t\tid: " << data->id << std::endl;
 	std::cerr << "\t\tskin: " << data->skin << std::endl;
-	delete [] data;
 	return NULL;
 }
 
@@ -265,7 +286,6 @@ Packet *	Server::ActionReady(Client *, Packet * pak)
 	std:: cerr << std::setw(10) << std::left << "[ACTION]" << "ActionReady" << std::endl;
 	std::cerr << "\t\tid: " << data->id << std::endl;
 	std::cerr << "\t\tlogin: " << data->login << std::endl;
-	delete [] data;
 	return NULL;
 }
 
@@ -275,7 +295,6 @@ Packet *	Server::ActionNotReady(Client *, Packet * pak)
 	std:: cerr << std::setw(10) << std::left << "[ACTION]" << "ActionNotReady" << std::endl;
 	std::cerr << "\t\tid: " << data->id << std::endl;
 	std::cerr << "\t\tlogin: " << data->login << std::endl;
-	delete [] data;
 	return NULL;
 }
 
