@@ -7,18 +7,31 @@ const int	width = 800;
 const int	height = 600;
 
 #include <iostream>
-#include "SpriteManager.hpp"
+#include <QtGui/QApplication>
+#include <QtGui/QPushButton>
 
-int main()
+#include "SpriteManager.hpp"
+#include "MainWindow.hpp"
+
+int main(int ac, char **av)
 {
+	QApplication app(ac, av);
+
+
+
+
+
+	Client *b = new Client();
+	MainWindow qtwindow(b);
+	qtwindow.show();
+
+/*
 	std::cout << "Allo le monde" << std::endl;
 	sf::RenderWindow	Game;
 	Game.Create(sf::VideoMode(width, height, 32), "R-TYPE");
 
 	SpriteManager a;
 	a.loadObjects("./ressources/sprites/");
-	
-
 
 	AGameObject *go = a.getClone(0, 0);
 	if (go == NULL)
@@ -56,6 +69,9 @@ int main()
 		go->draw(Game);
 		Game.Display();
 	}
+
+	*/
+	return app.exec();
 }
 
 /*
