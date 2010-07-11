@@ -10,7 +10,7 @@
 # include <vector>
 
 # ifdef _WIN32
-# include <io.h>include <io.h>
+# include <io.h>
 #  include <atlbase.h>
 #  include <windows.h>
 #else
