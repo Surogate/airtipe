@@ -131,11 +131,8 @@ AGameObject* SpriteManager::getClone(int type, int id)
     {
       return new AGameObject(this->_sprite[i]);
     }
+	++i;
   }
   return NULL;
 }
 
-//AGameObject const & SpriteManager::getCloneOfSprite(std::string const & name)
-//{
-//
-//}
