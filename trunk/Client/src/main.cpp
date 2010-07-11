@@ -11,43 +11,51 @@ const int	height = 600;
 
 int main()
 {
-  std::cout << "Allo le monde" << std::endl;
-  sf::RenderWindow	Game;
-  Game.Create(sf::VideoMode(width, height, 32), "R-TYPE");
+	std::cout << "Allo le monde" << std::endl;
+	sf::RenderWindow	Game;
+	Game.Create(sf::VideoMode(width, height, 32), "R-TYPE");
 
-  SpriteManager a;
-  a.loadObjects("./../ressources/sprites/spritepng");
+	SpriteManager a;
+	a.loadObjects("./sprites/spritespng/");
+	
 
 
-  sf::Image im;
-  im.LoadFromFile("./../ressources/sprites/spritepng/r-typesheet5.png");
-  sf::Sprite test(im);
-  test.SetPosition(0, 0);
+	AGameObject *go = a.getClone(0, 0);
+	if (go == NULL)
+	{
+		std::cout << "Bad pointer" << std::endl;
+		exit(1);
+	}
+	//sf::Sprite sp = go->getSprite(5);
+	//my.SetPosition(50,50);
 
-  //AGameObject *go = a.getClone(0, 0);
-  //sf::Sprite my = go->getSprite(0);
-  //my.SetPosition(50,50);
-  while (Game.IsOpened())
-  {
-    sf::Event Event;
-    while (Game.GetEvent(Event))
-    {
-      if ((Event.Type == sf::Event::KeyPressed))
-      {
-	//tape = Event.Text.Unicode;
-	//std::cout << tape << std::endl;
-      }
-      if ((Event.Type == sf::Event::Closed) || ((Event.Type == sf::Event::KeyPressed) && (Event.Key.Code == sf::Key::Escape)))
-      {
-	Game.Close();
-	return EXIT_SUCCESS;
-      }
-    }
-    Game.Clear();
-    Game.Draw(a.getClone(0, 0)->getSprite(0));
-    Game.Draw(test);
-    Game.Display();
-  }
+	sf::Clock cl;
+	cl.Reset();
+	while (Game.IsOpened())
+	{
+		sf::Event Event;
+		while (Game.GetEvent(Event))
+		{
+			if ((Event.Type == sf::Event::KeyPressed))
+			{
+				//tape = Event.Text.Unicode;
+				//std::cout << tape << std::endl;
+			}
+			if ((Event.Type == sf::Event::Closed) || ((Event.Type == sf::Event::KeyPressed) && (Event.Key.Code == sf::Key::Escape)))
+			{
+				Game.Close();
+				return EXIT_SUCCESS;
+			}
+		}
+		Game.Clear();
+		if (cl.GetElapsedTime() > 0.2f)
+		{
+			cl.Reset();
+			go->goNextFrame();
+		}
+		go->draw(Game);
+		Game.Display();
+	}
 }
 
 /*
