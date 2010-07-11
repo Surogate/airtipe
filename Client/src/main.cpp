@@ -16,7 +16,7 @@ int main()
 	Game.Create(sf::VideoMode(width, height, 32), "R-TYPE");
 
 	SpriteManager a;
-	a.loadObjects("./sprites/spritespng/");
+	a.loadObjects("./ressources/sprites/");
 	
 
 
