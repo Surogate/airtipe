@@ -7,7 +7,7 @@ const int	width = 800;
 const int	height = 600;
 
 #include <iostream>
-#include "SpriteManager.h"
+#include "SpriteManager.hpp"
 
 int main()
 {
