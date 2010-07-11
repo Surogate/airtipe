@@ -1,4 +1,4 @@
-#include "AGameObject.h"
+#include "AGameObject.hpp"
 
 #include <iostream>
 
