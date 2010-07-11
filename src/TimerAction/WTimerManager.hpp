@@ -22,7 +22,7 @@ public:
     WTimerManager & operator=(const WTimerManager&);
 
     void SetActualTime(const mtime timestamps);
-    mtime GetActualTime() ;
+    mtime GetActualTime();
     const timeHdl setTimer() ;
     mtime GetTimeFrom(const timeHdl& hdler) const;
     inline bool isValid(const timeHdl& hdler) const;
@@ -31,7 +31,7 @@ public:
     mtime GetTimeFromLast() const;
     const bool good() const;
     void wait(const mtime&) const;
-
+    
 private:
     bool error;
     mtime actionTime_;

@@ -9,6 +9,7 @@
 #ifndef _TIMERMANAGER_HPP
 #define	_TIMERMANAGER_HPP
 
+#include "../functor/Functor.hpp"
 #include <ctime>
 #include <time.h>
 #include <vector>
@@ -39,6 +40,13 @@ public:
     virtual mtime GetTimeFromLast() const = 0;
     virtual const bool good() const = 0;
     virtual void wait(const mtime& time) const = 0;
+
+    template <typename Class, typename RetType, typename Param1, typename Param2>
+    void waitTo(const mtime&, Functor<Class,RetType,Param1,Param2>&, Param1& arg1, Param2& arg2) const;
+    template <typename Class, typename RetType, typename Param1>
+    void waitTo(const mtime&, Functor<Class,RetType,Param1>&, Param1& arg1) const;
+    template <typename Class, typename RetType>
+    void waitTo(const mtime&, Functor<Class,RetType>&) const;
 };
 
 #endif	/* _TIMERMANAGER_HPP */

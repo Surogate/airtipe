@@ -20,7 +20,7 @@ int main(void) {
         std::cout << "error" << std::endl;
     std::cout << "second " << toto.sec << std::endl;
     std::cout << "usecond " << toto.msec << std::endl;
-    mtime waittime(10, 500);
+    mtime waittime(10);
     time.wait(waittime);
 //    ITimerManager::timeHdl tata = time.setTimer();
     //toto = time.GetTimeFromLast();

@@ -107,7 +107,7 @@ const bool WTimerManager::good() const {
 void WTimerManager::wait(const mtime& time) const {
     clock_t goal = (time.sec * CLOCKS_PER_SEC) + (time.msec * CLOCKS_PER_SEC / 1000) + clock();
     while(goal > clock()){
-        Sleep(0);
+        Sleep(1);
     }
 }
 
