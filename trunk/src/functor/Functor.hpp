@@ -55,7 +55,6 @@ private:
     Method method_;
 };
 
-
 template<typename Class, typename RetType, typename Param1, typename Param2>
 Functor<Class, RetType, Param1, Param2>::Functor(Class& instance, Method meth)
 : instance_(instance), method_(meth) {
