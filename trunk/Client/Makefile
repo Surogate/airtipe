@@ -10,29 +10,36 @@ TAG		= $(MTAG)-$(STAG)
 NAME		= R-type
 
 
-############### DIRECTORIES
 
-DIR_SRC			= ./src/
-DIR_SRC_COMMON	= ../src/
-DIR_INC			= ./include/
-DIR_INC_COMMON	= ../include/
-DIR_LIB			= ./lib/
-DIR_BIN			= ./bin/
+
+DIR_COMMON	= ../Common
+DIR		= .
+
+D_SRC		= $(DIR)/src
+D_SRC_COMMON	= $(DIR_COMMON)/src
+
+D_INC		= $(DIR)/inc
+D_INC_COMMON	= $(DIR_COMMON)/include
+
+D_LIB		= $(DIR)/lib
+
+D_BIN		= $(DIR)/bin
 
 ############### FILES
 
 SRC		= \
-		$(DIR_SRC)main.cpp				\
-		$(DIR_SRC)Client.cpp			\
-		$(DIR_SRC)Graphics.cpp			\
-		$(DIR_SRC)EventManager.cpp		\
-		$(DIR_SRC)Network.cpp			\
-		$(DIR_SRC)Ressources.cpp		\\
-		$(DIR_SRC)TCPClient.cpp			\
-		$(DIR_SRC)NetWork.cpp			\
-		$(DIR_SRC_COMMON)packets/PacketManager.cpp	\
-		$(DIR_SRC_COMMON)packets/Packet.cpp			\
-		$(DIR_SRC_COMMON)packets/PacketHeader.cpp	
+		$(D_SRC)/main.cpp				\
+		$(D_SRC)/Client.cpp				\
+		$(D_SRC)/Graphics.cpp				\
+		$(D_SRC)/EventManager.cpp			\
+		$(D_SRC)/Network.cpp				\
+		$(D_SRC)/Ressources.cpp			\
+		$(D_SRC)/TCPClient.cpp				\
+		$(D_SRC)/NetWork.cpp				\
+		$(D_SRC_COMMON)/packets/PacketManager.cpp	\
+		$(D_SRC_COMMON)/packets/Packet.cpp		\
+		$(D_SRC_COMMON)/packets/PacketHeader.cpp
+
 INC		= \
 
 SRC_LIB		= \
@@ -59,31 +66,28 @@ IFLAGS_i386-FreeBSD	= \
 
 IFLAGS_i686-Linux	= \
 
-IFLAGS				= \
+IFLAGS			= \
 			$(IFLAGS_$(TAG)) 	\
-			-I$(DIR_INC_COMMON)	\
-			-I$(DIR_INC)
+			-I$(D_INC_COMMON)	\
+			-I$(D_INC)
 
 #########  LIBRARIES
 
 LFLAGS_i386-Darwin	= \
-			
 
 LFLAGS_i386-FreeBSD	= \
-			
 
 LFLAGS_i686-Linux	= \
-			
 
-LFLAGS				= \
-					$(LFLAGS_$(TAG))	\
-					-L$(DIR_LIB)		\
-					-lsfml-graphics		\
-					-lGLU				\
-					-lGL				\
-					-lsfml-window		\
-					-lsfml-network		\
-					-lsfml-system
+LFLAGS			= \
+			$(LFLAGS_$(TAG))	\
+			-L$(D_LIB)		\
+			-lsfml-graphics		\
+			-lGLU			\
+			-lGL			\
+			-lsfml-window		\
+			-lsfml-network		\
+			-lsfml-system
 
 #########  COMPILE FLAGS
 
@@ -94,22 +98,21 @@ CFLAGS			+= -O3 -W -Wall $(DEFINE) $(IFLAGS)
 CC_FreeBSD	= g++
 CC_Linux	= g++
 CC_Darwin	= g++ -arch i386
-CC			= $(CC_$(STAG))
+CC		= $(CC_$(STAG))
 
-RM			= rm -f
-CD			= cd
+RM		= rm -f
+CD		= cd
 ETAGS		= etags
-CP			= cp
-ECHO_FreeBSD= echo -e
-ECHO_SunOS	= echo -e
+CP		= cp
+ECHO_FreeBSD	= echo -e
 ECHO_Linux	= echo -e
 ECHO_Darwin	= echo
 ECHO		= $(ECHO_$(STAG))
 
 ############### COLOR ###############
 
-END		= \033[m
-RED		= \033[31m
+END	= \033[m
+RED	= \033[31m
 GREEN	= \033[32m
 ORANGE	= \033[33m
 BLUE	= \033[34m
@@ -121,17 +124,17 @@ GREY	= \033[37m
 
 all		: $(NAME)
 
-$(NAME)	: $(OBJ)
+$(NAME)		: $(OBJ)
 	@$(ECHO) "$(CYAN)[LINKING]: $(NAME)$(END)"
-	$(CC) -o$(DIR_BIN)$(NAME) $(OBJ) $(LFLAGS)
+	$(CC) -o$(D_BIN)/$(NAME) $(OBJ) $(LFLAGS)
 	@$(ECHO) "$(GREEN)[LINKING] - DONE$(END)"
 
 tar		:
 	@$(ECHO) "$(CYAN)[TAR]$(END)"
 	tar -cf $(NAME).tar.gz		\
-		Makefile		\
-		$(INC)		\
-		$(SRC)
+	Makefile			\
+	$(INC)				\
+	$(SRC)
 	@$(ECHO) "$(CYAN)[TAR] - DONE$(END)"
 
 ############### SUFFIXIES
@@ -152,13 +155,13 @@ clean		:
 
 fclean		: clean
 	@$(ECHO) "$(RED)[FCLEAN]"
-	$(RM) $(DIR_BIN)$(NAME)
+	$(RM) $(D_BIN)/$(NAME)
 	@$(ECHO) "$(GREEN)[FCLEAN] -DONE$(END)"
 
 cleanall	: fclean
 	@$(ECHO) "$(RED)[CLEANALL]"
-	$(RM) $(DIR_SRC)*~
-	$(RM) $(DIR_INC)*~
+	$(RM) $(D_SRC)*~
+	$(RM) $(D_INC)*~
 	$(RM) *~
 	@$(ECHO) "$(GREEN)[CLEANALL] -DONE$(END)"
 
