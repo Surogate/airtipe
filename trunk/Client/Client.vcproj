@@ -167,6 +167,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\AGameWindow.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\Client.cpp"
 				>
 			</File>
@@ -215,6 +219,32 @@
 			<File
 				RelativePath=".\include\AGameObject.hpp"
 				>
+			</File>
+			<File
+				RelativePath=".\include\AGameWindow.hpp"
+				>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description=""
+						CommandLine=""
+						AdditionalDependencies=""
+						Outputs=""
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description=""
+						CommandLine=""
+						AdditionalDependencies=""
+						Outputs=""
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\include\Client.hpp"

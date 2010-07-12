@@ -55,5 +55,5 @@ MainWindow::~MainWindow()
 void	MainWindow::formValidation()
 {
 	std::cout << "Bing !" << std::endl << this->_ip->text().toStdString().c_str() << std::endl;
-	this->close();
+	this->hide();
 }
