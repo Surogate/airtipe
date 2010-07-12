@@ -8,7 +8,7 @@
 #ifndef _AENTITY_HPP
 #define	_AENTITY_HPP
 
-#include "MovementPolicy.hpp"
+#include "MovementPolicy.h"
 
 template< class MovementPolicy = NoMovement >
 class AEntity : private MovementPolicy {
