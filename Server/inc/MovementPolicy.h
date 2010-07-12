@@ -8,8 +8,8 @@
 #ifndef _MOVEMENTPOLICY_HPP
 #define	_MOVEMENTPOLICY_HPP
 
-#include "../../include/MovementType.h"
-#include "../../include/TimerManager/ITimerManager.hpp"
+#include "MovementType.h"
+#include "TimerManager/ITimerManager.hpp"
 
 struct Position {
     unsigned int _posX;
