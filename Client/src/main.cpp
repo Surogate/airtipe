@@ -27,7 +27,7 @@ int main(int ac, char **av)
 {
 	Client *client = new Client();
 	QtLauncher(ac, av, client);
-	//client->run();
+	client->run();
 
 
 	//sf::RenderWindow	Game;

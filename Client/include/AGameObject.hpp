@@ -1,5 +1,5 @@
-#ifndef		_AGAMEOBJECT_H_
-# define	_AGAMEOBJECT_H_
+#ifndef		_AGAMEOBJECT_HPP_
+# define	_AGAMEOBJECT_HPP_
 
 #include <SFML/Graphics.hpp>
 #include <map>
