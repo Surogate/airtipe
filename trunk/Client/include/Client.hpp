@@ -17,21 +17,21 @@
 
 class			Client
 {
-  //sf::RenderWindow	_rwindow;
+  //
 
 public:
 
-  //Graphics		_Wind;
-  //EventManager		_Event;
-  //Network		_Net;
+  Graphics		_Wind;
+  EventManager		_Event;
+  Network		_Net;
   //Ressources		_Ressources;
 
 public:
   Client();
   ~Client();
-  //sf::RenderWindow&	getrwindows();
-  //EventManager&		getEventM();
-  //Network&		getNetwork();
+  sf::RenderWindow&	getRWindow();
+  EventManager&		getEventM();
+  Network&		getNetwork();
   //Ressources&		getRessources();
   //void run();
 };

@@ -9,7 +9,7 @@
 
 #include "Client.hpp"
 
-Client::Client() //: _Wind(this), _Event(this)
+Client::Client() : _Wind(this), _Event(this)
 {
   std::cout << "Creation Client" << std::endl;
 }
@@ -19,20 +19,21 @@ Client::~Client()
   std::cout << "destruction Client" << std::endl;
 }
 
-//sf::RenderWindow&	Client::getrwindows()
-//{
-//  return this->_rwindow;
-//}
-//
-//EventManager&		Client::getEventM()
-//{
-//  return this->_Event;
-//}
-//
-//Network&		Client::getNetwork()
-//{
-//  return this->_Net;
-//}
+sf::RenderWindow&	Client::getRWindow()
+{
+	return this->_Wind.getWindow();
+}
+
+
+EventManager&		Client::getEventM()
+{
+  return this->_Event;
+}
+
+Network&		Client::getNetwork()
+{
+  return this->_Net;
+}
 //
 //Ressources&		Client::getRessources()
 //{
