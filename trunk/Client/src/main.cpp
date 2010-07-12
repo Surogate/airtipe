@@ -13,56 +13,67 @@ const int	height = 600;
 #include "SpriteManager.hpp"
 #include "MainWindow.hpp"
 
-int main(int ac, char **av)
+
+int QtLauncher(int ac, char **av, Client *client)
 {
 	QApplication app(ac, av);
-
-	//Client *b = new Client();
-	MainWindow qtwindow(NULL);
+	MainWindow qtwindow(client);
 	qtwindow.show();
-
-	sf::RenderWindow	Game;
-	Game.Create(sf::VideoMode(width, height, 32), "R-TYPE");
-	SpriteManager a;
-	a.loadObjects("./ressources/sprites/");
-
-	AGameObject *go = a.getClone(0, 0);
-	if (go == NULL)
-	{
-		std::cout << "Bad pointer" << std::endl;
-		exit(1);
-	}
-
-	sf::Clock cl;
-	cl.Reset();
-	while (Game.IsOpened())
-	{
-		sf::Event Event;
-		while (Game.GetEvent(Event))
-		{
-			std::cout << "3" << std::endl;
-			if ((Event.Type == sf::Event::KeyPressed))
-			{
-				//tape = Event.Text.Unicode;
-				//std::cout << tape << std::endl;
-			}
-			if ((Event.Type == sf::Event::Closed) || ((Event.Type == sf::Event::KeyPressed) && (Event.Key.Code == sf::Key::Escape)))
-			{
-				Game.Close();
-				return EXIT_SUCCESS;
-			}
-		}
-		Game.Clear();
-		if (cl.GetElapsedTime() > 0.2f)
-		{
-			cl.Reset();
-			go->goNextFrame();
-		}
-		go->draw(Game);
-		Game.Display();
-	}
 	return app.exec();
 }
+
+
+int main(int ac, char **av)
+{
+	Client *client = new Client();
+	QtLauncher(ac, av, client);
+	client->run();
+
+
+	//sf::RenderWindow	Game;
+	//Game.Create(sf::VideoMode(width, height, 32), "R-TYPE");
+	//SpriteManager a;
+	//a.loadObjects("./ressources/sprites/");
+
+	//AGameObject *go = a.getClone(0, 0);
+	//if (go == NULL)
+	//{
+	//	std::cout << "Bad pointer" << std::endl;
+	//	exit(1);
+	//}
+
+	//sf::Clock cl;
+	//cl.Reset();
+	//while (Game.IsOpened())
+	//{
+	//	sf::Event Event;
+	//	while (Game.GetEvent(Event))
+	//	{
+	//		std::cout << "3" << std::endl;
+	//		if ((Event.Type == sf::Event::KeyPressed))
+	//		{
+	//			//tape = Event.Text.Unicode;
+	//			//std::cout << tape << std::endl;
+	//		}
+	//		if ((Event.Type == sf::Event::Closed) || ((Event.Type == sf::Event::KeyPressed) && (Event.Key.Code == sf::Key::Escape)))
+	//		{
+	//			Game.Close();
+	//			return EXIT_SUCCESS;
+	//		}
+	//	}
+	//	Game.Clear();
+	//	if (cl.GetElapsedTime() > 0.2f)
+	//	{
+	//		cl.Reset();
+	//		go->goNextFrame();
+	//	}
+	//	go->draw(Game);
+	//	Game.Display();
+	//}
+
+}
+
+
 
 /*
 #include <iostream>
