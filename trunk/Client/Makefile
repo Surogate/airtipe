@@ -33,9 +33,13 @@ SRC		= \
 		$(D_SRC)/Graphics.cpp				\
 		$(D_SRC)/EventManager.cpp			\
 		$(D_SRC)/Network.cpp				\
-		$(D_SRC)/Ressources.cpp			\
+		$(D_SRC)/Ressources.cpp				\
 		$(D_SRC)/TCPClient.cpp				\
 		$(D_SRC)/NetWork.cpp				\
+		$(D_SRC)/AGameObject.cpp			\
+		$(D_SRC)/AGameWindows.cpp			\
+		$(D_SRC)/SpriteManager.cpp			\
+		$(D_SRC)/EventManager.cpp			\
 		$(D_SRC_COMMON)/packets/PacketManager.cpp	\
 		$(D_SRC_COMMON)/packets/Packet.cpp		\
 		$(D_SRC_COMMON)/packets/PacketHeader.cpp
