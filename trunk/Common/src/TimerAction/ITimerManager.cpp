@@ -7,7 +7,12 @@
  */
 
 #include <iostream>
-#include "ITimerManager.hpp"
+#include "TimerManager/ITimerManager.hpp"
+#ifdef WIN32
+# include "TimerManager/WTimerManager.hpp"
+#else
+# include "TimerManager/LTimerManager.hpp"
+#endif
 
 ITimerManager::~ITimerManager() {
 }
@@ -52,16 +57,24 @@ template<typename Class, typename RetType, typename Param1, typename Param2>
 void ITimerManager::waitTo(const mtime& time, Functor<Class,RetType,Param1,Param2>& func, Param1& arg1, Param2& arg2) const {
     wait(time);
     func.call(arg1, arg2);
-};
+}
 
 template<typename Class, typename RetType, typename Param1>
 void ITimerManager::waitTo(const mtime& time, Functor<Class,RetType,Param1>& func, Param1& arg1) const {
     wait(time);
     func.call(arg1);
-};
+}
 
 template<typename Class, typename RetType>
 void ITimerManager::waitTo(const mtime& time, Functor<Class,RetType>& func) const {
     wait(time);
     func.call();
-};
+}
+
+ITimerManager* ITimerManager::AbsNew() {
+	#ifdef WIN32
+		return new WTimerManager;
+	#else
+		return new LTimerManager;
+	#endif
+}
