@@ -19,7 +19,7 @@ public:
   Network();
   ~Network();
   void getEvent();
-  bool	Network::tryConnect(std::string ipaddr, unsigned short port);
+  bool	tryConnect(std::string ipaddr, unsigned short port);
 };
 
 #endif		/* __NETWORK_H__ */
