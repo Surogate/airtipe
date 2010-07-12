@@ -27,13 +27,13 @@ int main(int ac, char **av)
 {
 	Client *client = new Client();
 	QtLauncher(ac, av, client);
-	client->run();
+	//client->run();
 
 
 	//sf::RenderWindow	Game;
 	//Game.Create(sf::VideoMode(width, height, 32), "R-TYPE");
 	//SpriteManager a;
-	//a.loadObjects("./ressources/sprites/");
+	//a.loadObjects("../ressources/sprites/");
 
 	//AGameObject *go = a.getClone(0, 0);
 	//if (go == NULL)

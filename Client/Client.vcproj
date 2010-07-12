@@ -109,7 +109,7 @@
 				Optimization="0"
 				AdditionalIncludeDirectories=".\GeneratedFiles;&quot;$(QTDIR)\include&quot;;&quot;.\GeneratedFiles\$(ConfigurationName)&quot;;&quot;$(QTDIR)\include\qtmain&quot;;&quot;$(QTDIR)\include\QtCore&quot;;&quot;$(QTDIR)\include\QtGui&quot;;.\;.\include"
 				PreprocessorDefinitions="WIN32;QT_THREAD_SUPPORT;QT_CORE_LIB;QT_GUI_LIB"
-				RuntimeLibrary="2"
+				RuntimeLibrary="0"
 				TreatWChar_tAsBuiltInType="true"
 				DebugInformationFormat="3"
 			/>
@@ -124,12 +124,11 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="/SUBSYSTEM:CONSOLE"
-				AdditionalDependencies="qtmaind.lib QtCored4.lib QtGuid4.lib sfml-graphics.lib sfml-main.lib sfml-system.lib sfml-window.lib"
+				AdditionalDependencies="qtmaind.lib QtCored4.lib QtGuid4.lib sfml-graphics.lib sfml-main.lib sfml-system.lib sfml-window.lib sfml-network.lib"
 				OutputFile="$(OutDir)\$(ProjectName).exe"
 				AdditionalLibraryDirectories="&quot;$(SolutionDir)lib\SFML\&quot;;&quot;$(QTDIR)\lib&quot;"
 				GenerateDebugInformation="true"
-				SubSystem="2"
+				SubSystem="1"
 			/>
 			<Tool
 				Name="VCALinkTool"

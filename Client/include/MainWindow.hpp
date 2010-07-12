@@ -7,6 +7,8 @@
 #include <QtGui/QLineEdit>
 #include <QtGui/QCheckBox>
 #include <QtGui/QLabel>
+#include <QtGui/QMessageBox>
+#include <SFML/Network.hpp>
 #include "Client.hpp"
 
 class MainWindow : public QWidget
@@ -29,7 +31,7 @@ class MainWindow : public QWidget
 	QLabel* _portLabel;
 
 	Client* _client;
-
+	QMessageBox* _warning;
 	public slots:
 	void formValidation();
 
