@@ -8,6 +8,7 @@
 #ifndef			__GRAPHICS_HPP__
 #define			__GRAPHICS_HPP__
 
+#include <SFML/Graphics.hpp>
 #include <iostream>
 
 class Client;
@@ -17,6 +18,7 @@ class EventManager;
 class				Graphics
 {
   Client			*_client;
+  sf::RenderWindow*	_rwindow;
   int				_height;
   int				_width;
   int				_bpp;
@@ -25,7 +27,7 @@ class				Graphics
 public:
   Graphics(Client *);
   ~Graphics();
-  void			create_windows();
+  void			create_windows(bool fullScreen);
   void			close_windows();
   void			sprite_display(int x, int y);
   void			sprite_destroy();
@@ -34,6 +36,7 @@ public:
   void			sprite_anim();
   void			loop();
   void			draw();
+  sf::RenderWindow & getWindow();
 };
 
 #endif			/* __GRAPHICS_HPP__ */

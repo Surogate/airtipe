@@ -17,19 +17,12 @@ int main(int ac, char **av)
 {
 	QApplication app(ac, av);
 
-
-
-
-
-	Client *b = new Client();
-	MainWindow qtwindow(b);
+	//Client *b = new Client();
+	MainWindow qtwindow(NULL);
 	qtwindow.show();
 
-/*
-	std::cout << "Allo le monde" << std::endl;
 	sf::RenderWindow	Game;
 	Game.Create(sf::VideoMode(width, height, 32), "R-TYPE");
-
 	SpriteManager a;
 	a.loadObjects("./ressources/sprites/");
 
@@ -39,8 +32,6 @@ int main(int ac, char **av)
 		std::cout << "Bad pointer" << std::endl;
 		exit(1);
 	}
-	//sf::Sprite sp = go->getSprite(5);
-	//my.SetPosition(50,50);
 
 	sf::Clock cl;
 	cl.Reset();
@@ -49,6 +40,7 @@ int main(int ac, char **av)
 		sf::Event Event;
 		while (Game.GetEvent(Event))
 		{
+			std::cout << "3" << std::endl;
 			if ((Event.Type == sf::Event::KeyPressed))
 			{
 				//tape = Event.Text.Unicode;
@@ -69,8 +61,6 @@ int main(int ac, char **av)
 		go->draw(Game);
 		Game.Display();
 	}
-
-	*/
 	return app.exec();
 }
 
