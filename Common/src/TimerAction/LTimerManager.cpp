@@ -6,10 +6,9 @@
  * \date    July 7, 2010 5:52 PM
  */
 
-#include "LTimerManager.hpp"
-
 #ifndef WIN32
 
+#include "TimerManager/LTimerManager.hpp"
 #include <unistd.h>
 
 LTimerManager::LTimerManager()
@@ -81,7 +80,9 @@ mtime LTimerManager::GetTimeFrom(const ITimerManager::timeHdl& hdler) const {
 }
 
 inline bool LTimerManager::isValid(const ITimerManager::timeHdl& hdler) const {
-    return hdler < listTime_.size();
+    if (hdler >= 0)
+        return (static_cast<unsigned int>(hdler) < listTime_.size());
+    return false;
 }
 
 mtime LTimerManager::GetTimeBetween(const ITimerManager::timeHdl& hdl1, const ITimerManager::timeHdl& hdl2) const {

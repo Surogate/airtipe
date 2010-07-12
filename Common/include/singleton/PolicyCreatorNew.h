@@ -24,4 +24,20 @@ class	PolicyCreatorNew
 		}
 };
 
+template <class T>
+class	AbsPolicyCreatorNew
+{
+	public:
+		static T*	create()
+		{
+			return T::AbsNew();
+		}
+
+		static void	destroy(T* toDelete)
+		{
+			delete toDelete;
+		}
+};
+
+
 #endif		// POLICYCREATORNEW_H__

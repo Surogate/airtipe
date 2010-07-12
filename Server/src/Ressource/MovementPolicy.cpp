@@ -5,19 +5,24 @@
  * Created on July 12, 2010, 3:15 PM
  */
 
-#include "../../inc/MovementPolicy.h"
+#include "MovementPolicy.h"
+#include "singleton/SingletonHolder.h"
 
 Position::Position(unsigned int posX, unsigned int posY)
-: _posX(posX), _posY(posY) {}
+: _posX(posX), _posY(posY) {
+}
 
-MovementPolicy::MovementPolicy(Position& Init)
-: _pos(Init) {
+MovementPolicy::MovementPolicy(const Position& Init, const Position& direction, const int velocity)
+: _posInit(Init), _direct(direction), _vel(velocity) {
+    _timerMan = SingletonHolder< ITimerManager, AbsPolicyCreatorNew >::getInstance();
+    _timeHandler = _timerMan->setTimer();
 }
 
 MovementPolicy::MovementPolicy(const MovementPolicy& orig)
-: _pos(orig._pos), _timeHandler(orig._timeHandler), _timerMan(orig._timerMan) {
+: _posInit(orig._posInit), _direct(orig._direct), _vel(orig._vel) {
+   _timerMan = SingletonHolder< ITimerManager, AbsPolicyCreatorNew >::getInstance();
+   _timeHandler = _timerMan->setTimer();
 }
 
 MovementPolicy::~MovementPolicy() {
 }
-

@@ -9,30 +9,30 @@
 #define	_MOVEMENTPOLICY_HPP
 
 #include "MovementType.h"
+#include "singleton/SingletonHolder.h"
 #include "TimerManager/ITimerManager.hpp"
 
 struct Position {
     unsigned int _posX;
     unsigned int _posY;
-    Position(unsigned int posX, unsigned int posY);
+    Position(unsigned int posX = 0, unsigned int posY = 0);
 };
 
 class MovementPolicy {
 public:
-    MovementPolicy(Position& init);
+    MovementPolicy(const Position& init, const Position& direction, const int velocity);
     MovementPolicy(const MovementPolicy& orig);
     virtual ~MovementPolicy();
-    virtual Position GetPositionAt(mtime& time) = 0;
-    virtual Position GetPosition(void) = 0;
-    virtual MovementType GetMovementType(void) = 0;
+    virtual const Position GetPosition(void) const = 0;
+    virtual const Position GetPositionAt(mtime& time) = 0;
+    virtual const MovementType GetMovementType(void) const = 0;
 
 protected:
-    Position _pos;
-
-private:
+    const Position _posInit;
+    const Position _direct;
+    const int _vel;
     ITimerManager::timeHdl _timeHandler;
     ITimerManager* _timerMan;
 };
 
 #endif	/* _MOVEMENTPOLICY_HPP */
-

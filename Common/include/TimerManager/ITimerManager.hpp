@@ -47,6 +47,8 @@ public:
     void waitTo(const mtime&, Functor<Class,RetType,Param1>&, Param1& arg1) const;
     template <typename Class, typename RetType>
     void waitTo(const mtime&, Functor<Class,RetType>&) const;
+
+    static ITimerManager* AbsNew();
 };
 
 #endif	/* _TIMERMANAGER_HPP */

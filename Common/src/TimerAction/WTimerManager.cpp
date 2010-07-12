@@ -12,7 +12,7 @@
 # include <iostream>
 # include <cmath>
 # include <winsock2.h>
-# include "WTimerManager.hpp"
+# include "TimerManager/WTimerManager.hpp"
 
 WTimerManager::WTimerManager() {
     getTime(actionTime_);
@@ -62,7 +62,9 @@ mtime WTimerManager::GetTimeFrom(const timeHdl& hdler) const {
 }
 
 inline bool WTimerManager::isValid(const ITimerManager::timeHdl& hdler) const {
-    return (hdler < listTime_.size());
+    if (hdler >= 0)
+        return (static_cast<unsigned int>(hdler) < listTime_.size());
+    return false;
 }
 
 mtime WTimerManager::GetTimeBetween(const timeHdl& hdl1, const timeHdl& hdl2) const {
