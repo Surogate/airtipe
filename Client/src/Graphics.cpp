@@ -19,7 +19,7 @@ Graphics::Graphics(Client *c)
   this->_width = 384;
   this->_height = 256;
   this->_bpp = 32;
-  this->_name = "R-TYPE";
+  this->_name = "R-type";
 
 }
 

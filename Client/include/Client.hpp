@@ -21,8 +21,8 @@ class			Client
 
 public:
 
-  Graphics		_Wind;
-  EventManager		_Event;
+  Graphics*		_Wind;
+  EventManager*		_Event;
   Network		_Net;
   //Ressources		_Ressources;
 
@@ -33,7 +33,7 @@ public:
   EventManager&		getEventM();
   Network&		getNetwork();
   //Ressources&		getRessources();
-  //void run();
+  void run();
 };
 
 #endif		/* __CLIENT_HPP__ */

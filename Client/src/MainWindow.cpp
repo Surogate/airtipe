@@ -13,10 +13,11 @@ MainWindow::MainWindow(Client * client)
 		);
 
 	this->_client = client;
+
 	this->_ipLabel = new QLabel("IP :", this);
 	this->_ipLabel->move(130, 160);
 
-	this->_ip = new QLineEdit(this);
+	this->_ip = new QLineEdit("", this);
 	this->_ip->move(160, 160);
 
 
@@ -54,6 +55,6 @@ MainWindow::~MainWindow()
 
 void	MainWindow::formValidation()
 {
-	std::cout << "Bing !" << std::endl << this->_ip->text().toStdString().c_str() << std::endl;
-	this->hide();
+	//std::cout << "Bing !" << std::endl << this->_ip->text().toStdString().c_str() << std::endl;
+	this->close();
 }
