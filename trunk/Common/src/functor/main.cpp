@@ -6,7 +6,7 @@
  */
 
 #include <iostream>
-#include "Functor.hpp"
+#include "../../include/Functor.hpp"
 
 class toto {
 public:
