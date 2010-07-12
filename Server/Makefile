@@ -14,28 +14,28 @@ NAME		= R-type_server
 DIR_COMMON	= ../Common
 DIR		= .
 
-D_SRC		= $(DIR)/src/
-D_SRC_COMMON	= $(DIR_COMMON)/src/
+D_SRC		= $(DIR)/src
+D_SRC_COMMON	= $(DIR_COMMON)/src
 
-D_INC		= $(DIR)/inc/
-D_INC_COMMON	= $(DIR_COMMON)/include/
+D_INC		= $(DIR)/inc
+D_INC_COMMON	= $(DIR_COMMON)/include
 
-D_LIB		= $(DIR)/lib/
+D_LIB		= $(DIR)/lib
 
-D_BIN		= $(DIR)/bin/
+D_BIN		= $(DIR)/bin
 
 ############### FILES
 
 SRC		= \
-		$(D_SRC)main.cpp					\
-		$(D_SRC)Server.cpp					\
-		$(D_SRC)Game.cpp					\
-		$(D_SRC)Client.cpp					\
-		$(D_SRC_COMMON)network/CTCPServer_Unix.cpp		\
-		$(D_SRC_COMMON)network/CTCPSession_Unix.cpp		\
-		$(D_SRC_COMMON)packets/PacketManager.cpp		\
-		$(D_SRC_COMMON)packets/PacketHeader.cpp		\
-		$(D_SRC_COMMON)packets/Packet.cpp
+		$(D_SRC)/main.cpp					\
+		$(D_SRC)/Server.cpp					\
+		$(D_SRC)/Game.cpp					\
+		$(D_SRC)/Client.cpp					\
+		$(D_SRC_COMMON)/network/CTCPServer_Unix.cpp		\
+		$(D_SRC_COMMON)/network/CTCPSession_Unix.cpp		\
+		$(D_SRC_COMMON)/packets/PacketManager.cpp		\
+		$(D_SRC_COMMON)/packets/PacketHeader.cpp		\
+		$(D_SRC_COMMON)/packets/Packet.cpp
 
 INC		= \
 
@@ -66,7 +66,7 @@ IFLAGS_i686-Linux	= \
 IFLAGS			= \
 			$(IFLAGS_$(TAG)) 	\
 			-I$(D_INC) 		\
-			I$(D_INC_COMMON)
+			-I$(D_INC_COMMON)
 
 #########  LIBRARIES
 
@@ -119,7 +119,7 @@ all		: $(NAME)
 
 $(NAME)		: $(OBJ)
 	@$(ECHO) "$(CYAN)[LINKING]: $(NAME)$(END)"
-	$(CC) -o$(DIR_BIN)$(NAME) $(OBJ) $(LFLAGS)
+	$(CC) -o$(D_BIN)/$(NAME) $(OBJ) $(LFLAGS)
 	@$(ECHO) "$(GREEN)[LINKING] - DONE$(END)"
 
 tar		:
@@ -147,13 +147,13 @@ clean		:
 
 fclean		: clean
 	@$(ECHO) "$(RED)[FCLEAN]"
-	$(RM) $(DIR_BIN)$(NAME)
+	$(RM) $(D_BIN)/$(NAME)
 	@$(ECHO) "$(GREEN)[FCLEAN] -DONE$(END)"
 
 cleanall	: fclean
 	@$(ECHO) "$(RED)[CLEANALL]"
-	$(RM) $(DIR_SRC)*~
-	$(RM) $(DIR_INC)*~
+	$(RM) $(D_SRC)/*~
+	$(RM) $(D_INC)/*~
 	$(RM) *~
 	@$(ECHO) "$(GREEN)[CLEANALL] -DONE$(END)"
 
