@@ -30,7 +30,7 @@ class		TCPClient
 		 */
 		~TCPClient();
 
-		void				connect(std::string address, unsigned short port);
+		void				connect(std::string & address, unsigned short port);
 		bool				failed();
 		std::string 		receive();
 		void				send(void * buf, unsigned int bufSize);

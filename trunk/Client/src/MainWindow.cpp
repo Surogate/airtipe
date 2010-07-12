@@ -33,11 +33,11 @@ MainWindow::MainWindow(Client * client)
     this->_start->setCursor(Qt::PointingHandCursor);
     this->_start->move(170, 250);
 
-
+	this->_warning = NULL;
 	
 
 	this->_SplashImage = new QLabel(this);
-	this->_SplashImage->setPixmap(QPixmap("./ressources/rtype.png"));
+	this->_SplashImage->setPixmap(QPixmap("../ressources/rtype.png"));
     this->_SplashImage->move(0, 0);
 
 	QObject::connect(this->_start, SIGNAL(clicked()), this, SLOT(formValidation()));
@@ -46,15 +46,39 @@ MainWindow::MainWindow(Client * client)
 
 MainWindow::~MainWindow()
 {
+	std::cout << "Appel du destructeur de MainWindow" << std::endl;
 	delete this->_start;
+	if (this->_warning != NULL)
+		delete this->_warning;
 	delete this->_ip;
+	delete this->_ipLabel;
 	delete this->_port;
+	delete this->_portLabel;
 	delete this->_fullScreen;
+	delete this->_SplashImage;
 }
 
 
 void	MainWindow::formValidation()
 {
-	//std::cout << "Bing !" << std::endl << this->_ip->text().toStdString().c_str() << std::endl;
-	this->close();
+//	std::cout << this->_ip->text().toStdString() << " port : " << this->_port->text().toUShort() << std::endl;
+	std::string ip(_ip->text().toStdString());
+	std::cout << ip << std::endl;
+	if (this->_ip->text().length() == 0 || this->_port->text().length() == 0)
+	{
+		_warning = new QMessageBox(QMessageBox::Warning, "Probleme", "Vous n'avez pas saisie tous les champs");
+		_warning->show();
+	}
+	else
+	{	
+		if (_client->getNetwork().tryConnect(this->_ip->text().toStdString(), this->_port->text().toUShort()))
+		{
+		 this->close();
+		}
+		else
+		{
+		_warning = new QMessageBox(QMessageBox::Warning, "Probleme", "Connection timed out");
+		_warning->show();
+		}
+	}
 }
