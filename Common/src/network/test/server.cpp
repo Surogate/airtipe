@@ -1,5 +1,9 @@
 #ifdef		UNIX
 # include	"network/CTCPServer_Unix.h"
+#else 
+# ifdef		WIN32
+#  include "network/CTCPServer_Win32.h"
+# endif
 #endif
 
 #include	<iostream>
@@ -7,7 +11,7 @@
 
 int		main()
 {
-	TCPServer	serv(22255, 8);
+	/*TCPServer	serv(22255, 8);
 
 	if (serv.init())
 	{
@@ -15,7 +19,7 @@ int		main()
 		serv.run();
 		serv.close();
 		std::cout << "server closed" << std::endl;
-	}
+	}*/
 	return (0);
 }
 
