@@ -13,6 +13,8 @@ DEPENDPATH += . \
 INCLUDEPATH += . \
                include \
                include/SFML \
+               ../Common/include/packets \
+               ../Common/include
 
 LIBPATH += -L../lib/SFML
 
@@ -40,4 +42,8 @@ SOURCES += src/AGameObject.cpp \
            src/Renderer.cpp \
            src/Ressources.cpp \
            src/SpriteManager.cpp \
-           src/TCPClient.cpp
+           src/TCPClient.cpp    \
+           ../Common/src/packets/PacketManager.cpp \
+           ../Common/src/packets/Packet.cpp \
+           ../Common/src/packets/PacketHeader.cpp
+
