@@ -38,3 +38,12 @@ bool	Network::isConnected() const
 {
   return _socket.IsValid();
 }
+
+
+void	Network::sendInitPacket(std::string const & login)
+{
+  DataLogin*	data = new DataLogin;
+  //  data->login = login.c_str();
+  Packet*	tosend = _pacManager.CreatePacket(Login, data);
+  this->_socket.Send(reinterpret_cast<char *>(tosend), tosend->header->dataSize);
+}
