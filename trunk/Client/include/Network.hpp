@@ -20,6 +20,7 @@ public:
   ~Network();
   void getEvent();
   bool	tryConnect(std::string ipaddr, unsigned short port);
+  bool	isConnected() const;
 };
 
 #endif		/* __NETWORK_H__ */

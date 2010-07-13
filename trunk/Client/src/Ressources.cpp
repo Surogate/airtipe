@@ -7,13 +7,43 @@
 
 #include "Ressources.hpp"
 
-Ressources::Ressources()
+Ressources::Ressources() : _sDatabase()
 {
-  // TODO Auto-generated constructor stub
-
+  this->_sDatabase.loadObjects("../ressources/sprites/");
 }
 
 Ressources::~Ressources()
 {
-  // TODO Auto-generated destructor stub
+
+}
+
+
+AGameObject*	Ressources::getUniqueObject(int UID)
+{
+  std::map<int, AGameObject*>::iterator i = _sprites.begin();
+  std::map<int, AGameObject*>::iterator end = _sprites.end();
+
+  for (; i != end ; ++i)
+    {
+      if ((*i).first == UID)
+	{
+	  return _sprites[UID];
+	}
+    }
+
+
+}
+
+void	       Ressources::addClone(int UID, int type, int id)
+{
+  AGameObject *object = _sDatabase.getClone(type, id);
+
+  if (object != NULL)
+    {
+      _sprites[UID] = object;
+    }
+  else
+    {
+      //TODO throw ...
+    }
 }

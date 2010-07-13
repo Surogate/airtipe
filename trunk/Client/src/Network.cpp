@@ -32,3 +32,9 @@ void	Network::getEvent()
 {
   //std::cout << "network" << std::endl;
 }
+
+
+bool	Network::isConnected() const
+{
+  return _socket.IsValid();
+}
