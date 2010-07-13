@@ -9,7 +9,6 @@
 # define	__CLIENT_HPP__
 
 #include <SFML/Graphics.hpp>
-
 #include "Graphics.hpp"
 #include "EventManager.hpp"
 #include "Network.hpp"
@@ -17,14 +16,11 @@
 
 class			Client
 {
-  //
-
 public:
-
-  Graphics*		_Wind;
-  EventManager*		_Event;
-  Network		_Net;
-  //Ressources		_Ressources;
+  Graphics*		_wind;
+  EventManager*		_event;
+  Network		_network;
+  Ressources		_ressources;
 
 public:
   Client();

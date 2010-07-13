@@ -7,6 +7,7 @@ SpriteManager::SpriteManager(void)
 SpriteManager::~SpriteManager(void)
 {
 }
+#include <iostream>
 
 void SpriteManager::getFiles(std::string const & path)
 {
@@ -16,7 +17,6 @@ void SpriteManager::getFiles(std::string const & path)
 #ifdef _WIN32
 	realpath += "*.png";
 	USES_CONVERSION;
-	//LARGE_INTEGER filesize;
 	WIN32_FIND_DATA ffd;
 	HANDLE hFind = INVALID_HANDLE_VALUE;
 	hFind = FindFirstFile(realpath.c_str(), &ffd);
@@ -30,15 +30,13 @@ void SpriteManager::getFiles(std::string const & path)
 	}
 	FindClose(hFind);
 #else
-	DIR *dir = opendir(".");
+	DIR *dir = opendir(path.c_str());
 	struct dirent *elem = new dirent;
 	while ((elem = readdir(dir)) != NULL)
 	{
 		std::string s(elem->d_name);
-		if (s[s.length() - 3] == '.' && s[s.length() - 2] == 's' && s[s.length() - 1] == 'o')
-		{
-			_files.push_back("./" + s);
-		}
+		if (s.length() > 6 && s.substr(s.length() - 4) == ".png")
+		  _files.push_back(s);
 	}
 #endif
 }

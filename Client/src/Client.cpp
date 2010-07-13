@@ -12,8 +12,8 @@
 Client::Client()
 {
   std::cout << "Creation Client" << std::endl;
-  _Wind = new Graphics(this);
-  _Event = new EventManager(this);
+  _wind = new Graphics(this);
+  _event = new EventManager(this);
 }
 
 Client::~Client()
@@ -23,18 +23,18 @@ Client::~Client()
 
 sf::RenderWindow&	Client::getRWindow()
 {
-	return this->_Wind->getWindow();
+	return this->_wind->getWindow();
 }
 
 
 EventManager&		Client::getEventM()
 {
-  return *this->_Event;
+  return *this->_event;
 }
 
 Network&		Client::getNetwork()
 {
-  return this->_Net;
+  return this->_network;
 }
 //
 //Ressources&		Client::getRessources()
@@ -44,6 +44,6 @@ Network&		Client::getNetwork()
 //
 void	Client::run()
 {
-  this->_Wind->create_windows(false);
-  this->_Wind->loop();
+  this->_wind->create_windows(false);
+  this->_wind->loop();
 }

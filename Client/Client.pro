@@ -8,7 +8,8 @@ QT += gui
 QT += core
 DEPENDPATH += . \
               include \
-              src \
+              src
+
 INCLUDEPATH += . \
                include \
                include/SFML \
