@@ -7,10 +7,7 @@
  */
 
 #include	<iostream>
-
-#ifdef		UNIX
-# include	"thread/ThreadPool.h"
-#endif
+#include	"thread/ThreadPool.h"
 
 class	MyThread : public ATPTask
 {
@@ -30,8 +27,10 @@ int		main()
 
 	while (42)
 	{
+	//	th.run(&i);
 		pool.run(&th, &i);
 		i++;
 	}
 	return (0);
 }
+

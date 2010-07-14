@@ -13,6 +13,12 @@
 #  include	"thread/AThread_Unix.h"
 #  include	"thread/CMutex_Unix.h"
 #  include	"thread/CThreadCondition_Unix.h"
+# else
+#  ifdef		WIN32
+#   include	"thread/AThread_Win32.h"
+#   include	"thread/CMutex_Win32.h"
+#   include	"thread/CThreadCondition_Win32.h"
+#  endif
 # endif
 
 class	ThreadPool;

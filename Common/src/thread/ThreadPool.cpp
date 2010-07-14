@@ -48,6 +48,7 @@ void	ThreadPool::run(ATPTask* task, void* data, bool destroy)
 	TPThread*	thread = this->getIdle();
 	if (thread != NULL)
 	{
+		std::cout << "run" << std::endl;
 		thread->_syncMutex.lock();
 		thread->setTask(task, data, destroy);
 		task->setThread(thread);
