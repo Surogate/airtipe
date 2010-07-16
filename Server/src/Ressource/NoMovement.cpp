@@ -8,17 +8,18 @@
 
 #include "NoMovement.h"
 
-NoMovement::NoMovement() {
+NoMovement::NoMovement(const Position& init, const Position&, const int)
+: MovementPolicy(init) {
 }
 
-NoMovement::NoMovement(const NoMovement&) {
+MovementType NoMovement::GetMovementType() {
+    return ::NoMovement;
 }
 
-NoMovement::~NoMovement() {
+const Position NoMovement::GetPositionAt(mtime& time) {
+    return _posInit;
 }
 
-NoMovement& NoMovement::operator=(const NoMovement& cpy) {
-    if (this != &cpy) {
-    }
-    return *this;
+const Position NoMovement::GetPosition() const {
+    return _posInit;
 }
