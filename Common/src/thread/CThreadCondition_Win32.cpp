@@ -1,3 +1,6 @@
+
+#ifdef WIN32
+
 #include <iostream>
 #include "thread/CThreadCondition_Win32.h"
 
@@ -27,3 +30,5 @@ void	CThreadCondition_Win32::broadcast()
 {
 	WakeAllConditionVariable(&this->_condition);
 }
+
+#endif

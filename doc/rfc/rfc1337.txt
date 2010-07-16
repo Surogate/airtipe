@@ -1,10 +1,12 @@
 ﻿Tech3s RType Group 											ancel_a
-Category: Standards Track									lucaze_b
-															chanio_f
-															korcza_b
-															bertra_b
-															lebrun_d
+Category: Experimental										lucaze_b
 															July 2010
+
+
+
+
+
+
 
 
 					R-Type Client/Server Protocol
@@ -16,26 +18,44 @@ Abstract
 	exchange with TCP and UDP.
 
 Status of This Memo
+
 	This document is a draft, and was actually made to let us train
 	to read rfc. Any suggestions and request will be denied, go make  
 	your own protocol. Distribution of this memo is unlimited.
 
-
 Copyright Notice
+
 	This document is under GNU/GPL.
 
 Table of Contents
 
 	1.	Introduction. . . . . . . . . . . . . . . . . . . . . . . 2
-		1.1	Conventions Used in This Document . . . . . . . . . 2
-	2.	Standard Message Exchange . . . . . . . . . . . . . . . . 3
-	3.	TCP Message . . . . . . . . . . . . . . . . . . . . . . . 4
-	4.	UDP Message . . . . . . . . . . . . . . . . . . . . . . . 5
-		
+		1.1	Conventions Used in This Document . . . . . . . . . . 2
+	2.	Standard Message Exchange . . . . . . . . . . . . . . . . 2
+	3.	TCP Message . . . . . . . . . . . . . . . . . . . . . . . 3
+	4.	UDP Message . . . . . . . . . . . . . . . . . . . . . . . 4
 
-ancel_a				Standard Track							[page1]
 
-RFC 1337		R-Type Client/Server Protocol				July 2010
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ancel_a						Experimental					[page1]
+
+RFC 1337			R-Type Client/Server Protocol			July 2010
 
 
 1.	Introduction
@@ -53,4 +73,42 @@ RFC 1337		R-Type Client/Server Protocol				July 2010
 
 2.	Standard Message Exchange
 
+	Each message produced by the server/client must be composed 
+	by an header next by a body. The header is constant and defined the 
+	next body, each are structures define further.
 
+	the Packet header must be defined by three unsigned integer : 
+
+	o	the first is an id that define a the next body structure.
+
+	o	the second is the timestamp where the packet was formed.
+
+	o	the third is the actual size of the next body.
+
+	The header define the validity of the next body, 
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ancel_a						Experimental					[page2]

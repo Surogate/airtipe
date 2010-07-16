@@ -10,13 +10,14 @@
 
 #ifdef		UNIX
 Client::Client(int socket) :
-#endif // UNIX
+
 	TCPSession(socket),
 	_login("player"),
 	_logged(false)
 {
 
 }
+#endif // UNIX
 
 Client::~Client()
 {

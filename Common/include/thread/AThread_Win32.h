@@ -9,6 +9,7 @@
 #ifndef		ATHREAD_WIN32_H__
 # define	ATHREAD_WIN32_H__
 
+#ifdef WIN32
 # include	<Windows.h>
 # include "thread/IThread.h"
 
@@ -35,4 +36,5 @@ private:
 
 typedef AThread_Win32 AThread;
 
+#endif // !WIN32
 #endif		// ATHREAD_WIN32_H__
