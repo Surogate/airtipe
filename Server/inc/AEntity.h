@@ -9,9 +9,15 @@
 #define	_AENTITY_HPP
 
 #include "MovementPolicy.h"
+#include "NoMovement.h"
 
-template< class MovementPolicy = NoMovement >
-class AEntity : private MovementPolicy {
+
+
+template< class MvmPolicy = class NoMovement >
+class AEntity : private MvmPolicy {
+public:
+    AEntity(const Position& init, const Position& direction = Position(), const int velocity = 0);
+
 protected:
     unsigned int _id;
     unsigned int _width;
