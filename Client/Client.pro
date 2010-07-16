@@ -3,20 +3,23 @@
 ######################################################################
 
 TEMPLATE = app
-TARGET = 
+TARGET =
 QT += gui
 QT += core
-DEPENDPATH += . \
-              include \
-              src
 
-INCLUDEPATH += . \
-               include \
-               include/SFML \
-               ../Common/include/packets \
-               ../Common/include
+DEPENDPATH      += \
+                .       \
+                include \
+                src
 
-LIBPATH += -L../lib/SFML
+INCLUDEPATH     += \
+                include                         \
+                /usr/SFML                       \
+                ../Common/include/packets       \
+                ../Common/include
+
+LIBPATH         += \
+                -L/usr/lib/
 
 LIBS    += -lsfml-system -lsfml-window -lsfml-network -lsfml-graphics
 # Input

@@ -5,10 +5,12 @@ CLIENT	= ./Client
 SERVER	= ./Server
 BIN	= ./bin
 
+QMAKE	= qmake-qt4
+
 all	: client server
 
 client	:
-	@(cd $(CLIENT) && $(MAKE))
+	@(cd $(CLIENT) && $(QMAKE) && $(MAKE))
 	@(cp -v $(CLIENT)/bin/$(EXE_CLIENT) $(BIN))
 
 server	:
