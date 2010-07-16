@@ -1,3 +1,5 @@
+
+#ifdef WIN32
 #include <iostream>
 #include "thread/AThread_Win32.h"
 
@@ -64,3 +66,5 @@ void	AThread_Win32::cancel()
 		}
 	}
 }
+
+#endif

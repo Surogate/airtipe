@@ -12,9 +12,5 @@ MovementType CircularMovement::GetMovementType() {
 const Position CircularMovement::GetPositionAt(mtime& time) {
     mtime timeFrom = _timerMan->GetTimeFrom(_timeHandler);
     timeFrom = timeFrom + time;
-    if (_sens)
-    {
-        _vel
-    }
 }
 

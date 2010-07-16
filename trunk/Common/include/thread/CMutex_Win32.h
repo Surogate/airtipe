@@ -9,6 +9,8 @@
 #ifndef		CMUTEX_WIN32_H__
 # define	CMUTEX_WIN32_H__
 
+#ifdef WIN32
+
 # include <Windows.h>
 # include "thread/IMutex.h"
 
@@ -30,5 +32,7 @@ private:
 };
 
 typedef CMutex_Win32 Mutex;
+
+#endif // !WIN32
 
 #endif		// CTHREADCONDITION_WIN32_H__

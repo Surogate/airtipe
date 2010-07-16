@@ -1,6 +1,6 @@
 #include	<iostream>
 #include	<dlfcn.h>
-#include	"SharedLibrary_unix.h"
+#include	"shared_library/SharedLibrary_unix.h"
 
 SharedLibrary_unix::SharedLibrary_unix()
 {

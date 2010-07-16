@@ -20,7 +20,7 @@ LTimerManager::LTimerManager()
 }
 
 LTimerManager::LTimerManager(const LTimerManager& cpy)
-: actionval_(cpy.actionval_), actionTime_(cpy.actionTime_), listTime_(cpy.listTime_), error(cpy.error) {
+:  error(cpy.error), actionTime_(cpy.actionTime_), actionval_(cpy.actionval_), listTime_(cpy.listTime_) {
 }
 
 LTimerManager::~LTimerManager() {

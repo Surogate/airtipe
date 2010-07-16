@@ -9,6 +9,8 @@
 #ifndef		CTHREADCONDITION_WIN32_H__
 # define	CTHREADCONDITION_WIN32_H__
 
+#ifdef WIN32
+
 # include "thread/IThreadCondition.h"
 # include	"thread/CMutex_Win32.h"
 
@@ -29,4 +31,5 @@ private:
 
 typedef CThreadCondition_Win32 ThreadCondition;
 
+#endif // !WIN32
 #endif		// CTHREADCONDITION_WIN32_H__
