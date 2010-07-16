@@ -20,7 +20,7 @@ struct Position {
 
 class MovementPolicy {
 public:
-    MovementPolicy(const Position& init, const Position& direction, const int velocity);
+    MovementPolicy(const Position& init, const Position& direction = Position(), const int velocity = 0);
     MovementPolicy(const MovementPolicy& orig);
     virtual ~MovementPolicy();
     virtual const Position GetPosition(void) const = 0;
