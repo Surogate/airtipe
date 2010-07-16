@@ -10,7 +10,6 @@
 
 #ifdef		UNIX
 Client::Client(int socket) :
-
 	TCPSession(socket),
 	_login("player"),
 	_logged(false)
