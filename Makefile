@@ -1,5 +1,5 @@
-EXE_SERVER	= R-type_server
-EXE_CLIENT	= R-type
+EXE_SERVER	= R-Type_server
+EXE_CLIENT	= R-Type
 
 CLIENT	= ./Client
 SERVER	= ./Server

@@ -7,7 +7,7 @@ TAG		= $(MTAG)-$(STAG)
 
 ############### PROJECT
 
-NAME		= R-type_server
+NAME		= R-Type_server
 
 ############### DIRECTORIES
 

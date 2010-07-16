@@ -12,18 +12,17 @@
 #include "PacketCode.h"
 #include "PacketManager.h"
 
-class Network
+class			Network
 {
-private:
-	sf::SocketTCP	_socket;
+  sf::SocketTCP		_socket;
   PacketManager		_pacManager;
 public:
   Network();
   ~Network();
-  void getEvent();
-  bool	tryConnect(std::string ipaddr, unsigned short port);
-  bool	isConnected() const;
-  void	sendInitPacket(std::string const &);
+  void			getEvent();
+  bool			tryConnect(std::string ipaddr, unsigned short port);
+  bool			isConnected() const;
+  void			sendInitPacket(std::string const &);
 };
 
 #endif		/* __NETWORK_H__ */
