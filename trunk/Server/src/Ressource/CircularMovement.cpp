@@ -1,16 +1,17 @@
 
-#include "CircularMovement.h"
+#include "CircularMovementRight.h"
 
-CircularMovement::CircularMovement(const Position& init, const Position& circleCenter, const int radPerSec, bool sens)
-: MovementPolicy(init, circleCenter, radPerSec), _sens(sens) {
+CircularMovementRight::CircularMovementRight(const Position& init, const Position& circleCenter, const int radPerSec, bool sens)
+: MovementPolicy(init, circleCenter, radPerSec) {
 }
 
-MovementType CircularMovement::GetMovementType() {
+MovementType CircularMovementRight::GetMovementType() {
     return Circular;
 }
 
-const Position CircularMovement::GetPositionAt(mtime& time) {
+const Position CircularMovementRight::GetPositionAt(mtime& time) {
     mtime timeFrom = _timerMan->GetTimeFrom(_timeHandler);
     timeFrom = timeFrom + time;
+    
 }
 
