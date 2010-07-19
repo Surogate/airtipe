@@ -16,8 +16,9 @@
 # include	<arpa/inet.h>
 # include	<netinet/in.h>
 # include	"network/IUDP.h"
+# include	"network/CUDPSession_Unix.h"
 
-class		CUDP_Unix : IUDP
+class		CUDP_Unix : public IUDP
 {
 	public:
 		CUDP_Unix(unsigned short port = 44547);
@@ -34,10 +35,12 @@ class		CUDP_Unix : IUDP
 		int				_socket;
 
 	private:
-		struct sockaddr_in					_addrMe;
+		struct sockaddr_in		_addrMe;
 		struct sockaddr_in		_addrClients;
+		std::list<UDPSession*>	_clients;
 };
 
 typedef		CUDP_Unix	UDP;
 
 #endif		// CUDP_UNIX_H__
+

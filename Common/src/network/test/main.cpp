@@ -32,3 +32,4 @@ int		main()
 	delete [] buffer;
 	return (0);
 }
+
