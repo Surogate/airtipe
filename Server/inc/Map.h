@@ -12,17 +12,26 @@
 #include <fstream>
 #include "Frame.h"
 
-
 class Map : private std::queue<Frame> {
 public:
     Map(std::string& mapFile);
     virtual ~Map();
     void loadMap();
+    void AddFrame(Frame&);
 
 private:
     std::string _mapFile;
-    bool _loaded;
     bool _error;
+    std::vector<char> bytes;
+    unsigned int iterator;
+};
+
+struct parser {
+    std::string& _file;
+    unsigned int iterator;
+    unsigned int size;
+
+    bool parseFile(Map& toMap);
 };
 
 #endif	/* MAP_H */

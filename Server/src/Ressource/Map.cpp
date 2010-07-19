@@ -6,6 +6,7 @@
  */
 
 #include "Map.h"
+#include "MapParser.h"
 
 Map::Map(std::string& mapFile)
 : _mapFile(mapFile) {
@@ -21,5 +22,7 @@ void Map::loadMap() {
     std::vector<char> bytes(fileSize);
     _mapScript.read(&bytes[0], fileSize);
     _mapScript.close();
-    std::string script(bytes.begin(), bytes.end());
+    iterator = 0;
+    MapParser parser(std::string(bytes.begin(), bytes.end()), *this);
+    _error = parser.consumeScript();
 }
