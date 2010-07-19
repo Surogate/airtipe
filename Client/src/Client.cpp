@@ -21,35 +21,36 @@ Client::~Client()
   std::cout << "destruction Client" << std::endl;
 }
 
-sf::RenderWindow&	Client::getRWindow()
+sf::RenderWindow& Client::getRWindow()
 {
-	return this->_wind->getWindow();
+  return this->_wind->getWindow();
 }
 
 
-EventManager&		Client::getEventM()
+EventManager& Client::getEventM()
 {
   return *this->_event;
 }
 
-Network&		Client::getNetwork()
+Network&  Client::getNetwork()
 {
   return this->_network;
 }
-//
-//Ressources&		Client::getRessources()
-//{
-//  return this->_Ressources;
-//}
-//
+
+Ressources&		Client::getRessources()
+{
+  return this->_ressources;
+}
+
 void	Client::run()
 {
   this->_wind->create_windows(false);
+  this->_ressources.addClone(0,0,0);
   this->_wind->loop();
 }
 
 
-void			Client::setLogin(std::string const & login)
+void  Client::setLogin(std::string const & login)
 {
   this->_login = login;
 }

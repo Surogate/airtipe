@@ -30,7 +30,7 @@ public:
   sf::RenderWindow&	getRWindow();
   EventManager&		getEventM();
   Network&		getNetwork();
-  //Ressources&		getRessources();
+  Ressources&		getRessources();
   void			setLogin(std::string const &);
   void run();
 };

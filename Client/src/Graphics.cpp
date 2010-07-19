@@ -26,45 +26,53 @@ Graphics::Graphics(Client *c)
 Graphics::~Graphics()
 {}
 
-void	Graphics::create_windows(bool fullScreen)
+void  Graphics::create_windows(bool fullScreen)
 {
   this->_rwindow->Create(sf::VideoMode(this->_width, this->_height, this->_bpp),
                                       this->_name);
 }
 
-void	Graphics::close_windows()
+void  Graphics::close_windows()
 {
   this->_rwindow->Close();
 }
 
-void	Graphics::loop()
+void  Graphics::loop()
 {
   float ElapsedTime;
+  sf::Clock cl;
+
   while (this->_rwindow->IsOpened())
   {
     this->_rwindow->Clear();
     ElapsedTime = this->_rwindow->GetFrameTime();
     this->_client->getEventM().getEvent(ElapsedTime);
     this->_client->getNetwork().getEvent();
+        if (cl.GetElapsedTime() > 0.2f)
+        {
+                cl.Reset();
+                this->_client->getRessources().getUniqueObject(0)->goNextFrame();
+    }
     this->draw();
     this->_rwindow->Display();
   }
 }
 
-void	Graphics::draw()
+void  Graphics::draw()
 {
-  //this->_client->getRessources().Draw(this->_Player);
+  this->_rwindow->Draw(this->_client->getRessources().getUniqueObject(0)->draw());
+
 }
 
-void	Graphics::sprite_display(int x, int y)
+void  Graphics::sprite_display(int x, int y)
 {
   //this->_Player.SetPosition(x, y);
 }
 
-void	Graphics::sprite_destroy()
+void  Graphics::sprite_destroy()
 {}
 
-void	Graphics::load()
+void  Graphics::load()
 {
   /*
   if (!this->_Image.LoadFromFile("../../ressources/sprites/r-typesheet42.png"))
@@ -74,17 +82,13 @@ void	Graphics::load()
   */
 }
 
-void	Graphics::sprite_move()
-{
-
-}
 
 sf::RenderWindow & Graphics::getWindow()
 {
-	return *_rwindow;
+  return *_rwindow;
 }
 
-void	Graphics::sprite_anim()
+void  Graphics::sprite_anim()
 {
 
 }

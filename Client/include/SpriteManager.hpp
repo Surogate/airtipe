@@ -21,19 +21,19 @@
 class SpriteManager
 {
 private:
-	std::list<std::string>		_files;
-	std::vector<AGameObject>	_sprite;
+  std::list<std::string>		_files;
+  std::vector<AGameObject>	_sprite;
 
-	void getFiles(std::string const & path);
-	bool	getBoolFromInt(int integer);
-	void	getInfoFromFile(std::string const &filename, std::string const line, int *data);
+  void getFiles(std::string const & path);
+  bool	getBoolFromInt(int integer);
+  void	getInfoFromFile(std::string const &filename, std::string const line, int *data);
 
 public:
-	SpriteManager(void);
-	~SpriteManager(void);
-	void loadObjects(std::string const & path);
-	void loadOne(std::string const & file, std::string const & infofile);
-	AGameObject* getClone(int type, int id);
+  SpriteManager(void);
+  ~SpriteManager(void);
+  void loadObjects(std::string const & path);
+  void loadOne(std::string const & file, std::string const & infofile);
+  AGameObject* getClone(int type, int id);
 };
 
 #endif

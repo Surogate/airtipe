@@ -11,33 +11,33 @@ SpriteManager::~SpriteManager(void)
 
 void SpriteManager::getFiles(std::string const & path)
 {
-	std::string realpath;
-	realpath = path;
+  std::string realpath;
+  realpath = path;
 
 #ifdef _WIN32
-	realpath += "*.png";
-	USES_CONVERSION;
-	WIN32_FIND_DATA ffd;
-	HANDLE hFind = INVALID_HANDLE_VALUE;
-	hFind = FindFirstFile(realpath.c_str(), &ffd);
-	if (hFind != INVALID_HANDLE_VALUE)
-	{
-		do
-		{
-			_files.push_back(ffd.cFileName);
-		}
-		while (FindNextFile(hFind, &ffd) != 0);
-	}
-	FindClose(hFind);
+  realpath += "*.png";
+  USES_CONVERSION;
+  WIN32_FIND_DATA ffd;
+  HANDLE hFind = INVALID_HANDLE_VALUE;
+  hFind = FindFirstFile(realpath.c_str(), &ffd);
+  if (hFind != INVALID_HANDLE_VALUE)
+  {
+    do
+    {
+      _files.push_back(ffd.cFileName);
+    }
+    while (FindNextFile(hFind, &ffd) != 0);
+  }
+  FindClose(hFind);
 #else
-	DIR *dir = opendir(path.c_str());
-	struct dirent *elem = new dirent;
-	while ((elem = readdir(dir)) != NULL)
-	{
-		std::string s(elem->d_name);
-		if (s.length() > 6 && s.substr(s.length() - 4) == ".png")
-		  _files.push_back(s);
-	}
+  DIR *dir = opendir(path.c_str());
+  struct dirent *elem = new dirent;
+  while ((elem = readdir(dir)) != NULL)
+  {
+    std::string s(elem->d_name);
+    if (s.length() > 6 && s.substr(s.length() - 4) == ".png")
+      _files.push_back(s);
+  }
 #endif
 }
 
@@ -45,46 +45,46 @@ void SpriteManager::getFiles(std::string const & path)
 
 void SpriteManager::loadObjects(std::string const & path)
 {
-	this->getFiles(path);
-	std::list<std::string>::iterator i = _files.begin();
-	std::list<std::string>::iterator end = _files.end();
+  this->getFiles(path);
+  std::list<std::string>::iterator i = _files.begin();
+  std::list<std::string>::iterator end = _files.end();
 
-	for (; i != end ; ++i)
-	{
-		std::cout << (*i) << std::endl;;
-		if (std::string("r-typesheet3.png") == (*i))
-			this->loadOne(path + *i, (path + *i).substr(0, (path + *i).length() - 4) + ".sd");
-	}
+  for (; i != end ; ++i)
+  {
+    std::cout << (*i) << std::endl;;
+    if (std::string("r-typesheet3.png") == (*i))
+      this->loadOne(path + *i, (path + *i).substr(0, (path + *i).length() - 4) + ".sd");
+  }
 }
 
-bool	SpriteManager::getBoolFromInt(int integer)
+bool  SpriteManager::getBoolFromInt(int integer)
 {
-	if (integer == 0)
-		return false;
-	return true;
+  if (integer == 0)
+    return false;
+  return true;
 }
 
-void	SpriteManager::getInfoFromFile(std::string const &filename, std::string const line, int *data)
+void  SpriteManager::getInfoFromFile(std::string const &filename, std::string const line, int *data)
 {
-	int i = 0;
-	std::string cell;
-	std::stringstream  lineStream(line);
-	while (std::getline(lineStream, cell, ';'))
-	{
-		std::istringstream is(cell);
-		is >> data[i++];
-	}
-	if (i != 9)
-	{
-		//TODO throw
-		std::cerr << "Bad .sd file" << filename << std::endl;
-		exit(1);
-	}
+  int i = 0;
+  std::string cell;
+  std::stringstream  lineStream(line);
+  while (std::getline(lineStream, cell, ';'))
+  {
+    std::istringstream is(cell);
+    is >> data[i++];
+  }
+  if (i != 9)
+  {
+    //TODO throw
+    std::cerr << "Bad .sd file" << filename << std::endl;
+    exit(1);
+  }
 }
 
 
 //int left, top, right, bottom, type, object, anim, oneshot, frame;
-void SpriteManager::loadOne(std::string const & file, std::string const & infofile)
+void  SpriteManager::loadOne(std::string const & file, std::string const & infofile)
 {
   AGameObject *object;
   sf::Sprite *sprite;
@@ -129,7 +129,7 @@ AGameObject* SpriteManager::getClone(int type, int id)
     {
       return new AGameObject(this->_sprite[i]);
     }
-	++i;
+    ++i;
   }
   return NULL;
 }

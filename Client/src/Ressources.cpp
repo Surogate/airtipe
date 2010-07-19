@@ -18,7 +18,7 @@ Ressources::~Ressources()
 }
 
 
-AGameObject*	Ressources::getUniqueObject(int UID)
+AGameObject*  Ressources::getUniqueObject(int UID)
 {
   std::map<int, AGameObject*>::iterator i = _sprites.begin();
   std::map<int, AGameObject*>::iterator end = _sprites.end();
@@ -26,17 +26,17 @@ AGameObject*	Ressources::getUniqueObject(int UID)
   for (; i != end ; ++i)
     {
       if ((*i).first == UID)
-	{
-	  return _sprites[UID];
-	}
+        {
+          return _sprites[UID];
+        }
     }
 
 
 }
 
-void	       Ressources::addClone(int UID, int type, int id)
+void  Ressources::addClone(int UID, int type, int id)
 {
-  AGameObject *object = _sDatabase.getClone(type, id);
+  AGameObject *object = this->_sDatabase.getClone(type, id);
 
   if (object != NULL)
     {
