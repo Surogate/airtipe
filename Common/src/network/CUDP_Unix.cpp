@@ -58,42 +58,63 @@ void	CUDP_Unix::close()
 
 }
 
-int		CUDP_Unix::sendTo(void* data, unsigned int size)
+void	CUDP_Unix::broadcast(void* data, unsigned int size)
 {
-	std::cout << "sending  : " << std::string(static_cast<char*>(data), size) << std::endl;
-	int ret = sendto(
-		this->_socket,
-		data, size,
-		0,
-		(struct sockaddr*) &this->_addrClients,
-		sizeof(this->_addrClients)
-	);
-	if (ret == -1)
-		std::cerr << "send failed" << std::endl;
-	else if (ret != static_cast<int>(size))
-		std::cerr << "message not totally sent" << std::endl;
-	else
-		std::cout << "sending  : " << std::string(static_cast<char*>(data), size) << std::endl;
-	return (ret);
+	std::list<IUDPSession*>::iterator it = this->_sessions.begin();
+	std::list<IUDPSession*>::iterator ite = this->_sessions.end();
+	while (it != ite)
+	{
+		(*it)->send(data, size);
+		++it;
+	}
+}
+
+int		CUDP_Unix::sendTo(IUDPSession* session, void* data, unsigned int size)
+{
+	return (session->send(data, size));
 }
 
 int		CUDP_Unix::recvFrom(void* data, unsigned int size)
 {
-	unsigned int addrSize = sizeof(this->_addrClients);
+	UDPSession*		session = new UDPSession(this->_socket);
+	unsigned int addrSize = sizeof(session->getAddr());
 	int received = recvfrom(
 		this->_socket,
 		data, size,
 		0,
-		(struct sockaddr*) &this->_addrClients,
+		(struct sockaddr*) &session->getAddr(),
 		&addrSize
 	);
 	if (received == -1 && errno != EWOULDBLOCK)
 		std::cerr << "recv failed" << std::endl;
 	else if (received > 0)
 	{
+		if (!this->existSession(session))
+		{
+			this->_sessions.push_back(session);
+			std::cout << "new session" << std::endl;
+		}
 		std::cout << "received : " << std::string(static_cast<char*>(data), received) << std::endl;
 	}
 	return (received);
+}
+
+std::list<IUDPSession*>&		CUDP_Unix::getSessions()
+{
+	return (this->_sessions);
+}
+
+bool	CUDP_Unix::existSession(IUDPSession* session)
+{
+	std::list<IUDPSession*>::iterator it = this->_sessions.begin();
+	std::list<IUDPSession*>::iterator ite = this->_sessions.end();
+	while (it != ite)
+	{
+		if (*(*it) == session)
+			return (true);
+		++it;
+	}
+	return (false);
 }
 
 #endif //!WIN32
