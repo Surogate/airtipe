@@ -20,8 +20,8 @@ Network::~Network()
 
 bool	Network::tryConnect(std::string ipaddr, unsigned short port)
 {
-	std::cout << port << std::endl;
-	std::cout << ipaddr << std::endl;
+  //	std::cout << port << std::endl;
+  //	std::cout << ipaddr << std::endl;
 	if (sf::Socket::Done != _socket.Connect(port, ipaddr, 2.f))
 		return false;
 	return true;

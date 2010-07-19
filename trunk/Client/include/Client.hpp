@@ -8,6 +8,7 @@
 #ifndef		__CLIENT_HPP__
 # define	__CLIENT_HPP__
 
+#include <string>
 #include <SFML/Graphics.hpp>
 #include "Graphics.hpp"
 #include "EventManager.hpp"
@@ -21,6 +22,7 @@ public:
   EventManager*		_event;
   Network		_network;
   Ressources		_ressources;
+  std::string		_login;
 
 public:
   Client();
@@ -29,6 +31,7 @@ public:
   EventManager&		getEventM();
   Network&		getNetwork();
   //Ressources&		getRessources();
+  void			setLogin(std::string const &);
   void run();
 };
 

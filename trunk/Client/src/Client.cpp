@@ -47,3 +47,9 @@ void	Client::run()
   this->_wind->create_windows(false);
   this->_wind->loop();
 }
+
+
+void			Client::setLogin(std::string const & login)
+{
+  this->_login = login;
+}
