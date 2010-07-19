@@ -30,7 +30,7 @@ struct mtime {
 class ITimerManager {
 public:
     typedef int timeHdl;
-    
+
     virtual ~ITimerManager();
     virtual void SetActualTime(const mtime timestamps) = 0; // modifie l'horloge interne
     virtual mtime GetActualTime() = 0;

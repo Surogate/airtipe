@@ -21,7 +21,7 @@ WTimerManager::WTimerManager() {
 }
 
 WTimerManager::WTimerManager(const WTimerManager& orig)
-: actionTime_(orig.actionTime_), actionval_(orig.actionval_), listTime_(orig.listTime_) {
+: ITimerManager(), actionTime_(orig.actionTime_), actionval_(orig.actionval_), listTime_(orig.listTime_) {
 }
 
 WTimerManager::~WTimerManager() {

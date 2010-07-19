@@ -16,8 +16,8 @@
 struct Frame {
     unsigned int _height;
     unsigned int _width;
-    AEntity< class NoMovement > _ceil;
-    AEntity< class NoMovement > _floor;
+    AEntity<> _ceil;
+    AEntity<> _floor;
     std::map<unsigned int, Position> _monster;
     std::map<unsigned int, Position> _items;
 };
