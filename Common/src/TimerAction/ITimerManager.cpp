@@ -22,6 +22,11 @@ mtime::mtime(long int sec_, long int msec_) {
     msec = msec_;
 }
 
+mtime::mtime(float time) {
+    sec = time;
+    msec = (time * 1000) % 1000;
+}
+
 bool mtime::operator==(mtime& comp) {
     return ((sec == comp.sec) && (msec == comp.msec));
 }
@@ -51,6 +56,12 @@ mtime& mtime::operator-(mtime& comp) {
     sec = _sec;
     msec = _msec;
     return *this;
+}
+
+float mtime::toFloat() const {
+    float time = sec;
+    time += msec / 1000;
+    return time;
 }
 
 template<typename Class, typename RetType, typename Param1, typename Param2>

@@ -21,7 +21,5 @@ void Map::loadMap() {
     std::vector<char> bytes(fileSize);
     _mapScript.read(&bytes[0], fileSize);
     _mapScript.close();
-
     std::string script(bytes.begin(), bytes.end());
-    
 }
