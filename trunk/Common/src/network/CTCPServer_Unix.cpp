@@ -6,6 +6,7 @@
  * \date	02/07/2010 09:52:00
  */
 
+#ifndef WIN32
 #include	<iostream>
 #include	<iomanip>
 #include	<cstdlib>
@@ -204,3 +205,4 @@ void	CTCPServer_Unix::DisplayWarning(std::string const & msg)
 	std::cerr << std::setw(10) << std::left << "[WARNING]" << msg << std::endl;
 }
 
+#endif

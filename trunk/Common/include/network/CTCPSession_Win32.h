@@ -17,3 +17,4 @@ class		CTCPSession_Win32 : public ITCPSession
 };
 
 #endif		// CTCPSESSION_WIN32_H__
+
