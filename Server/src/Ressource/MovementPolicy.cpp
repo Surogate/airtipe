@@ -8,7 +8,7 @@
 #include "MovementPolicy.h"
 #include "singleton/SingletonHolder.h"
 
-Position::Position(unsigned int posX, unsigned int posY)
+Position::Position(float posX, float posY)
 : _posX(posX), _posY(posY) {
 }
 
