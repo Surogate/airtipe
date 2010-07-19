@@ -8,6 +8,7 @@
  * more description...
  */
 
+#ifndef WIN32
 #ifndef		CUDP_UNIX_H__
 # define	CUDP_UNIX_H__
 
@@ -44,3 +45,4 @@ typedef		CUDP_Unix	UDP;
 
 #endif		// CUDP_UNIX_H__
 
+#endif //! WIN32=======

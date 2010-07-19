@@ -26,7 +26,7 @@
 class		PacketManager
 {
 	typedef	AData*	(AData::*Creator)();
-	typedef	Factory<AData, PacketCode, Creator, NoThrowFactoryError> DataFactory;
+	typedef	Factory< AData, PacketCode, Creator, NoThrowFactoryError > DataFactory;
 	typedef	SingletonHolder<DataFactory > SingletonFactory;
 	public:
 		PacketManager();
