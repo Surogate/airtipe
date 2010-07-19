@@ -73,6 +73,11 @@ class		CTCPSession_Unix : public ITCPSession
 /*!
  * \brief	A typedef to keep abstraction at use
  */
+#ifndef WIN32
 typedef CTCPSession_Unix		TCPSession;
+#else
+//typedef CTCPSession_Windows             TCPSession;
+typedef CTCPSession_Windows             TCPSession;
+#endif
 
 #endif		// ITCPSESSION_H__

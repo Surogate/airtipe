@@ -9,6 +9,7 @@
 #ifndef		ISHAREDLIBRARY_H__
 # define	ISHAREDLIBRARY_H__
 
+
 # include	<string>
 
 # ifdef		UNIX
@@ -16,6 +17,8 @@
 	typedef	void* libProcAddr;
 # endif
 # ifdef		WIN32
+#  include <windows.h>
+#  include <winbase.h>
 	typedef	HMODULE libHandler;
 	typedef	FARPROC libProcAddr;
 # endif

@@ -1,3 +1,5 @@
+
+#ifndef WIN32
 #include	<iostream>
 #include	<dlfcn.h>
 #include	"shared_library/SharedLibrary_unix.h"
@@ -39,3 +41,6 @@ bool		SharedLibrary_unix::libFree(libHandler lib)
 		return (true);
 	return (false);
 }
+
+#endif
+

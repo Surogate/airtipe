@@ -8,6 +8,8 @@
  * more description...
  */
 
+#ifndef WIN32
+
 #include <iostream>
 #include <cstring>
 #include <fcntl.h>
@@ -94,3 +96,4 @@ int		CUDP_Unix::recvFrom(void* data, unsigned int size)
 	return (received);
 }
 
+#endif //!WIN32
