@@ -13,9 +13,9 @@
 #include "TimerManager/ITimerManager.hpp"
 
 struct Position {
-    unsigned int _posX;
-    unsigned int _posY;
-    Position(unsigned int posX = 0, unsigned int posY = 0);
+    float _posX;
+    float _posY;
+    Position(float posX = 0, float posY = 0);
 };
 
 class MovementPolicy {
