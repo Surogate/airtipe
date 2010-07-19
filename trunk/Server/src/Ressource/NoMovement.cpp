@@ -12,11 +12,11 @@ NoMovement::NoMovement(const Position& init, const Position&, const int)
 : MovementPolicy(init) {
 }
 
-MovementType NoMovement::GetMovementType() {
+const MovementType NoMovement::GetMovementType() const {
     return ::NoMovement;
 }
 
-const Position NoMovement::GetPositionAt(mtime& time) {
+const Position NoMovement::GetPositionAt(mtime&) {
     return _posInit;
 }
 

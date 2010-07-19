@@ -16,7 +16,8 @@
 template< class MvmPolicy = class NoMovement >
 class AEntity : private MvmPolicy {
 public:
-    AEntity(const Position& init, const Position& direction = Position(), const int velocity = 0);
+    AEntity(const Position& init = Position(), const Position& direction = Position(), const int velocity = 0)
+            : MvmPolicy(init, direction, velocity) {}
 
 protected:
     unsigned int _id;
