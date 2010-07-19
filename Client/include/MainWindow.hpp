@@ -19,16 +19,15 @@ public:
   MainWindow(Client * client);
   ~MainWindow();
  
-private:
-  QPushButton* _start;
-  QPushButton* _exit;
-  QLineEdit* _ip;
-  QLineEdit* _port;
-  QCheckBox* _fullScreen;
-
-  QLabel* _SplashImage;
-  QLabel* _ipLabel;
-  QLabel* _portLabel;
+    private:
+    QPushButton* _start;
+	QPushButton* _exit;
+	QLineEdit* _ip;
+	QLineEdit* _login;
+	QCheckBox* _fullScreen;
+	QLabel* _SplashImage;
+	QLabel* _ipLabel;
+	QLabel* _loginLabel;
 
   Client* _client;
   QMessageBox* _warning;
