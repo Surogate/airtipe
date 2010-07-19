@@ -32,7 +32,7 @@ class Factory : public FactoryErrorPolicy<IdentifierType, AbstractProduct>
 			}
 			std::pair<AbstractProduct *, Creator> * newPair;
 			newPair = new std::pair<AbstractProduct *, Creator >(newProduct, creator);
-			return associations_.insert(std::pair<const IdentifierType&, std::pair<AbstractProduct *, Creator > * >(id, newPair)).second;
+			return associations_.insert(std::pair< const IdentifierType&, std::pair<AbstractProduct *, Creator > * >(id, newPair)).second;
 		}
 
 		bool Unregister(const IdentifierType& id)

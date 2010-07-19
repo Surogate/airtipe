@@ -15,13 +15,14 @@
 
 class Map : private std::queue<Frame> {
 public:
-    Map(std::ifstream& mapScript);
+    Map(std::string& mapFile);
     virtual ~Map();
+    void loadMap();
 
 private:
-    std::ifstream& _mapScript;
+    std::string _mapFile;
     bool _loaded;
+    bool _error;
 };
 
 #endif	/* MAP_H */
-
