@@ -16,61 +16,63 @@ const int	height = 600;
 
 int QtLauncher(int ac, char **av, Client *client)
 {
-	QApplication app(ac, av);
-	MainWindow qtwindow(client);
-	qtwindow.show();
-	return app.exec();
+        QApplication app(ac, av);
+        MainWindow qtwindow(client);
+        qtwindow.show();
+        return app.exec();
 }
 
 
 int main(int ac, char **av)
 {
-	Client *client = new Client();
-	QtLauncher(ac, av, client);
-	if (client->getNetwork().isConnected())
-	  client->run();
+  Client *client = new Client();
+/*
+  QtLauncher(ac, av, client);
+  if (client->getNetwork().isConnected())
+*/
+    client->run();
 
 
-	//sf::RenderWindow	Game;
-	//Game.Create(sf::VideoMode(width, height, 32), "R-TYPE");
-	//SpriteManager a;
-	//a.loadObjects("../ressources/sprites/");
+        //sf::RenderWindow	Game;
+        //Game.Create(sf::VideoMode(width, height, 32), "R-TYPE");
+        //SpriteManager a;
+        //a.loadObjects("../ressources/sprites/");
 
-	//AGameObject *go = a.getClone(0, 0);
-	//if (go == NULL)
-	//{
-	//	std::cout << "Bad pointer" << std::endl;
-	//	exit(1);
-	//}
+        //AGameObject *go = a.getClone(0, 0);
+        //if (go == NULL)
+        //{
+        //	std::cout << "Bad pointer" << std::endl;
+        //	exit(1);
+        //}
 
-	//sf::Clock cl;
-	//cl.Reset();
-	//while (Game.IsOpened())
-	//{
-	//	sf::Event Event;
-	//	while (Game.GetEvent(Event))
-	//	{
-	//		std::cout << "3" << std::endl;
-	//		if ((Event.Type == sf::Event::KeyPressed))
-	//		{
-	//			//tape = Event.Text.Unicode;
-	//			//std::cout << tape << std::endl;
-	//		}
-	//		if ((Event.Type == sf::Event::Closed) || ((Event.Type == sf::Event::KeyPressed) && (Event.Key.Code == sf::Key::Escape)))
-	//		{
-	//			Game.Close();
-	//			return EXIT_SUCCESS;
-	//		}
-	//	}
-	//	Game.Clear();
-	//	if (cl.GetElapsedTime() > 0.2f)
-	//	{
-	//		cl.Reset();
-	//		go->goNextFrame();
-	//	}
-	//	go->draw(Game);
-	//	Game.Display();
-	//}
+        //sf::Clock cl;
+        //cl.Reset();
+        //while (Game.IsOpened())
+        //{
+        //	sf::Event Event;
+        //	while (Game.GetEvent(Event))
+        //	{
+        //		std::cout << "3" << std::endl;
+        //		if ((Event.Type == sf::Event::KeyPressed))
+        //		{
+        //			//tape = Event.Text.Unicode;
+        //			//std::cout << tape << std::endl;
+        //		}
+        //		if ((Event.Type == sf::Event::Closed) || ((Event.Type == sf::Event::KeyPressed) && (Event.Key.Code == sf::Key::Escape)))
+        //		{
+        //			Game.Close();
+        //			return EXIT_SUCCESS;
+        //		}
+        //	}
+        //	Game.Clear();
+        //	if (cl.GetElapsedTime() > 0.2f)
+        //	{
+        //		cl.Reset();
+        //		go->goNextFrame();
+        //	}
+        //	go->draw(Game);
+        //	Game.Display();
+        //}
 
 }
 
@@ -90,30 +92,30 @@ const int	bpp = 32;
 
 int		main()
 {
-	Client client;
+        Client client;
 
-	 * PacketManager	pm;
-	
+         * PacketManager	pm;
 
-	client.Net.c.connect(std::string("localhost"), 22255);
-	Packet* packet = pm.CreatePacket(Login);
-	DataLogin* data = new (packet->datas) DataLogin;
-	data->id = 9;
-	memcpy(data->login, "azeazeazeazeae", 15);
-	data->login[14] = 0;
-	if (!client.Net.c.failed())
-	{
-		packet->header->dataSize = sizeof(*data);
-		client.Net.c.send(packet->header, sizeof(*packet->header));
-		client.Net.c.send(data, sizeof(*data));
-		client.Net.c.send(packet->header, sizeof(*packet->header));
-		client.Net.c.send(data, sizeof(*data));
-		client.Net.c.send(packet->header, sizeof(*packet->header));
-		client.Net.c.send(data, sizeof(*data));
-		client.Net.c.send(packet->header, sizeof(*packet->header));
-		client.Net.c.send(data, sizeof(*data));
-	}
-	while (42);
-	client.run();
+
+        client.Net.c.connect(std::string("localhost"), 22255);
+        Packet* packet = pm.CreatePacket(Login);
+        DataLogin* data = new (packet->datas) DataLogin;
+        data->id = 9;
+        memcpy(data->login, "azeazeazeazeae", 15);
+        data->login[14] = 0;
+        if (!client.Net.c.failed())
+        {
+                packet->header->dataSize = sizeof(*data);
+                client.Net.c.send(packet->header, sizeof(*packet->header));
+                client.Net.c.send(data, sizeof(*data));
+                client.Net.c.send(packet->header, sizeof(*packet->header));
+                client.Net.c.send(data, sizeof(*data));
+                client.Net.c.send(packet->header, sizeof(*packet->header));
+                client.Net.c.send(data, sizeof(*data));
+                client.Net.c.send(packet->header, sizeof(*packet->header));
+                client.Net.c.send(data, sizeof(*data));
+        }
+        while (42);
+        client.run();
 }
 */
