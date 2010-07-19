@@ -13,10 +13,8 @@ class		IUDPSession
 {
 	public:
 		virtual int		send(void* data, unsigned int size) = 0;
-		virtual int		recv(unsigned int size) = 0;
-
-	public:
-		virtual void*	getData() = 0;
+		virtual struct sockaddr_in&	getAddr() = 0;
+		virtual bool operator==(IUDPSession* session) = 0;
 };
 
 #endif		// IUDPSESSION_H__

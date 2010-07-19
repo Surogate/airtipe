@@ -20,10 +20,11 @@ int		main()
 		int msgSize;
 		while (42)
 		{
-			//std::cout << "loop" << std::endl;
 			msgSize = s.recvFrom(buffer, 512);
 			if (msgSize > 0)
-				s.sendTo(buffer, msgSize);
+			{
+				s.broadcast(buffer, msgSize);
+			}
 		}
 		s.close();
 		std::cout << "UDP closed" << std::endl;

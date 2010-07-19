@@ -6,34 +6,49 @@
  * \date	19/07/2010 16:19:58
  */
 
+#include <cstring>
 #include <iostream>
 #include "network/CUDPSession_Unix.h"
 
-CUDPSession_Unix::CUDPSession_Unix(unsigned int bufSize) :
-	_bufSize(bufSize),
-	_data(NULL)
+CUDPSession_Unix::CUDPSession_Unix(int socket) :
+	_socket(socket)
 {
-	this->_data = new char[bufSize];
+
 }
 
 CUDPSession_Unix::~CUDPSession_Unix()
 {
-	if (this->_data != NULL)
-		delete [] static_cast<char*>(this->_data);
+
 }
 
 int		CUDPSession_Unix::send(void* data, unsigned int size)
 {
-	return (0);
+	int ret = sendto(
+		this->_socket,
+		data, size,
+		0,
+		(struct sockaddr*) &this->_addr,
+		sizeof(this->_addr)
+	);
+	if (ret == -1)
+		std::cerr << "send failed" << std::endl;
+	else if (ret != static_cast<int>(size))
+		std::cerr << "message not totally sent" << std::endl;
+	else
+		std::cout << "sending  : " << std::string(static_cast<char*>(data), size) << std::endl;
+	return (ret);
 }
 
-int		CUDPSession_Unix::recv(unsigned int size)
+struct sockaddr_in&		CUDPSession_Unix::getAddr()
 {
-	return (0);
+	return this->_addr;
 }
 
-void*	CUDPSession_Unix::getData()
+bool CUDPSession_Unix::operator==(IUDPSession* session)
 {
-	return (this->_data);
+	int ret = memcmp(&this->_addr, &session->getAddr(), sizeof(this->_addr));
+	if (ret == 0)
+		return (true);
+	return (false);
 }
 

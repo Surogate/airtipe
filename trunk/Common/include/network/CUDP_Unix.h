@@ -28,8 +28,15 @@ class		CUDP_Unix : public IUDP
 	public:
 		bool	open();
 		void	close();
-		int		sendTo(void* data, unsigned int size);
+		void	broadcast(void* data, unsigned int size);
+		int		sendTo(IUDPSession* session, void* data, unsigned int size);
 		int		recvFrom(void* data, unsigned int size);
+
+	public:
+		std::list<IUDPSession*>&	getSessions();
+
+	private:
+		bool	existSession(IUDPSession* session);
 
 	private:
 		unsigned short	_port;
@@ -37,12 +44,11 @@ class		CUDP_Unix : public IUDP
 
 	private:
 		struct sockaddr_in		_addrMe;
-		struct sockaddr_in		_addrClients;
-		std::list<UDPSession*>	_clients;
+		std::list<IUDPSession*>	_sessions;
 };
 
 typedef		CUDP_Unix	UDP;
 
 #endif		// CUDP_UNIX_H__
 
-#endif //! WIN32=======
+#endif //WIN32

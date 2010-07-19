@@ -9,24 +9,27 @@
 #ifndef		CUDPSESSION__UNIX_H__
 # define	CUDPSESSION__UNIX_H__
 
+# include	<sys/socket.h>
+# include	<arpa/inet.h>
+# include	<netinet/in.h>
 # include	"network/IUDPSession.h"
 
 class		CUDPSession_Unix : public IUDPSession
 {
 	public:
-		CUDPSession_Unix(unsigned int bufSize = 16);
+		CUDPSession_Unix(int socket);
 		virtual ~CUDPSession_Unix();
+		bool operator==(IUDPSession* session);
 
 	public:
 		int		send(void* data, unsigned int size);
-		int		recv(unsigned int size);
 
 	public:
-		void*	getData();
+		struct sockaddr_in&		getAddr();
 
 	private:
-		unsigned int	_bufSize;
-		void*			_data;
+		int						_socket;
+		struct sockaddr_in		_addr;
 };
 
 typedef CUDPSession_Unix	UDPSession;
