@@ -26,6 +26,7 @@ PacketManager::PacketManager()
 	this->_dataFactory->Register(Shoot, new DataId, &AData::Clone);
 	this->_dataFactory->Register(LoginOK, new DataLogin, &AData::Clone);
 	this->_dataFactory->Register(CreateGameOK, new DataEmpty, &AData::Clone);
+	this->_dataFactory->Register(SendGames, new DataLogin, &AData::Clone);
 	this->_dataFactory->Register(SendMaps, new DataMap, &AData::Clone);
 	this->_dataFactory->Register(SendMapsEnd, new DataMap, &AData::Clone);
 	this->_dataFactory->Register(AddMapOK, new DataMap, &AData::Clone);

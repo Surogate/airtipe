@@ -11,10 +11,12 @@
 
 # include	"packets/AData.h"
 
-struct		DataMap : public AData
+class		DataMap : public AData
 {
-	char	mapName[15];
-	AData *	Clone() { return new DataMap; }
+	public:
+		char	mapName[15];
+		AData *	Clone() { return new DataMap; }
+		virtual ~DataMap() {}
 };
 
 #endif		// DATAMAP_H__

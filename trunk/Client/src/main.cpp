@@ -26,11 +26,10 @@ int QtLauncher(int ac, char **av, Client *client)
 int main(int ac, char **av)
 {
   Client *client = new Client();
-/*
+
   QtLauncher(ac, av, client);
   if (client->getNetwork().isConnected())
-*/
-    client->run();
+	client->run();
 
 
         //sf::RenderWindow	Game;

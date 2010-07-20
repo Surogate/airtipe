@@ -26,6 +26,7 @@ enum		PacketCode
 	Shoot,
 	LoginOK,
 	CreateGameOK,
+	SendGames,
 	SendMaps,
 	SendMapsEnd,
 	AddMapOK,

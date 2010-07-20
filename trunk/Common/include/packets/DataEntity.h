@@ -14,18 +14,20 @@
 # include	"SkinType.h"
 # include	"MovementType.h"
 
-struct		DataEntity : public AData
+class		DataEntity : public AData
 {
-	unsigned int	id;
-	unsigned int	pv;
-	unsigned int	x;
-	unsigned int	y;
-	EntityType		type;
-	SkinType		BulletSkin;
-	MovementType	movement;
-	unsigned int	spawnFrameNum;
-	int				startTime; // A Revoir
-	AData * Clone() { return new DataEntity; }
+	public:
+		unsigned int	id;
+		unsigned int	pv;
+		unsigned int	x;
+		unsigned int	y;
+		EntityType		type;
+		SkinType		BulletSkin;
+		MovementType	movement;
+		unsigned int	spawnFrameNum;
+		int				startTime; // A Revoir
+		AData * Clone() { return new DataEntity; }
+		virtual ~DataEntity() {}
 };
 
 #endif		// DATAENTITY_H__

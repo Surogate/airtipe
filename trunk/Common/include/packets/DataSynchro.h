@@ -13,18 +13,20 @@
 # include	"SkinType.h"
 # include	"MovementType.h"
 
-struct		DataSynchro : public AData
+class		DataSynchro : public AData
 {
-	DataSynchro() : id(1), x(2), y(3), pv(4), time(5), bulletSkin(Tentacle), movement(Circular), startTime(9) {}
-	unsigned int	id;
-	unsigned int	x;
-	unsigned int	y;
-	unsigned int	pv;
-	int				time; // A Revoir
-	SkinType		bulletSkin;
-	MovementType	movement;
-	int				startTime; // A Revoir
-	AData * Clone() { return new DataSynchro; }
+	public:
+		DataSynchro() : id(1), x(2), y(3), pv(4), time(5), bulletSkin(Tentacle), movement(Circular), startTime(9) {}
+		unsigned int	id;
+		unsigned int	x;
+		unsigned int	y;
+		unsigned int	pv;
+		int				time; // A Revoir
+		SkinType		bulletSkin;
+		MovementType	movement;
+		int				startTime; // A Revoir
+		AData * Clone() { return new DataSynchro; }
+		virtual ~DataSynchro() {}
 };
 
 #endif		// DATASYNCHRO_H__
