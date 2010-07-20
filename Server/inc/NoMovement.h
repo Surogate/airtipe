@@ -15,7 +15,7 @@
 class NoMovement : MovementPolicy {
 public:
     NoMovement(const Position& init, const Position&, const int);
-    const Position GetPositionAt(mtime& time);
+    const Position GetPositionAt(mtime& time) const;
     const Position GetPosition() const;
     const MovementType GetMovementType(void) const;
 };

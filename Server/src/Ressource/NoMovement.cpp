@@ -16,7 +16,7 @@ const MovementType NoMovement::GetMovementType() const {
     return ::NoMovement;
 }
 
-const Position NoMovement::GetPositionAt(mtime&) {
+const Position NoMovement::GetPositionAt(mtime&) const {
     return _posInit;
 }
 

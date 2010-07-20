@@ -6,6 +6,7 @@
  */
 
 #include <string>
+#include <sstream>
 
 #include "MapParser.h"
 
@@ -16,22 +17,26 @@ bool MapParser::consumeScript() {
     while(peek() && consumeBlanks() && peek())
         if (!consumeLine())
         {
-            
+            std::cerr << "error at line " << lineConsumed << std::endl;
             return false;
         }
     return true;
 }
 
 bool MapParser::consumeLine() {
-    bool ret = (Entitydecl() || frameDefine()) && char_(';');
+    bool ret = Entitydecl()&& char_(';');
     if (ret)
         ++lineConsumed;
     return ret;
 }
 
 bool MapParser::Entitydecl() {
-    return true;
-    
+    monster neo;
+    return (char_('<') && (EntityId(neo._id)) && char_('>'));
+}
+
+bool MapParser::EntityId(int& in) {
+    if (readText("id:") && readInt(in))
 }
 
 bool MapParser:: frameDefine() {
@@ -42,27 +47,30 @@ bool MapParser::consumeBlanks() {
     while (char_(' ') || char_('\n') || char_('\t'));
 }
 
-bool MapParser::char_() {
+bool MapParser::char_(std::string& in) {
     if (iterator < size)
     {
+        in += _file[iterator];
         ++iterator;
         return true;
     }
     return false;
 }
 
-bool MapParser::char_(char c) {
+bool MapParser::char_(char c, std::string& in) {
     if (peek(c))
     {
+        in += _file[iterator];
         ++iterator;
         return true;
     }
     return false;
 }
 
-bool MapParser::char_(char from, char to) {
+bool MapParser::char_(char from, char to, std::string& in) {
     if (peek(from, to))
     {
+        in += _file[iterator];
         ++iterator;
         return true;
     }
@@ -79,4 +87,33 @@ bool MapParser::peek(char from, char to) {
 
 bool MapParser::peek() {
     return (iterator < size);
+}
+
+bool MapParser::readText(std::string& text, std::string& in) {
+    for (unsigned int i = 0; i < text; i++)
+    {
+        if (!char_(text[i], in))
+            return false;
+    }
+    return true;
+}
+
+bool MapParser::readInt(int& in)
+{
+    std::string num;
+    int sign = 1;
+    while (peek('+') || peek('-'))
+    {
+        if (char_('-'))
+            sign = sign * -1;
+        else
+            char_('+');
+    }
+    while (char_('0', '9', num));
+    if (std::stringstream(num) >> in)
+    {
+        in = in * sign;
+        return true;
+    }
+    return false;
 }

@@ -23,8 +23,8 @@ struct mtime {
     mtime& operator+(mtime& comp);
     mtime& operator-(mtime& comp);
     float toFloat() const;
-    mtime(long int sec = 0, long int msec = 0);
-    mtime(float time);
+    mtime(long int sec, long int msec = 0);
+    mtime(float time = 0);
 };
 
 class ITimerManager {
