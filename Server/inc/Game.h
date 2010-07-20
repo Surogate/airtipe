@@ -21,11 +21,12 @@
 class		Game
 {
 	public:
-		Game();
+		Game(std::string const & ownerLogin);
 		~Game();
 
 	public:
 		void	poll();
+		std::string const & getOwner() const;
 
 	private:
 		void	PlayerMove(Packet const & pak);
@@ -51,6 +52,7 @@ class		Game
 		PacketManager	_pm;
 		bool			_valid;
 		bool			_started;
+		std::string		_owner;
 		std::map<PacketCode, Action>								_actions;
 		std::map<TCPSession *, std::pair<unsigned int, IEntity &> >	_players;
 };

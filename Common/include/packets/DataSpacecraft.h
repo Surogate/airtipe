@@ -12,11 +12,13 @@
 # include	"packets/AData.h"
 # include	"SkinType.h"
 
-struct		DataSpacecraft : public AData
+class		DataSpacecraft : public AData
 {
-	unsigned int	id;
-	SkinType		skin;
-	AData *			Clone() { return new DataSpacecraft; }
+	public:
+		unsigned int	id;
+		SkinType		skin;
+		AData *			Clone() { return new DataSpacecraft; }
+		virtual ~DataSpacecraft() {}
 };
 
 #endif		// DATASPACECRAFT_H__

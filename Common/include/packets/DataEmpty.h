@@ -11,9 +11,11 @@
 
 # include	"packets/AData.h"
 
-struct		DataEmpty : public AData
+class		DataEmpty : public AData
 {
-	AData * Clone() { return new DataEmpty; }
+	public:
+		AData * Clone() { return new DataEmpty; }
+		virtual ~DataEmpty() {}
 };
 
 #endif		// DATAEMPTY_H__

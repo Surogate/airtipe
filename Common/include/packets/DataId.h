@@ -11,10 +11,12 @@
 
 # include	"packets/AData.h"
 
-struct		DataId : public AData
+class		DataId : public AData
 {
-	unsigned int	id;
-	AData * Clone() { return new DataId; }
+	public:
+		unsigned int	id;
+		AData * Clone() { return new DataId; }
+		virtual ~DataId() {}
 };
 
 #endif		// DATAID_H__

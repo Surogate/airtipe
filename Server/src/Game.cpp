@@ -8,7 +8,9 @@
 
 #include	"Game.h"
 
-Game::Game()
+Game::Game(std::string const & ownerLogin) :
+	_started(false),
+	_owner(ownerLogin)
 {
 
 }
@@ -108,4 +110,7 @@ void	Game::BroadcastPacket(Packet *)
 
 }
 
-
+std::string const & Game::getOwner() const
+{
+	return (this->_owner);
+}

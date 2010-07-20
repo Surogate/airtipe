@@ -10,8 +10,9 @@
 # define	SERVER_H__
 
 # include	<map>
-
+# include	<vector>
 # include	"Client.h"
+# include	"Game.h"
 # include	"packets/PacketManager.h"
 
 # ifdef		UNIX
@@ -20,6 +21,8 @@
 
 class		Server : public TCPServer
 {
+	typedef Packet * (Server::*Action)(Client * client, Packet * pak);
+
 	public:
 		Server(short port, unsigned int bufferSize);
 		virtual	~Server();
@@ -30,15 +33,18 @@ class		Server : public TCPServer
 		void	respondToValidClients();
 
 	private:
-		typedef Packet * (Server::*Action)(Client * client, Packet * pak);
 		std::map<PacketCode, Action>	_actions;
-		PacketManager	_pm;
+		std::map<std::string, Game*>	_games;
+		PacketManager					_pm;
 
 	private:
 		void		process();
 		void		DisplayInHeader(PacketHeader * header);
 		void		DisplayOutHeader(PacketHeader * header);
 		bool		loginExists(std::string const & login);
+		void		sendGamesToPlayer(std::string const & login);
+		void		sendGameToPlayer(Client* client, std::string const & Game);
+		void		broadcastGames(std::string const & gameName);
 
 	private:
 		Packet *	ActionLogin(Client * client, Packet * pak);

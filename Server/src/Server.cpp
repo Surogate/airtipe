@@ -171,7 +171,8 @@ void		Server::process()
 				Packet* response = (this->*(it->second))(dynamic_cast<Client *>(this->_in.front().first), pak);
 				this->_out.push_back(std::pair<TCPSession*, void*>(this->_in.front().first, response));
 				found = true;
-				delete [] pak->header;
+				delete pak->header;
+				delete pak->datas;
 				delete pak;
 				break;
 			}
@@ -215,12 +216,13 @@ Packet *	Server::ActionLogin(Client * client, Packet * pak)
 			client->setLogin(data->login);
 			client->setLogged(true);
 			this->DisplayNotice(client->getLogin() + " now logged");
-    
+
 			DataLogin * newdata = new DataLogin;
 			memcpy(newdata->login, data->login, 16);
 			newdata->id = 0;
 			response = this->_pm.CreatePacket(LoginOK, newdata);
 			response->header->dataSize = sizeof(DataLogin);
+			sendGamesToPlayer(newdata->login);
 		}
 		else
 		{
@@ -238,14 +240,98 @@ Packet *	Server::ActionLogin(Client * client, Packet * pak)
 		response = this->_pm.CreatePacket(LoginKO);
 		response->header->dataSize = sizeof(DataEmpty);
 	}
-	delete pak->datas;
 	return response;
 }
 
-Packet *	Server::ActionCreateGame(Client *, Packet *)
+void		Server::sendGamesToPlayer(std::string const & login)
 {
+	std::list<TCPSession*>::const_iterator	it = this->_sessions.begin();
+	std::list<TCPSession*>::const_iterator	ite = this->_sessions.end();
+	Client *	client;
+
+	while (it != ite)
+	{
+		client = dynamic_cast<Client *>(*it);
+		if (client->isLogged() == true && client->getLogin() == login)
+		{
+			std::map<std::string, Game*>::const_iterator	itGame = this->_games.begin();
+			std::map<std::string, Game*>::const_iterator	itGameEnd = this->_games.end();
+
+			while (itGame != itGameEnd)
+			{
+				sendGameToPlayer(client, itGame->first);
+				++it;
+			}
+		}
+		++it;
+	}
+}
+
+void		Server::sendGameToPlayer(Client* client, std::string const & gameName)
+{
+	DataLogin*		data = new DataLogin;
+	memcpy(data->login, gameName.c_str(), gameName.size() + 1);
+	data->id = 0;
+
+	PacketHeader*	header = new PacketHeader(SendGames);
+	header->dataSize = sizeof(DataLogin);
+
+	Packet*			pak = new Packet(header, data);
+	this->_out.push_back(std::pair<TCPSession*, void*>(client, pak));
+}
+
+Packet *	Server::ActionCreateGame(Client * client, Packet*)
+{
+	Packet*			response = NULL;
+	DataEmpty*		data = new DataEmpty;
+
 	std:: cerr << std::setw(10) << std::left << "[ACTION]" << "ActionCreateGame" << std::endl;
-	return NULL;
+
+	if (this->_games.find(client->getLogin()) != this->_games.end())
+	{
+		this->DisplayWarning(client->getLogin() + " get an error when creating a new game");
+
+		PacketHeader*	header = new PacketHeader(CreateGameKO);
+		response = new Packet(header, data);
+	}
+	else
+	{
+		this->_games[client->getLogin()] = new Game(client->getLogin());
+		this->DisplayNotice(client->getLogin() + " creating new game");
+		PacketHeader*	header = new PacketHeader(CreateGameOK);
+		header->dataSize = sizeof(DataEmpty);
+		DataLogin*		data = new DataLogin;
+		memcpy(data->login, client->getLogin().c_str(), client->getLogin().size() + 1);
+		data->id = 0;
+		response = new Packet(header, data);
+		broadcastGames(client->getLogin());
+	}
+	return response;
+}
+
+void		Server::broadcastGames(std::string const & gameName)
+{
+	this->DisplayNotice(std::string("broacasting new game : ") + gameName + " to all players");
+	std::list<TCPSession*>::const_iterator	it = this->_sessions.begin();
+	std::list<TCPSession*>::const_iterator	ite = this->_sessions.end();
+	Client *	client;
+
+	while (it != ite)
+	{
+		client = dynamic_cast<Client *>(*it);
+		if (client->isLogged() == true)
+		{
+			PacketHeader*	broadHeader = new PacketHeader(SendGames);
+			DataLogin*		broadData = new DataLogin;
+			memcpy(broadData->login, gameName.c_str(), gameName.size() + 1);
+			broadData->id = 0;
+			broadHeader->dataSize = sizeof(DataLogin);
+			Packet*			broadPacket = new Packet(broadHeader, broadData);
+
+			this->_out.push_back(std::pair<TCPSession*, void*>((*it), broadPacket));
+		}
+		++it;
+	}
 }
 
 Packet *	Server::ActionAddMap(Client *, Packet * pak)
