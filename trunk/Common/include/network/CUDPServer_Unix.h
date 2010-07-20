@@ -1,5 +1,5 @@
 /*!
- * \file	CUDP_Unix.h
+ * \file	CUDPServer_Unix.h
  * \brief	
  * \author	Bertran Pierre - bertra_b@epitech.eu
  * \version	0.1
@@ -9,21 +9,21 @@
  */
 
 #ifndef WIN32
-#ifndef		CUDP_UNIX_H__
-# define	CUDP_UNIX_H__
+#ifndef		CUDPSERVER_UNIX_H__
+# define	CUDPSERVER_UNIX_H__
 
 # include	<list>
 # include	<sys/socket.h>
 # include	<arpa/inet.h>
 # include	<netinet/in.h>
-# include	"network/IUDP.h"
+# include	"network/IUDPServer.h"
 # include	"network/CUDPSession_Unix.h"
 
-class		CUDP_Unix : public IUDP
+class		CUDPServer_Unix : public IUDPServer
 {
 	public:
-		CUDP_Unix(unsigned short port = 44547);
-		virtual ~CUDP_Unix();
+		CUDPServer_Unix(unsigned short port = 44547);
+		virtual ~CUDPServer_Unix();
 
 	public:
 		bool	open();
@@ -47,8 +47,8 @@ class		CUDP_Unix : public IUDP
 		std::list<IUDPSession*>	_sessions;
 };
 
-typedef		CUDP_Unix	UDP;
+typedef		CUDPServer_Unix	UDPServer;
 
-#endif		// CUDP_UNIX_H__
+#endif		// CUDPSERVER_UNIX_H__
 
 #endif //WIN32

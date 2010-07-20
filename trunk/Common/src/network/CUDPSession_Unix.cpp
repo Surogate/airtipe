@@ -44,6 +44,11 @@ struct sockaddr_in&		CUDPSession_Unix::getAddr()
 	return this->_addr;
 }
 
+void					CUDPSession_Unix::resetAddr()
+{
+	memset(&this->_addr, 0, sizeof(this->_addr));
+}
+
 bool CUDPSession_Unix::operator==(IUDPSession* session)
 {
 	int ret = memcmp(&this->_addr, &session->getAddr(), sizeof(this->_addr));
