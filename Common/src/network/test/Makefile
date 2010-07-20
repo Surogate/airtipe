@@ -2,11 +2,11 @@ NAME		=	server
 CNAME		=	client
 
 SRCS		=	main.cpp					\
-				../CUDP_Unix.cpp			\
+				../CUDPServer_Unix.cpp		\
 				../CUDPSession_Unix.cpp
 
 CSRCS		=	client.cpp					\
-				../CUDP_Unix.cpp			\
+				../CUDPClient_Unix.cpp		\
 				../CUDPSession_Unix.cpp
 
 OBJS		=	$(SRCS:.cpp=.o)
@@ -27,9 +27,11 @@ all			:	$(NAME) $(CNAME)
 
 clean		:
 			$(RM) $(OBJS)
+			$(RM) $(COBJS)
 
 fclean		: clean
 			$(RM) $(NAME)
+			$(RM) $(CNAME)
 
 re			: fclean all
 

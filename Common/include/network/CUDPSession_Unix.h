@@ -26,6 +26,7 @@ class		CUDPSession_Unix : public IUDPSession
 
 	public:
 		struct sockaddr_in&		getAddr();
+		void					resetAddr();
 
 	private:
 		int						_socket;

@@ -9,30 +9,24 @@
  */
 
 #include	<iostream>
-#include	"network/CUDP_Unix.h"
+#include	"network/CUDPClient_Unix.h"
 
 int		main()
 {
-	UDP	c(44547);
-	char*	buffer = new char[512];
+	UDPClient	c("127.0.0.1");
+	char*		wbuffer = "coucou";
+	char*		rbuffer = new char[512];
+	int			recv;
 
-	if (c.open())
+	if (c.init())
 	{
-		std::cout << "UDP opened" << std::endl;
-		int msgSize;
+		std::cout << "init ok" << std::endl;
 		while (42)
 		{
-			msgSize = c.recvFrom(buffer, 512);
-			if (msgSize > 0)
-			{
-				c.broadcast(buffer, msgSize);
-			}
+			c.send(wbuffer, 7);
+			recv = c.recv(rbuffer, 512);
 		}
-		c.close();
-		std::cout << "UDP closed" << std::endl;
 	}
-
-	delete [] buffer;
 	return (0);
 }
 

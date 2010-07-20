@@ -1,17 +1,17 @@
 /*!
- * \file	IUDP.h
+ * \file	IUDPServer.h
  * \brief	
  * \author	Bertran Pierre - bertra_b@epitech.eu
  * \version	0.1
  * \date	18/07/2010 19:16:54
  */
 
-#ifndef		IUDP_H__
-# define	IUDP_H__
+#ifndef		IUDPSERVER_H__
+# define	IUDPSERVER_H__
 
 # include	"IUDPSession.h"
 
-class		IUDP
+class		IUDPServer
 {
 	public:
 		virtual bool	open() = 0;
@@ -22,5 +22,5 @@ class		IUDP
 		virtual std::list<IUDPSession*>&	getSessions() = 0;
 };
 
-#endif		// IUDP_H__
+#endif		// IUDPSERVER_H__
 

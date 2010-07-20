@@ -7,12 +7,12 @@
  */
 
 #include	<iostream>
-#include	"network/CUDP_Unix.h"
+#include	"network/CUDPServer_Unix.h"
 
 int		main()
 {
-	UDP	s;
-	char*	buffer = new char[512];
+	UDPServer	s;
+	char*		buffer = new char[512];
 
 	if (s.open())
 	{
