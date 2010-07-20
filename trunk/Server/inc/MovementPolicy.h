@@ -24,7 +24,7 @@ public:
     MovementPolicy(const MovementPolicy& orig);
     virtual ~MovementPolicy();
     virtual const Position GetPosition(void) const = 0;
-    virtual const Position GetPositionAt(mtime& time) = 0;
+    virtual const Position GetPositionAt(mtime& time) const = 0;
     virtual const MovementType GetMovementType(void) const = 0;
 
 protected:

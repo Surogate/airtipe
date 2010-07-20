@@ -17,7 +17,7 @@ const MovementType VectorialMovement::GetMovementType() const {
     return Vectorial;
 }
 
-const Position VectorialMovement::GetPositionAt(mtime& time) {
+const Position VectorialMovement::GetPositionAt(mtime& time) const {
     mtime timeFrom = _timerMan->GetTimeFrom(_timeHandler);
     timeFrom = timeFrom + time;
     float fTime = timeFrom.toFloat();
@@ -25,5 +25,6 @@ const Position VectorialMovement::GetPositionAt(mtime& time) {
 }
 
 const Position VectorialMovement::GetPosition() const {
-    return GetPositionAt(0);
+    mtime time;
+    return GetPositionAt(time);
 }
